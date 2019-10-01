@@ -13,6 +13,16 @@ public class Employees {
 	
 	
 	
+	
+	public Employees(int employee_id, String first_name, String last_name) {
+		super();
+		this.employee_id = employee_id;
+		this.first_name = first_name;
+		this.last_name = last_name;
+	}
+	
+
+
 	public Employees(int employee_id, String first_name, String last_name, String email, int phone_number,
 			String hire_date, int job_id, int salary, int manager_id, int department_id) {
 		super();
@@ -86,5 +96,12 @@ public class Employees {
 	public void setDepartment_id(int department_id) {
 		this.department_id = department_id;
 	}
+
+	@Override
+	public String toString() {
+		return "Employees [employee_id=" + employee_id + ", first_name=" + first_name + ", last_name=" + last_name
+				+ "]";
+	}
 		
+	
 }

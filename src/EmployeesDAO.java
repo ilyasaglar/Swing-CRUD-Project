@@ -2,7 +2,9 @@ import java.sql.Connection;
 import java.io.*;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,60 +13,77 @@ public class EmployeesDAO implements CustomDAO {
 	List<Employees> employees;
 	private Employees employee;
 
-	   public EmployeesDAO(){
-	      employees = new ArrayList<Employees>();
-	      	
-	   }
-	@Override
-	public List<Employees> getAllEmployees() {
-		
-		return null;
+	public EmployeesDAO() {
+		employees = new ArrayList<Employees>();
+
 	}
 
-	@Override
-	public Employees getEmployee(int employee_id) {
-		
-		return null;
-	}
+	public void getEmployee() { // ÝD ye göre ad ve soyadý getir
 
-	@Override
-	public boolean insertEmployee(Employees employee) {
-	 
-		
+		Connection connection = DbConnection.getConnection();
 		try {
-			Connection	connection = DriverManager.getConnection(DbConnection.URL,"hr","hr");
-			PreparedStatement ps = connection.prepareStatement("INSERT INTO user VALUES (NULL, ?, ?, ?)");
-		        ps.setString(1, employee.getFirst_name());
-		        ps.setString(2, employee.getLast_name());
-		        ps.setInt(3, employee.phone_number);
-		        int i = ps.executeUpdate();
-		      if(i == 1) {
-		        return true;
-		      }
+			Statement stmt = connection.createStatement();
+			ResultSet rs = stmt.executeQuery("SELECT * FROM employees WHERE employee_id=103");
+			if (rs.next()) {
+				Employees user = new Employees();
+				user.setEmployee_id(rs.getInt(1));
+				user.setFirst_name(rs.getString(2));
+				user.setLast_name(rs.getString(3));
+				System.out.println(user);
+
+			}
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+		}
+
+	}
+
+	@Override
+	public boolean insertEmployee() {
+
+		try {
+			Connection connection = DbConnection.getConnection();
+	
+			String tr="aa";
+			String tr2="bbb";
+			int id=3;
+			
+			Employees e = new Employees(4, "TR", "Turkey");
+			
+			String inserting = "INSERT INTO countries(country_id,country_name,region_id) values(?,?,?)";
+			System.out.println("insert " + inserting);//
+			PreparedStatement ps = connection.prepareStatement(inserting); 
+			ps.setString(1,e.getFirst_name()); // <----- this
+			ps.setString(2,e.getLast_name());// <---- and this
+			ps.setInt(3, e.getEmployee_id());
+			ps.executeUpdate();
+			
+				
+		/*
+			
+			  Statement stmt = connection.createStatement(); int rowsInserted =
+			  stmt.executeUpdate("insert into countries values (,'Turkey',4)");
+			  System.out.println(rowsInserted + " rows inserted");
+			*/  
+			 
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+
 			e.printStackTrace();
 		}
-		 
-		    
-		       
-		     
-		    return false;
-		}
+
+		return false;
+	}
 
 	@Override
 	public boolean updateEmployee(Employees employee) {
 		return false;
-		
-		
+
 	}
 
 	@Override
 	public boolean deleteEmployee(Employees employee) {
 		return false;
-		
-		
+
 	}
 
-	
 }

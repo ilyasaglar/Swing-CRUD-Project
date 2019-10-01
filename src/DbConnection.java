@@ -1,11 +1,14 @@
 import java.sql.Connection;
 import java.sql.Driver;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 public class DbConnection {
 	public static final String URL = "jdbc:oracle:thin:@localhost:1521:xe";
-    public static final String USER = "hr";
+    public static final String USER = "HR";
     public static final String PASS = "hr";
     /**
      * Get a connection to database
@@ -15,8 +18,8 @@ public class DbConnection {
     {
       try {
     	  Connection myConn = DriverManager.getConnection(URL, USER, PASS);
-         // DriverManager.registerDriver(new Driver());
-          return myConn;
+    	  return DriverManager.getConnection(URL, USER, PASS);
+          
       } catch (SQLException ex) {
           throw new RuntimeException("Error connecting to the database", ex);
       }
@@ -25,7 +28,28 @@ public class DbConnection {
      * Test Connection
      */
     public static void main(String[] args) {
-        Connection connection = DbConnection.getConnection();
+      
+        try {
+        	  Connection connection = DbConnection.getConnection();
+        	  EmployeesDAO e = new EmployeesDAO();
+        	  e.getEmployee();  
+        	  System.out.println("------------");
+        	  
+        	 e.insertEmployee();
+        	
+        	  
+			connection.close();
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        
+    	
+    	
+		
+		
+
     }
 }
 
