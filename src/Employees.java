@@ -1,5 +1,5 @@
 
-public class Employee {
+public class Employees {
 	int employee_id;
 	String first_name;
 	String last_name;
@@ -13,7 +13,7 @@ public class Employee {
 	
 	
 	
-	public Employee(int employee_id, String first_name, String last_name, String email, int phone_number,
+	public Employees(int employee_id, String first_name, String last_name, String email, int phone_number,
 			String hire_date, int job_id, int salary, int manager_id, int department_id) {
 		super();
 		this.employee_id = employee_id;
@@ -28,7 +28,7 @@ public class Employee {
 		this.department_id = department_id;
 	}
 
-	public Employee() {
+	public Employees() {
 		super();
 	}
 

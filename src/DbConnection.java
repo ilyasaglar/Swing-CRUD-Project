@@ -3,7 +3,7 @@ import java.sql.Driver;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-public class MyConnection {
+public class DbConnection {
 	public static final String URL = "jdbc:oracle:thin:@localhost:1521:xe";
     public static final String USER = "hr";
     public static final String PASS = "hr";
@@ -25,7 +25,7 @@ public class MyConnection {
      * Test Connection
      */
     public static void main(String[] args) {
-        Connection connection = MyConnection.getConnection();
+        Connection connection = DbConnection.getConnection();
     }
 }
 

@@ -6,33 +6,33 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class EmployeeDAOimp implements EmployeeDAO {
+public class EmployeesDAO implements CustomDAO {
 
-	List<Employee> employees;
-	private Employee employee;
+	List<Employees> employees;
+	private Employees employee;
 
-	   public EmployeeDAOimp(){
-	      employees = new ArrayList<Employee>();
+	   public EmployeesDAO(){
+	      employees = new ArrayList<Employees>();
 	      	
 	   }
 	@Override
-	public List<Employee> getAllEmployees() {
+	public List<Employees> getAllEmployees() {
 		
 		return null;
 	}
 
 	@Override
-	public Employee getEmployee(int employee_id) {
+	public Employees getEmployee(int employee_id) {
 		
 		return null;
 	}
 
 	@Override
-	public boolean insertEmployee(Employee employee) {
+	public boolean insertEmployee(Employees employee) {
 	 
 		
 		try {
-			Connection	connection = DriverManager.getConnection(MyConnection.URL,"hr","hr");
+			Connection	connection = DriverManager.getConnection(DbConnection.URL,"hr","hr");
 			PreparedStatement ps = connection.prepareStatement("INSERT INTO user VALUES (NULL, ?, ?, ?)");
 		        ps.setString(1, employee.getFirst_name());
 		        ps.setString(2, employee.getLast_name());
@@ -53,14 +53,14 @@ public class EmployeeDAOimp implements EmployeeDAO {
 		}
 
 	@Override
-	public boolean updateEmployee(Employee employee) {
+	public boolean updateEmployee(Employees employee) {
 		return false;
 		
 		
 	}
 
 	@Override
-	public boolean deleteEmployee(Employee employee) {
+	public boolean deleteEmployee(Employees employee) {
 		return false;
 		
 		
