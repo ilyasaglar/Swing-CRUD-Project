@@ -6,7 +6,7 @@ public interface CustomDAO {
 	
 	
 	boolean insertEmployee();
-	boolean updateEmployee(Employees employee);
+	boolean updateEmployee();
 	boolean deleteEmployee(Employees employee);
 	
 	

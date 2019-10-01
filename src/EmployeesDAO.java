@@ -39,33 +39,31 @@ public class EmployeesDAO implements CustomDAO {
 	}
 
 	@Override
-	public boolean insertEmployee() {
+	public boolean insertEmployee() { //Employees employee eklenmeli
 
 		try {
 			Connection connection = DbConnection.getConnection();
-	
-			String tr="aa";
-			String tr2="bbb";
-			int id=3;
-			
+
+			String tr = "aa";
+			String tr2 = "bbb";
+			int id = 3;
+
 			Employees e = new Employees(4, "TR", "Turkey");
-			
+
 			String inserting = "INSERT INTO countries(country_id,country_name,region_id) values(?,?,?)";
 			System.out.println("insert " + inserting);//
-			PreparedStatement ps = connection.prepareStatement(inserting); 
-			ps.setString(1,e.getFirst_name()); // <----- this
-			ps.setString(2,e.getLast_name());// <---- and this
+			PreparedStatement ps = connection.prepareStatement(inserting);
+			ps.setString(1, e.getFirst_name()); // <----- this
+			ps.setString(2, e.getLast_name());// <---- and this
 			ps.setInt(3, e.getEmployee_id());
 			ps.executeUpdate();
-			
-				
-		/*
-			
-			  Statement stmt = connection.createStatement(); int rowsInserted =
-			  stmt.executeUpdate("insert into countries values (,'Turkey',4)");
-			  System.out.println(rowsInserted + " rows inserted");
-			*/  
-			 
+
+			/*
+			 * Statement stmt = connection.createStatement(); int rowsInserted =
+			 * stmt.executeUpdate("insert into countries values (,'Turkey',4)");
+			 * System.out.println(rowsInserted + " rows inserted");
+			 */
+
 		} catch (SQLException e) {
 
 			e.printStackTrace();
@@ -74,8 +72,23 @@ public class EmployeesDAO implements CustomDAO {
 		return false;
 	}
 
-	@Override
-	public boolean updateEmployee(Employees employee) {
+	
+	public boolean updateEmployee() { //Employees employee eklenmeli
+		Connection connection = DbConnection.getConnection();
+		Employees e = new Employees(4,"TR", "tr");
+		
+		try {
+			String sql ="UPDATE countries SET country_name=?, region_id=? WHERE country_id='" + e.getFirst_name() + "'";
+			PreparedStatement ps = connection.prepareStatement(sql);
+			ps.setString(1, e.getLast_name());
+			ps.setInt(2, e.getEmployee_id());
+			int i = ps.executeUpdate();
+			if (i == 1) {
+				return true;
+			}
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+		}
 		return false;
 
 	}

@@ -35,8 +35,8 @@ public class DbConnection {
         	  e.getEmployee();  
         	  System.out.println("------------");
         	  
-        	 e.insertEmployee();
-        	
+        	// e.insertEmployee();
+        	e.updateEmployee();
         	  
 			connection.close();
 
