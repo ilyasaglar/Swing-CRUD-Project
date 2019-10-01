@@ -1,4 +1,5 @@
 import java.sql.Connection;
+import java.io.*;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -8,6 +9,7 @@ import java.util.List;
 public class EmployeeDAOimp implements EmployeeDAO {
 
 	List<Employee> employees;
+	private Employee employee;
 
 	   public EmployeeDAOimp(){
 	      employees = new ArrayList<Employee>();
@@ -27,25 +29,28 @@ public class EmployeeDAOimp implements EmployeeDAO {
 
 	@Override
 	public boolean insertEmployee(Employee employee) {
-		Connector connector = new Connector();
-	    //Connection connection = connector.getConnection();
-		//Connection myConn = DriverManager.getConnection(null);
-		    try {
-		        PreparedStatement ps = connection.prepareStatement("INSERT INTO user VALUES (NULL, ?, ?, ?)");
+	 
+		
+		try {
+			Connection	connection = DriverManager.getConnection(MyConnection.URL,"hr","hr");
+			PreparedStatement ps = connection.prepareStatement("INSERT INTO user VALUES (NULL, ?, ?, ?)");
 		        ps.setString(1, employee.getFirst_name());
 		        ps.setString(2, employee.getLast_name());
-		        ps.setInt(3, employee.getEmployee_id());
+		        ps.setInt(3, employee.phone_number);
 		        int i = ps.executeUpdate();
 		      if(i == 1) {
 		        return true;
 		      }
-		    } catch (SQLException ex) {
-		        ex.printStackTrace();
-		    }
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		 
+		    
+		       
+		     
 		    return false;
 		}
-		
-	
 
 	@Override
 	public boolean updateEmployee(Employee employee) {
