@@ -1,52 +1,48 @@
-import java.awt.BorderLayout;
-import java.awt.EventQueue;
-
 import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-import javax.swing.JLabel;
-import java.awt.Font;
-import datechooser.beans.DateChooserCombo;
-import datechooser.beans.DateChooserPanel;
-import datechooser.beans.DateChooserDialog;
+import javax.swing.JMenuBar;
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class MainFrame extends JFrame {
 
-	private JPanel contentPane;
-
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					MainFrame frame = new MainFrame();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
+	public MainFrame() {
+		
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.setTitle("HR Otomasyon");
+		this.setBounds(100, 100, 400, 350);
+		getContentPane().setLayout(null);
+		
+		JMenuBar menuBar = new JMenuBar();
+		menuBar.setBounds(10, 11, 97, 21);
+		getContentPane().add(menuBar);
+		
+		JMenu mnNewMenu = new JMenu("TABLES");
+		menuBar.add(mnNewMenu);
+		
+		JMenuItem mnýtmNewMenuItem = new JMenuItem("Employees");
+		mnýtmNewMenuItem.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				EmployeesFrame frm = new EmployeesFrame();
+				frm.setVisible(true);
 			}
 		});
+		mnNewMenu.add(mnýtmNewMenuItem);
+		
+		JMenuItem mnýtmNewMenuItem_1 = new JMenuItem("...");
+		mnNewMenu.add(mnýtmNewMenuItem_1);
+		
+		JMenuItem mnýtmNewMenuItem_2 = new JMenuItem("...");
+		mnNewMenu.add(mnýtmNewMenuItem_2);
+		
+		JMenuItem mnýtmNewMenuItem_3 = new JMenuItem("EXIT");
+		mnNewMenu.add(mnýtmNewMenuItem_3);
+		this.setVisible(true);
+	//			
 	}
-
-	/**
-	 * Create the frame.
-	 */
-	public MainFrame() {
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 522, 360);
-		contentPane = new JPanel();
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		setContentPane(contentPane);
-		contentPane.setLayout(null);
-		
-		JLabel lblNewLabel = new JLabel("\u0130\u015EKUR PROJECT");
-		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 24));
-		lblNewLabel.setBounds(164, 27, 260, 57);
-		contentPane.add(lblNewLabel);
-		
-		
-		
+	
+	public static void main(String[] args) {
+		MainFrame mainFrame = new MainFrame();
 	}
 }

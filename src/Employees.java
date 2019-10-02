@@ -5,23 +5,23 @@ public class Employees {
 	String first_name;
 	String last_name;
 	String email;
-	Integer phone_number;
+	String phone_number;
 	Date hire_date;
 	String job_id;
 	Integer salary;
 	Integer manager_id;
 	Integer department_id;
-	double commission_pct;
+	Integer commission_pct;
 
-	public Employees(int employee_id, String first_name, String last_name) {
+	public Employees(Integer employee_id, String first_name, String last_name) {
 		super();
 		this.employee_id = employee_id;
 		this.first_name = first_name;
 		this.last_name = last_name;
 	}
 
-	public Employees(int employee_id, String first_name, String last_name, String email, int phone_number, Date hire_date,
-			 String job_id, int salary, double commission_pct, int manager_id, int department_id) {
+	public Employees(Integer employee_id, String first_name, String last_name, String email, String phone_number, Date hire_date,
+			 String job_id, Integer salary, Integer commission_pct, Integer manager_id, Integer department_id) {
 		super();
 		this.employee_id = employee_id;
 		this.first_name = first_name;
@@ -39,11 +39,11 @@ public class Employees {
 		super();
 	}
 
-	public int getEmployee_id() {
+	public Integer getEmployee_id() {
 		return employee_id;
 	}
 
-	public void setEmployee_id(int employee_id) {
+	public void setEmployee_id(Integer employee_id) {
 		this.employee_id = employee_id;
 	}
 
@@ -71,11 +71,11 @@ public class Employees {
 		this.email = email;
 	}
 
-	public int getPhone_number() {
+	public String getPhone_number() {
 		return phone_number;
 	}
 
-	public void setPhone_number(int phone_number) {
+	public void setPhone_number(String phone_number) {
 		this.phone_number = phone_number;
 	}
 
@@ -87,35 +87,35 @@ public class Employees {
 		this.job_id = job_id;
 	}
 
-	public int getSalary() {
+	public Integer getSalary() {
 		return salary;
 	}
 
-	public void setSalary(int salary) {
+	public void setSalary(Integer salary) {
 		this.salary = salary;
 	}
 
-	public int getManager_id() {
+	public Integer getManager_id() {
 		return manager_id;
 	}
 
-	public void setManager_id(int manager_id) {
+	public void setManager_id(Integer manager_id) {
 		this.manager_id = manager_id;
 	}
 
-	public int getDepartment_id() {
+	public Integer getDepartment_id() {
 		return department_id;
 	}
 
-	public void setDepartment_id(int department_id) {
+	public void setDepartment_id(Integer department_id) {
 		this.department_id = department_id;
 	}
 
-	public double getCommission_pct() {
+	public Integer getCommission_pct() {
 		return commission_pct;
 	}
 
-	public void setCommission_pct(double commission_pct) {
+	public void setCommission_pct(Integer commission_pct) {
 		this.commission_pct = commission_pct;
 	}
 
@@ -129,8 +129,7 @@ public class Employees {
 
 	@Override
 	public String toString() {
-		return "Employees [employee_id=" + employee_id + ", first_name=" + first_name + ", last_name=" + last_name
-				+ "]";
+		return employee_id + " " + first_name + " " + last_name;
 	}
 
 }
