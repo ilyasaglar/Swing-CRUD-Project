@@ -5,9 +5,9 @@ import java.io.*;
 public interface CustomDAO {
 	
 	
-	boolean insertEmployee();
-	boolean updateEmployee();
-	boolean deleteEmployee();
+	boolean insert();
+	boolean update();
+	boolean delete();
 	
 	
 	
