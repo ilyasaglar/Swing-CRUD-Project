@@ -1,16 +1,16 @@
 import java.sql.Date;
 
 public class Employees {
-	int employee_id;
+	Integer employee_id;
 	String first_name;
 	String last_name;
 	String email;
-	int phone_number;
+	Integer phone_number;
 	Date hire_date;
 	String job_id;
-	int salary;
-	int manager_id;
-	int department_id;
+	Integer salary;
+	Integer manager_id;
+	Integer department_id;
 	double commission_pct;
 
 	public Employees(int employee_id, String first_name, String last_name) {

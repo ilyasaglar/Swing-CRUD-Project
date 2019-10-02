@@ -84,7 +84,7 @@ public class EmployeesDAO implements CustomDAO {
 
 	public boolean updateEmployee() { // Employees employee eklenmeli
 		Connection connection = DbConnection.getConnection();
-		Employees e = new Employees(206, "Bengisu", "Özmelleþ", "bengsu@gmail", 123456789, "02/10/2019", "AD_VP", 5000,0.3, 108, 50);
+		Employees e = new Employees(206, "Bengisu", "Özmelleþ", "bengsu@gmail", 123456789,Date.valueOf("2010-10-10") , "AD_VP", 5000, 0.3, 108, 50);
 
 		try {
 			String sql = "UPDATE employees SET first_name=?, last_name=?, email=?, phone_number=?, hire_date=?, job_id=?, salary=?, commission_pct=?, manager_id=?, department_id=?"
