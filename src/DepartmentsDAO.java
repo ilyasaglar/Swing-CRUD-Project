@@ -43,7 +43,7 @@ public class DepartmentsDAO implements CustomDAO {
 		try {
 			Connection connection = DbConnection.getConnection();
 
-			Departments department = new Departments(290,"Beng Beng", 250,1700);
+			Departments department = new Departments(290, "Beng Beng", 110, 1500);
 			
 
 			String inserting = "INSERT INTO employees (department_id, department_name, manager_id, location_id)"
