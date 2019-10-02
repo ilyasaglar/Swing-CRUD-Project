@@ -42,12 +42,13 @@ public class EmployeesDAO implements CustomDAO {
 	}
 
 	@Override
-	public boolean insertEmployee() { // Employees employee eklenmeli
+	public boolean insert() { // Employees employee eklenmeli
 
 		try {
 			Connection connection = DbConnection.getConnection();
 
-			Employees e = new Employees(5001, "Alper", "Ersayin", "alper1@gmail", 123456789,  Date.valueOf("2015-10-02") , "SA_REP", 5000, 0.3, 108, 50);
+			Employees employee = new Employees(5003, "Alper", "Ersayin", "alper12@gmail", 123456789,
+					Date.valueOf("2015-10-02"), "SA_REP", 5000, 0.3, 108, 50);
 
 			String inserting = "INSERT INTO employees (employee_id, first_name, last_name, email, phone_number, hire_date, job_id, salary, commission_pct, manager_id, department_id)"
 					+ " values(?,?,?,?,?,?,?,?,?,?,?)";
@@ -55,36 +56,31 @@ public class EmployeesDAO implements CustomDAO {
 			System.out.println("insert " + inserting);//
 			PreparedStatement ps = connection.prepareStatement(inserting);
 
-			ps.setInt(1, e.getEmployee_id());
-			ps.setString(2, e.getFirst_name());
-			ps.setString(3, e.getLast_name());
-			ps.setString(4, e.getEmail());
-			ps.setInt(5, e.getPhone_number());
-			ps.setDate(6, e.getHire_date());
-			ps.setString(7, e.getJob_id());
-			ps.setInt(8, e.getSalary());
-			ps.setDouble(9, e.getCommission_pct());
-			ps.setInt(10, e.getManager_id());
-			ps.setInt(11, e.getDepartment_id());
+			ps.setInt(1, employee.getEmployee_id());
+			ps.setString(2, employee.getFirst_name());
+			ps.setString(3, employee.getLast_name());
+			ps.setString(4, employee.getEmail());
+			ps.setInt(5, employee.getPhone_number());
+			ps.setDate(6, employee.getHire_date());
+			ps.setString(7, employee.getJob_id());
+			ps.setInt(8, employee.getSalary());
+			ps.setDouble(9, employee.getCommission_pct());
+			ps.setInt(10, employee.getManager_id());
+			ps.setInt(11, employee.getDepartment_id());
 			ps.executeUpdate();
-
-			/*
-			 * Statement stmt = connection.createStatement(); int rowsInserted =
-			 * stmt.executeUpdate("insert into countries values (,'Turkey',4)");
-			 * System.out.println(rowsInserted + " rows inserted");
-			 */
 
 		} catch (SQLException e) {
 
 			e.printStackTrace();
-		} 
+		}
 
 		return false;
 	}
 
-	public boolean updateEmployee() { // Employees employee eklenmeli
+	public boolean update() { // Employees employee eklenmeli
 		Connection connection = DbConnection.getConnection();
-		Employees e = new Employees(206, "Bengisu", "Özmelleþ", "bengsu@gmail", 123456789,Date.valueOf("2010-10-10") , "AD_VP", 5000, 0.3, 108, 50);
+		Employees e = new Employees(206, "Bengisu", "Özmelleþ", "bengsu@gmail", 123456789, Date.valueOf("2010-10-10"),
+				"AD_VP", 5000, 0.3, 108, 50);
 
 		try {
 			String sql = "UPDATE employees SET first_name=?, last_name=?, email=?, phone_number=?, hire_date=?, job_id=?, salary=?, commission_pct=?, manager_id=?, department_id=?"
@@ -111,13 +107,12 @@ public class EmployeesDAO implements CustomDAO {
 		} catch (SQLException ex) {
 			ex.printStackTrace();
 		}
-		
-		
+
 		return false;
 
 	}
 
-	public boolean deleteEmployee() { // Employees employee eklenmeli
+	public boolean delete() { // Employees employee eklenmeli
 		Connection connection = DbConnection.getConnection();
 		int employee_id = 109;
 		try {

@@ -8,7 +8,7 @@ import java.sql.Statement;
 
 public class DbConnection {
 	public static final String URL = "jdbc:oracle:thin:@localhost:1521:xe";
-	public static final String USER = "HR";
+	public static final String USER = "hr";
 	public static final String PASS = "hr";
 
 	/**
@@ -34,10 +34,12 @@ public class DbConnection {
 		try {
 			Connection connection = DbConnection.getConnection();
 			EmployeesDAO e = new EmployeesDAO();
+			DepartmentsDAO d= new DepartmentsDAO();
 			e.getEmployee();
 			System.out.println("------------");
 
-			e.insertEmployee();
+			e.insert();
+			//e.insert();
 			// e.updateEmployee();
 			// e.deleteEmployee();
 
