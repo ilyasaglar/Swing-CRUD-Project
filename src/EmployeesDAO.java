@@ -17,44 +17,44 @@ public class EmployeesDAO implements CustomDAO {
 	
 	private Employees employee;
 	
-	
 	public EmployeesDAO() {
 		//employees = new ArrayList<Employees>();
 	}
 	
-	public Employees alper(Employees e){
+	public Employees setEmployee(Employees e){
 		return employee = e;
 	}
 	
 	
-	public void getEmployee(Integer id) { // ÝD ye göre ad ve soyadý getir
+	public Employees getEmployee(Integer id) { // ÝD ye göre ad ve soyadý getir
 
 		Connection connection = DbConnection.getConnection();
 		try {
-			Employees employee = new Employees();
+			Employees e = new Employees();
 			Statement stmt = connection.createStatement();
 			ResultSet rs = stmt.executeQuery("SELECT * FROM employees WHERE employee_id="+id);
 			if (rs.next()) {
 				
-				employee.setEmployee_id(rs.getInt(id));
-				employee.setFirst_name(rs.getString(2));
-				employee.setLast_name(rs.getString(3));
-				employee.setEmail(rs.getString(4));
-				employee.setPhone_number(rs.getString(5));
-				employee.setHire_date(rs.getDate(6));
-				employee.setJob_id(rs.getString(7));
-				employee.setSalary(rs.getInt(8));
-				employee.setCommission_pct(rs.getInt(9));
-				employee.setManager_id(rs.getInt(10));
-				employee.setDepartment_id(rs.getInt(11));
+				e.setEmployee_id(rs.getInt(id));
+				e.setFirst_name(rs.getString(2));
+				e.setLast_name(rs.getString(3));
+				e.setEmail(rs.getString(4));
+				e.setPhone_number(rs.getString(5));
+				e.setHire_date(rs.getDate(6));
+				e.setJob_id(rs.getString(7));
+				e.setSalary(rs.getInt(8));
+				e.setCommission_pct(rs.getInt(9));
+				e.setManager_id(rs.getInt(10));
+				e.setDepartment_id(rs.getInt(11));
 				//System.out.println(emp);
+				return e;
 				
 			}
 		} catch (SQLException ex) {
 			ex.printStackTrace();
 			
 		}
-		//return employee;
+		return null;
 		
 
 	}
@@ -98,13 +98,15 @@ public class EmployeesDAO implements CustomDAO {
 		}
 
 	}
+	
+	public void check() {
+		Connection connection = DbConnection.getConnection();
+		
+	}
 
 	public boolean update() { // Employees employee eklenmeli
 		Connection connection = DbConnection.getConnection();
-		/*
-		Employees e = new Employees(206, "Bengisu", "Özmelleþ", "bengsu@gmail", "123456789", Date.valueOf("2010-10-10"),
-				"AD_VP", 5000, 1, 108, 50);
-		*/
+	
 		try {
 			//Employees employee = new Employees();
 			
@@ -130,6 +132,12 @@ public class EmployeesDAO implements CustomDAO {
 				return true;
 
 			}
+			
+			Employees emp = new Employees();
+			emp = getEmployee(employee.getEmployee_id());
+			
+			
+			
 		} catch (SQLException ex) {
 			ex.printStackTrace();
 		}

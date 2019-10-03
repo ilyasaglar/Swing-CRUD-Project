@@ -21,23 +21,23 @@ public class MainFrame extends JFrame {
 		JMenu mnNewMenu = new JMenu("TABLES");
 		menuBar.add(mnNewMenu);
 		
-		JMenuItem tmNewMenuItem = new JMenuItem("Employees");
-		tmNewMenuItem.addActionListener(new ActionListener() {
+		JMenuItem mnNewMenuItem = new JMenuItem("Employees");
+		mnNewMenuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				EmployeesFrame frm = new EmployeesFrame();
 				frm.setVisible(true);
 			}
 		});
-		mnNewMenu.add(tmNewMenuItem);
+		mnNewMenu.add(mnNewMenuItem);
 		
-		JMenuItem tmNewMenuItem_1 = new JMenuItem("...");
-		mnNewMenu.add(tmNewMenuItem_1);
+		JMenuItem mnNewMenuItem_1 = new JMenuItem("...");
+		mnNewMenu.add(mnNewMenuItem_1);
 		
-		JMenuItem tmNewMenuItem_2 = new JMenuItem("...");
-		mnNewMenu.add(tmNewMenuItem_2);
+		JMenuItem mnNewMenuItem_2 = new JMenuItem("...");
+		mnNewMenu.add(mnNewMenuItem_2);
 		
-		JMenuItem tmNewMenuItem_3 = new JMenuItem("EXIT");
-		mnNewMenu.add(tmNewMenuItem_3);
+		JMenuItem mnNewMenuItem_3 = new JMenuItem("EXIT");
+		mnNewMenu.add(mnNewMenuItem_3);
 		this.setVisible(true);
 	//			
 	}

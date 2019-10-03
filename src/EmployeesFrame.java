@@ -105,7 +105,7 @@ public class EmployeesFrame extends JDialog{
 		            txtManagerID.setText(emp.getManager_id().toString());
 		            txtDepartmentID.setText(emp.getDepartment_id().toString());
 		            
-		        }
+		        } 
 		    }
 		});
 		
@@ -264,6 +264,8 @@ public class EmployeesFrame extends JDialog{
 				}
 				
 				txtID.setEditable(false);
+				btnInsert.setEnabled(false);
+				btnDelete.setEnabled(false);
 
 				//empDao.getEmployee(Integer.valueOf(txtID.getText()));
 				
@@ -286,8 +288,7 @@ public class EmployeesFrame extends JDialog{
 						btn.setEnabled(true);
 					}
 				}
-				
-				//empDao.update();
+
 				Employees e = new Employees();
 				e.setEmployee_id(Integer.valueOf(txtID.getText()));
 				e.setFirst_name(txtName.getText());
@@ -301,7 +302,7 @@ public class EmployeesFrame extends JDialog{
 				e.setManager_id(Integer.valueOf(txtManagerID.getText()));
 				e.setDepartment_id(Integer.valueOf(txtDepartmentID.getText()));
 				
-				empDao.alper(e);
+				empDao.setEmployee(e);
 				empDao.update();
 				
 			}
@@ -315,16 +316,11 @@ public class EmployeesFrame extends JDialog{
 		btnList.add(btnCancel);
 		getContentPane().add(btnCancel);
 		this.setVisible(true);
+	
 		
 	//
 	}
-	/*
-	public List<JTextField> addFieldToList(JTextField jt) {
-		List<JTextField> list = new ArrayList<>();
-		list.add(jt);
-		return list;
-	}
-	*/
+
 	public static void main(String[] args) {
 		EmployeesFrame empFrame = new EmployeesFrame();
 		//List<String> list = new List<String>();
