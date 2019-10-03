@@ -46,7 +46,7 @@ public class EmployeesDAO implements CustomDAO {
 				e.setCommission_pct(rs.getInt(9));
 				e.setManager_id(rs.getInt(10));
 				e.setDepartment_id(rs.getInt(11));
-				//System.out.println(emp);
+				
 				return e;
 				
 			}
@@ -64,17 +64,11 @@ public class EmployeesDAO implements CustomDAO {
 
 		try {
 			Connection connection = DbConnection.getConnection();
-			
-			/*
-			Employees employee = new Employees(5003, "Alper", "Ersayin", "alper12@gmail", "123456789",
-					Date.valueOf("2015-10-02"), "SA_REP", 5000, 1, 108, 50);
-			*/
-			
+		
 			
 			String inserting = "INSERT INTO employees (employee_id, first_name, last_name, email, phone_number, hire_date, job_id, salary, commission_pct, manager_id, department_id)"
 					+ " values(?,?,?,?,?,?,?,?,?,?,?)";
 
-			//System.out.println("insert " + inserting);//
 			PreparedStatement ps = connection.prepareStatement(inserting);
 
 			ps.setInt(1, employee.getEmployee_id());

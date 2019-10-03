@@ -5,12 +5,14 @@ import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JToolBar;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
@@ -19,8 +21,13 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.JButton;
+import datechooser.beans.DateChooserCombo;
+
+import com.toedter.calendar.JCalendar;
+import com.toedter.calendar.JDateChooser;
 
 
 public class EmployeesFrame extends JDialog{
@@ -52,6 +59,7 @@ public class EmployeesFrame extends JDialog{
 	private JLabel lblCommissionPct;
 	private JLabel lblManagerId;
 	private JLabel lblDepartmentId;
+	private JDateChooser dateChooser;
 	JButton btnUpdate;
 	JButton btnDelete;
 	JButton btnInsert;
@@ -99,6 +107,7 @@ public class EmployeesFrame extends JDialog{
 		            txtEmail.setText(emp.getEmail());
 		            txtPhoneNumber.setText(emp.getPhone_number());
 		            txtHireDate.setText(emp.getHire_date().toString());
+		            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		            txtJobID.setText(emp.getJob_id());
 		            txtSalary.setText(emp.getSalary().toString());
 		            txtCommissionPCT.setText(emp.getCommission_pct().toString());
@@ -240,6 +249,10 @@ public class EmployeesFrame extends JDialog{
 		lblDepartmentId.setBounds(23, 371, 86, 14);
 		panelRight.add(lblDepartmentId);
 		
+		 dateChooser = new JDateChooser();
+		dateChooser.setBounds(134, 190, 95, 20);
+		panelRight.add(dateChooser);
+		
 		btnInsert = new JButton("Insert");
 		btnInsert.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -249,6 +262,8 @@ public class EmployeesFrame extends JDialog{
 				}
 				btnUpdate.setEnabled(false);
 				btnDelete.setEnabled(false);
+				txtHireDate.setVisible(false);
+				
 				
 			}
 		});
@@ -267,7 +282,7 @@ public class EmployeesFrame extends JDialog{
 				btnInsert.setEnabled(false);
 				btnDelete.setEnabled(false);
 
-				//empDao.getEmployee(Integer.valueOf(txtID.getText()));
+				
 				
 			}
 		});
@@ -290,20 +305,28 @@ public class EmployeesFrame extends JDialog{
 				}
 
 				Employees e = new Employees();
-				e.setEmployee_id(Integer.valueOf(txtID.getText()));
-				e.setFirst_name(txtName.getText());
-				e.setLast_name(txtSurname.getText());
-				e.setEmail(txtEmail.getText());
-				e.setPhone_number(txtPhoneNumber.getText());
-				e.setHire_date(Date.valueOf(txtHireDate.getText()));
-				e.setJob_id(txtJobID.getText());
-				e.setSalary(Integer.valueOf(txtSalary.getText()));
-				e.setCommission_pct(Integer.valueOf(txtCommissionPCT.getText()));
-				e.setManager_id(Integer.valueOf(txtManagerID.getText()));
-				e.setDepartment_id(Integer.valueOf(txtDepartmentID.getText()));
+				if(!(txtID.getText().equals("")) || !(txtEmail.getText().equals(""))){
+					e.setEmployee_id(Integer.valueOf(txtID.getText()));
+					e.setFirst_name(txtName.getText());
+					e.setLast_name(txtSurname.getText());
+					e.setEmail(txtEmail.getText());
+					e.setPhone_number(txtPhoneNumber.getText());
+					//e.setHire_date(Date.valueOf(txtHireDate.getText()));
+					//e.setHire_date(dateChooser.getLocale());
+					e.setJob_id(txtJobID.getText());
+					e.setSalary(Integer.valueOf(txtSalary.getText()));
+					e.setCommission_pct(Integer.valueOf(txtCommissionPCT.getText()));
+					e.setManager_id(Integer.valueOf(txtManagerID.getText()));
+					e.setDepartment_id(Integer.valueOf(txtDepartmentID.getText()));
+					
+					empDao.setEmployee(e);
+					empDao.insert();
+				}else {
+					JOptionPane.showMessageDialog(new JFrame(), "Eksik bilgi girildi. Tüm alanlarý doldurunuz", "Dialog", JOptionPane.ERROR_MESSAGE);
+				}
 				
-				empDao.setEmployee(e);
-				empDao.update();
+				
+				
 				
 			}
 		});
