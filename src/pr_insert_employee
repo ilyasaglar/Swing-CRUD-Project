@@ -1,17 +1,16 @@
 CallableStatement stmt = myConn.prepareCall("{call PR_INSERT_EMPLOYEE(?,?,?,?,?,?,?,?,?,?,?)}");
 		
-		stmt.setInt(1, 502);
-		stmt.setString(2, "Kerem");
-		stmt.setString(3, "Coþar");
-		stmt.setString(4, "keremi@cosar");
-		stmt.setInt(5, 6549876);
+		stmt.setInt(1, 500);
+		stmt.setString(2, "Kemoç");
+		stmt.setString(3, "Cesar");
+		stmt.setString(4, "keremowski");
+		stmt.setInt(5, 654987656);
 		stmt.setString(6, "03/10/2019");
 		stmt.setString(7, "SA_REP");
 		stmt.setInt(8, 6010);
 		stmt.setInt(9, 0);
 		stmt.setInt(10, 101);
 		stmt.setInt(11, 50);
-		stmt.execute();
 
 create or replace PROCEDURE PR_INSERT_EMPLOYEE 
 (
