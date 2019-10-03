@@ -21,23 +21,23 @@ public class MainFrame extends JFrame {
 		JMenu mnNewMenu = new JMenu("TABLES");
 		menuBar.add(mnNewMenu);
 		
-		JMenuItem mnýtmNewMenuItem = new JMenuItem("Employees");
-		mnýtmNewMenuItem.addActionListener(new ActionListener() {
+		JMenuItem tmNewMenuItem = new JMenuItem("Employees");
+		tmNewMenuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				EmployeesFrame frm = new EmployeesFrame();
 				frm.setVisible(true);
 			}
 		});
-		mnNewMenu.add(mnýtmNewMenuItem);
+		mnNewMenu.add(tmNewMenuItem);
 		
-		JMenuItem mnýtmNewMenuItem_1 = new JMenuItem("...");
-		mnNewMenu.add(mnýtmNewMenuItem_1);
+		JMenuItem tmNewMenuItem_1 = new JMenuItem("...");
+		mnNewMenu.add(tmNewMenuItem_1);
 		
-		JMenuItem mnýtmNewMenuItem_2 = new JMenuItem("...");
-		mnNewMenu.add(mnýtmNewMenuItem_2);
+		JMenuItem tmNewMenuItem_2 = new JMenuItem("...");
+		mnNewMenu.add(tmNewMenuItem_2);
 		
-		JMenuItem mnýtmNewMenuItem_3 = new JMenuItem("EXIT");
-		mnNewMenu.add(mnýtmNewMenuItem_3);
+		JMenuItem tmNewMenuItem_3 = new JMenuItem("EXIT");
+		mnNewMenu.add(tmNewMenuItem_3);
 		this.setVisible(true);
 	//			
 	}

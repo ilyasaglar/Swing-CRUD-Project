@@ -13,31 +13,49 @@ import java.sql.Date;
 
 public class EmployeesDAO implements CustomDAO {
 
-	List<Employees> employees;
+//	List<Employees> employees;
+	
 	private Employees employee;
-
+	
+	
 	public EmployeesDAO() {
-		employees = new ArrayList<Employees>();
-
+		//employees = new ArrayList<Employees>();
 	}
-
-	public void getEmployee() { // ÝD ye göre ad ve soyadý getir
+	
+	public Employees alper(Employees e){
+		return employee = e;
+	}
+	
+	
+	public void getEmployee(Integer id) { // ÝD ye göre ad ve soyadý getir
 
 		Connection connection = DbConnection.getConnection();
 		try {
+			Employees employee = new Employees();
 			Statement stmt = connection.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT * FROM employees WHERE employee_id=103");
+			ResultSet rs = stmt.executeQuery("SELECT * FROM employees WHERE employee_id="+id);
 			if (rs.next()) {
-				Employees user = new Employees();
-				user.setEmployee_id(rs.getInt(1));
-				user.setFirst_name(rs.getString(2));
-				user.setLast_name(rs.getString(3));
-				System.out.println(user);
-
+				
+				employee.setEmployee_id(rs.getInt(id));
+				employee.setFirst_name(rs.getString(2));
+				employee.setLast_name(rs.getString(3));
+				employee.setEmail(rs.getString(4));
+				employee.setPhone_number(rs.getString(5));
+				employee.setHire_date(rs.getDate(6));
+				employee.setJob_id(rs.getString(7));
+				employee.setSalary(rs.getInt(8));
+				employee.setCommission_pct(rs.getInt(9));
+				employee.setManager_id(rs.getInt(10));
+				employee.setDepartment_id(rs.getInt(11));
+				//System.out.println(emp);
+				
 			}
 		} catch (SQLException ex) {
 			ex.printStackTrace();
+			
 		}
+		//return employee;
+		
 
 	}
 
@@ -46,14 +64,17 @@ public class EmployeesDAO implements CustomDAO {
 
 		try {
 			Connection connection = DbConnection.getConnection();
-
+			
+			/*
 			Employees employee = new Employees(5003, "Alper", "Ersayin", "alper12@gmail", "123456789",
 					Date.valueOf("2015-10-02"), "SA_REP", 5000, 1, 108, 50);
-
+			*/
+			
+			
 			String inserting = "INSERT INTO employees (employee_id, first_name, last_name, email, phone_number, hire_date, job_id, salary, commission_pct, manager_id, department_id)"
 					+ " values(?,?,?,?,?,?,?,?,?,?,?)";
 
-			System.out.println("insert " + inserting);//
+			//System.out.println("insert " + inserting);//
 			PreparedStatement ps = connection.prepareStatement(inserting);
 
 			ps.setInt(1, employee.getEmployee_id());
@@ -68,39 +89,44 @@ public class EmployeesDAO implements CustomDAO {
 			ps.setInt(10, employee.getManager_id());
 			ps.setInt(11, employee.getDepartment_id());
 			ps.executeUpdate();
-
+			
+			return true;
+			
 		} catch (SQLException e) {
-
 			e.printStackTrace();
+			return false;
 		}
 
-		return false;
 	}
 
 	public boolean update() { // Employees employee eklenmeli
 		Connection connection = DbConnection.getConnection();
+		/*
 		Employees e = new Employees(206, "Bengisu", "Özmelleþ", "bengsu@gmail", "123456789", Date.valueOf("2010-10-10"),
 				"AD_VP", 5000, 1, 108, 50);
-
+		*/
 		try {
+			//Employees employee = new Employees();
+			
+			
 			String sql = "UPDATE employees SET first_name=?, last_name=?, email=?, phone_number=?, hire_date=?, job_id=?, salary=?, commission_pct=?, manager_id=?, department_id=?"
-					+ " WHERE employee_id='" + e.getEmployee_id() + "'";
+					+ " WHERE employee_id=" + employee.getEmployee_id();
 
 			PreparedStatement ps = connection.prepareStatement(sql);
-			ps.setString(1, e.getFirst_name());
-			ps.setString(2, e.getLast_name());
-			ps.setString(3, e.getEmail());
-			ps.setString(4, e.getPhone_number());
-			ps.setDate(5, e.getHire_date());
-			ps.setString(6, e.getJob_id());
-			ps.setInt(7, e.getSalary());
-			ps.setDouble(8, e.getCommission_pct());
-			ps.setInt(9, e.getManager_id());
-			ps.setInt(10, e.getDepartment_id());
+			ps.setString(1, employee.getFirst_name());
+			ps.setString(2, employee.getLast_name());
+			ps.setString(3, employee.getEmail());
+			ps.setString(4, employee.getPhone_number());
+			ps.setDate(5, employee.getHire_date());
+			ps.setString(6, employee.getJob_id());
+			ps.setInt(7, employee.getSalary());
+			ps.setDouble(8, employee.getCommission_pct());
+			ps.setInt(9, employee.getManager_id());
+			ps.setInt(10, employee.getDepartment_id());
 
 			int i = ps.executeUpdate();
 			if (i == 1) {
-				System.out.println(e.getEmployee_id() + " güncellendi");
+				System.out.println(employee.getEmployee_id() + " güncellendi");
 				return true;
 
 			}
@@ -159,21 +185,14 @@ public class EmployeesDAO implements CustomDAO {
 		e.setLast_name(rs.getString("last_name"));
 		e.setEmail(rs.getString("email"));
 		e.setPhone_number(rs.getString("phone_number"));
-		// e.setHire_date(rs.getString("hire_date"));
+		e.setHire_date(rs.getDate("hire_date"));
 		e.setJob_id(rs.getString("job_id"));
 		e.setSalary(rs.getInt("salary"));
 		e.setCommission_pct(rs.getInt("commission_pct"));
 		e.setManager_id(rs.getInt("manager_id"));
 		e.setDepartment_id(rs.getInt("department_id"));
 
-		/*
-		 * e.setEmployee_id(rs.getInt(1)); e.setFirst_name(rs.getString(2));
-		 * e.setLast_name(rs.getString(3)); e.setEmail(rs.getString(4));
-		 * e.setPhone_number(rs.getInt(5)); //e.setHire_date(rs.getString("hire_date"));
-		 * e.setJob_id(rs.getString(7)); e.setSalary(rs.getInt(8));
-		 * e.setCommission_pct(rs.getInt(9)); e.setManager_id(rs.getInt(10));
-		 * e.setDepartment_id(rs.getInt(11));
-		 */
+	
 		return e;
 	}
 
