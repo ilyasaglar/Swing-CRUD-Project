@@ -11,6 +11,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JDialog;
@@ -29,12 +30,16 @@ import javax.swing.JButton;
 
 import com.toedter.calendar.JCalendar;
 import com.toedter.calendar.JDateChooser;
+import com.toedter.components.JSpinField;
 
 public class EmployeesFrame extends JDialog {
 	JList<Employees> jlist;
 	EmployeesDAO empDao = new EmployeesDAO();
 	List<JTextField> jtList = new ArrayList<>();
 	List<JButton> btnList = new ArrayList<>();
+	Employees tempData = new Employees();
+	List<Employees> empList = new ArrayList<>();
+	DefaultListModel<Employees> model;
 
 	private JTextField txtID;
 	private JTextField txtName;
@@ -59,11 +64,61 @@ public class EmployeesFrame extends JDialog {
 	private JLabel lblCommissionPct;
 	private JLabel lblManagerId;
 	private JLabel lblDepartmentId;
+	private JDateChooser dateChooser;
+	JPanel panelLeft = new JPanel();
 	JButton btnUpdate;
 	JButton btnDelete;
 	JButton btnInsert;
 	JButton btnCancel;
 	JButton btnSave;
+	JButton btnSearch;
+	public int islem = -1;
+	
+	public void createJList() {
+
+		model = new DefaultListModel<Employees>();
+		jlist = new JList<Employees>(model);
+		scrollPane = new JScrollPane();
+		scrollPane.setBounds(10, 11, 241, 388);
+		scrollPane.setViewportView(jlist);
+		panelLeft.add(scrollPane);
+		jlist.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
+		empList = empDao.getAllData();
+		
+		for (Employees employees : empList) {
+			model.addElement(employees);
+		}
+		
+		jlist.addListSelectionListener(new ListSelectionListener() {
+		    @Override
+		    public void valueChanged(ListSelectionEvent e)
+		    {
+		    	
+		        if(!e.getValueIsAdjusting()) {
+		           
+		        Employees emp = jlist.getSelectedValue();
+	            
+	            txtID.setText(emp.getEmployee_id().toString());
+	            txtName.setText(emp.getFirst_name());
+	            txtSurname.setText(emp.getLast_name());
+	            txtEmail.setText(emp.getEmail());
+	            txtPhoneNumber.setText(emp.getPhone_number());
+	            txtHireDate.setText(emp.getHire_date().toString());
+	            txtJobID.setText(emp.getJob_id());
+	            txtSalary.setText(emp.getSalary().toString());
+	            txtCommissionPCT.setText(emp.getCommission_pct().toString());
+	            txtManagerID.setText(emp.getManager_id().toString());
+	            txtDepartmentID.setText(emp.getDepartment_id().toString());  
+		        } 
+		        
+		        
+		    }
+		});
+		
+		
+		
+	}
+
 
 	public EmployeesFrame() {
 		setModal(true);
@@ -76,6 +131,8 @@ public class EmployeesFrame extends JDialog {
 		getContentPane().add(panelLeft);
 		panelLeft.setLayout(null);
 
+	//	createJList();
+	
 		DefaultListModel<Employees> model = new DefaultListModel<Employees>();
 
 		scrollPane = new JScrollPane();
@@ -85,9 +142,13 @@ public class EmployeesFrame extends JDialog {
 		scrollPane.setViewportView(jlist);
 		jlist.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
 
+	//	createJList();
+		
+		
 		List<Employees> empList = new ArrayList<>();
 		empList = empDao.getAllData();
 
+		
 		for (Employees employees : empList) {
 			model.addElement(employees);
 		}
@@ -114,6 +175,10 @@ public class EmployeesFrame extends JDialog {
 				}
 			}
 		});
+		
+		
+		
+		
 
 		JPanel panelRight = new JPanel();
 		panelRight.setBounds(281, 11, 337, 410);
@@ -239,10 +304,23 @@ public class EmployeesFrame extends JDialog {
 		lblManagerId = new JLabel("Manager ID");
 		lblManagerId.setBounds(23, 336, 86, 14);
 		panelRight.add(lblManagerId);
+		
+				dateChooser = new JDateChooser();
+				dateChooser.setDateFormatString("dd/mm/yyyy");
+				dateChooser.setBounds(134, 190, 95, 20);
+				panelRight.add(dateChooser);
+				
+						dateChooser.setVisible(false);
 
 		lblDepartmentId = new JLabel("Department ID");
 		lblDepartmentId.setBounds(23, 371, 86, 14);
 		panelRight.add(lblDepartmentId);
+		
+		btnSearch = new JButton("Search");
+		btnSearch.setBounds(238, 14, 89, 23);
+		panelRight.add(btnSearch);
+		btnSearch.setVisible(false);
+		
 
 		btnInsert = new JButton("Insert");
 		btnInsert.addActionListener(new ActionListener() {
@@ -251,8 +329,14 @@ public class EmployeesFrame extends JDialog {
 					jt.setEditable(true);
 					jt.setText(null);
 				}
+				islem = 0;
 				btnUpdate.setEnabled(false);
 				btnDelete.setEnabled(false);
+				txtHireDate.setVisible(false);
+				dateChooser.setVisible(true);
+				btnSearch.setVisible(false);
+				btnSave.setEnabled(true);
+				btnCancel.setEnabled(true);
 
 			}
 		});
@@ -266,10 +350,15 @@ public class EmployeesFrame extends JDialog {
 				for (JTextField jt : jtList) {
 					jt.setEditable(true);
 				}
-
+				islem = 1;
 				txtID.setEditable(false);
 				btnInsert.setEnabled(false);
 				btnDelete.setEnabled(false);
+				btnSearch.setVisible(false);
+				btnSave.setEnabled(true);
+				btnCancel.setEnabled(true);
+				txtHireDate.setVisible(true);
+				
 
 			}
 		});
@@ -278,6 +367,23 @@ public class EmployeesFrame extends JDialog {
 		getContentPane().add(btnUpdate);
 
 		btnDelete = new JButton("Delete");
+		btnDelete.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				islem = 2;
+				btnSearch.setVisible(true);
+				for (JTextField jt : jtList) {
+					jt.setEditable(false);
+				}
+				btnSave.setEnabled(true);
+				btnCancel.setEnabled(true);
+				txtID.setEditable(true);
+				btnInsert.setEnabled(false);
+				btnUpdate.setEnabled(false);
+				dateChooser.setVisible(false);
+				dateChooser.setVisible(true);
+				
+			}
+		});
 		btnDelete.setBounds(324, 434, 89, 23);
 		btnList.add(btnDelete);
 		getContentPane().add(btnDelete);
@@ -290,58 +396,113 @@ public class EmployeesFrame extends JDialog {
 						btn.setEnabled(true);
 					}
 				}
-
 				Employees e = new Employees();
-				if (!(txtID.getText().equals("")) || !(txtEmail.getText().equals(""))) {
+
+				if (islem == 0) { // ýnsert iþlemi
+					
+					if (!(txtID.getText().equals("")) || !(txtEmail.getText().equals(""))) {
+
+						e.setEmployee_id(Integer.valueOf(txtID.getText()));
+						e.setFirst_name(txtName.getText());
+						e.setLast_name(txtSurname.getText());
+						e.setEmail(txtEmail.getText());
+						e.setPhone_number(txtPhoneNumber.getText());
+
+						SimpleDateFormat sdf = new SimpleDateFormat("dd/mm/yyyy");
+						String d = sdf.format(dateChooser.getDate());
+						e.setHire_date(d);
+
+						// e.setHire_date(txtHireDate.toString());
+						// e.setHire_date(dateChooser.getDateFormatString());
+						e.setJob_id(txtJobID.getText());
+						e.setSalary(Integer.valueOf(txtSalary.getText()));
+						e.setCommission_pct(Double.valueOf(txtCommissionPCT.getText()));
+						e.setManager_id(Integer.valueOf(txtManagerID.getText()));
+						e.setDepartment_id(Integer.valueOf(txtDepartmentID.getText()));
+
+						empDao.setEmployee(e);
+						Boolean sonuc = empDao.insert();
+
+						if (sonuc == true) {
+							JOptionPane.showMessageDialog(new JFrame(), "Bilgiler Kaydedildi. ", "Dialog",
+									JOptionPane.YES_NO_CANCEL_OPTION);
+
+						} else {
+							JOptionPane.showMessageDialog(new JFrame(), "Bir hata oluþtu.", "Dialog",
+									JOptionPane.ERROR_MESSAGE);
+
+						}
+
+					} else {
+						JOptionPane.showMessageDialog(new JFrame(), "Eksik bilgi girildi. Tüm alanlarý doldurunuz",
+								"Dialog", JOptionPane.ERROR_MESSAGE);
+					}
+
+				}
+				else if(islem==1) {  //update islemi
+					dateChooser.setVisible(false);
+					
+					
+					
+					
 					e.setEmployee_id(Integer.valueOf(txtID.getText()));
 					e.setFirst_name(txtName.getText());
 					e.setLast_name(txtSurname.getText());
 					e.setEmail(txtEmail.getText());
 					e.setPhone_number(txtPhoneNumber.getText());
-					e.setHire_date(txtHireDate.toString());
+					e.setHire_date(txtHireDate.getText());
 					e.setJob_id(txtJobID.getText());
 					e.setSalary(Integer.valueOf(txtSalary.getText()));
-					e.setCommission_pct(Integer.valueOf(txtCommissionPCT.getText()));
+					e.setCommission_pct(Double.valueOf(txtCommissionPCT.getText()));
 					e.setManager_id(Integer.valueOf(txtManagerID.getText()));
 					e.setDepartment_id(Integer.valueOf(txtDepartmentID.getText()));
-
+					
 					empDao.setEmployee(e);
-					Boolean sonuc = empDao.insert();
+					empDao.update();
+				//	createJList();
+
+					
+				}else if(islem ==2) {  //delete islemi
 					
 					
-					if (sonuc == true) {
-						JOptionPane.showMessageDialog(new JFrame(), "Bilgiler Kaydedildi. ", "Dialog",
-								JOptionPane.YES_NO_CANCEL_OPTION);
-
-					} else {
-						JOptionPane.showMessageDialog(new JFrame(), "Bir hata oluþtu.", "Dialog",
-								JOptionPane.ERROR_MESSAGE);
-
-					}
-
-				} else {
-					JOptionPane.showMessageDialog(new JFrame(), "Eksik bilgi girildi. Tüm alanlarý doldurunuz",
-							"Dialog", JOptionPane.ERROR_MESSAGE);
 				}
+				
+				
+			
+				
 
 			}
 		});
 		btnSave.setBounds(430, 434, 89, 23);
 		btnList.add(btnSave);
 		getContentPane().add(btnSave);
+		
+		btnSave.setEnabled(false);
 
 		btnCancel = new JButton("Cancel");
+		btnCancel.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				btnInsert.setEnabled(true);
+				btnDelete.setEnabled(true);
+				btnUpdate.setEnabled(true);
+				for (JTextField jt : jtList) {
+					jt.setEditable(false);
+				}
+				dateChooser.setVisible(false);
+			}
+		});
 		btnCancel.setBounds(529, 434, 89, 23);
 		btnList.add(btnCancel);
+		btnCancel.setEnabled(false);
 		getContentPane().add(btnCancel);
 		this.setVisible(true);
-
+		
 		//
 	}
 
 	public static void main(String[] args) {
 		EmployeesFrame empFrame = new EmployeesFrame();
-		// List<String> list = new List<String>();
+		
 
 	}
 }

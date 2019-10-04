@@ -43,7 +43,7 @@ public class EmployeesDAO implements CustomDAO {
 				e.setHire_date(rs.getString(6));
 				e.setJob_id(rs.getString(7));
 				e.setSalary(rs.getInt(8));
-				e.setCommission_pct(rs.getInt(9));
+				e.setCommission_pct(rs.getDouble(9));
 				e.setManager_id(rs.getInt(10));
 				e.setDepartment_id(rs.getInt(11));
 
@@ -64,25 +64,9 @@ public class EmployeesDAO implements CustomDAO {
 		try {
 			Connection connection = DbConnection.getConnection();
 
-			/*
-			 * String inserting =
-			 * "INSERT INTO employees (employee_id, first_name, last_name, email, phone_number, hire_date, job_id, salary, commission_pct, manager_id, department_id)"
-			 * + " values(?,?,?,?,?,?,?,?,?,?,?)";
-			 * 
-			 * PreparedStatement ps = connection.prepareStatement(inserting);
-			 * 
-			 * ps.setInt(1, employee.getEmployee_id()); ps.setString(2,
-			 * employee.getFirst_name()); ps.setString(3, employee.getLast_name());
-			 * ps.setString(4, employee.getEmail()); ps.setString(5,
-			 * employee.getPhone_number()); ps.setString(6, employee.getHire_date());
-			 * ps.setString(7, employee.getJob_id()); ps.setInt(8, employee.getSalary());
-			 * ps.setDouble(9, employee.getCommission_pct()); ps.setInt(10,
-			 * employee.getManager_id()); ps.setInt(11, employee.getDepartment_id());
-			 * ps.executeUpdate();
-			 * 
-			 */
-
 			CallableStatement stmt = connection.prepareCall("{call PR_INSERT_EMPLOYEE(?,?,?,?,?,?,?,?,?,?,?)}");
+
+			System.out.println(employee);
 
 			stmt.setInt(1, employee.getEmployee_id());
 			stmt.setString(2, employee.getFirst_name());
@@ -95,6 +79,7 @@ public class EmployeesDAO implements CustomDAO {
 			stmt.setDouble(9, employee.getCommission_pct());
 			stmt.setInt(10, employee.getManager_id());
 			stmt.setInt(11, employee.getDepartment_id());
+
 			stmt.execute();
 
 			return true;
@@ -113,10 +98,11 @@ public class EmployeesDAO implements CustomDAO {
 
 	public boolean update() { // Employees employee eklenmeli
 		Connection connection = DbConnection.getConnection();
-
+		
 		try {
-			// Employees employee = new Employees();
-
+			//Employees employee = new Employees();
+			
+			
 			String sql = "UPDATE employees SET first_name=?, last_name=?, email=?, phone_number=?, hire_date=?, job_id=?, salary=?, commission_pct=?, manager_id=?, department_id=?"
 					+ " WHERE employee_id=" + employee.getEmployee_id();
 
@@ -138,10 +124,12 @@ public class EmployeesDAO implements CustomDAO {
 				return true;
 
 			}
-
+			
 			Employees emp = new Employees();
 			emp = getEmployee(employee.getEmployee_id());
-
+			
+			
+			
 		} catch (SQLException ex) {
 			ex.printStackTrace();
 		}
@@ -169,7 +157,7 @@ public class EmployeesDAO implements CustomDAO {
 		return false;
 	}
 
-	public static List<Employees> getAllData() {
+	public List<Employees> getAllData() {
 
 		Connection conn = DbConnection.getConnection();
 		try {
@@ -178,7 +166,6 @@ public class EmployeesDAO implements CustomDAO {
 			List<Employees> empList = new ArrayList<>();
 			while (rs.next()) {
 				Employees employee = extractUserFromResultSet(rs);
-				;
 
 				empList.add(employee);
 			}
@@ -200,11 +187,10 @@ public class EmployeesDAO implements CustomDAO {
 		e.setHire_date(rs.getString("hire_date"));
 		e.setJob_id(rs.getString("job_id"));
 		e.setSalary(rs.getInt("salary"));
-		e.setCommission_pct(rs.getInt("commission_pct"));
+		e.setCommission_pct(rs.getDouble("commission_pct"));
 		e.setManager_id(rs.getInt("manager_id"));
 		e.setDepartment_id(rs.getInt("department_id"));
 
 		return e;
 	}
-
 }
