@@ -98,11 +98,10 @@ public class EmployeesDAO implements CustomDAO {
 
 	public boolean update() { // Employees employee eklenmeli
 		Connection connection = DbConnection.getConnection();
-		
+
 		try {
-			//Employees employee = new Employees();
-			
-			
+			// Employees employee = new Employees();
+
 			String sql = "UPDATE employees SET first_name=?, last_name=?, email=?, phone_number=?, hire_date=?, job_id=?, salary=?, commission_pct=?, manager_id=?, department_id=?"
 					+ " WHERE employee_id=" + employee.getEmployee_id();
 
@@ -121,26 +120,24 @@ public class EmployeesDAO implements CustomDAO {
 			int i = ps.executeUpdate();
 			if (i == 1) {
 				System.out.println(employee.getEmployee_id() + " güncellendi");
-				return true;
 
 			}
-			
+
 			Employees emp = new Employees();
 			emp = getEmployee(employee.getEmployee_id());
-			
-			
-			
+
+			return true;
+
 		} catch (SQLException ex) {
 			ex.printStackTrace();
+			return false;
 		}
-
-		return false;
 
 	}
 
-	public boolean delete() { // Employees employee eklenmeli
+	public boolean delete(int employee_id) { // Employees employee eklenmeli
 		Connection connection = DbConnection.getConnection();
-		int employee_id = 109;
+
 		try {
 			Statement stmt = connection.createStatement();
 			int i = stmt.executeUpdate("DELETE FROM employees WHERE employee_id='" + employee_id + "'");
