@@ -10,6 +10,10 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+
 import java.sql.Date;
 
 public class EmployeesDAO implements CustomDAO {
@@ -135,23 +139,36 @@ public class EmployeesDAO implements CustomDAO {
 
 	}
 
+	@Override
 	public boolean delete(int employee_id) { // Employees employee eklenmeli
 		Connection connection = DbConnection.getConnection();
 
 		try {
 			Statement stmt = connection.createStatement();
-			int i = stmt.executeUpdate("DELETE FROM employees WHERE employee_id='" + employee_id + "'");
-			if (i == 1) {
-				System.out.println(employee_id + " silindi");
-				return true;
 
+			int dialogButton = JOptionPane.YES_NO_OPTION;
+			int dialogResult = JOptionPane.showConfirmDialog(null, "Kiþi Bilgilerini Silmek Ýstedðinize emin misiniz?",
+					"Warning", dialogButton);
+			if (dialogResult == JOptionPane.YES_OPTION) {
+
+				int i = stmt.executeUpdate("DELETE FROM employees WHERE employee_id='" + employee_id + "'");
+				if (i == 1) {
+					System.out.println(employee_id + " silindi");
+
+				}
+				return true;
+			} else {
+
+				return false;
 			}
+
 		} catch (SQLException ex) {
 			System.out.println(ex);
 			ex.printStackTrace();
-
+			JOptionPane.showMessageDialog(new JFrame(), "Bir hata oluþtu.", "Dialog", JOptionPane.ERROR_MESSAGE);
+			return false;
 		}
-		return false;
+
 	}
 
 	public List<Employees> getAllData() {
@@ -190,4 +207,5 @@ public class EmployeesDAO implements CustomDAO {
 
 		return e;
 	}
+
 }

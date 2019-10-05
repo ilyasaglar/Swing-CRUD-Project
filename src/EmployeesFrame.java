@@ -20,6 +20,7 @@ import javax.swing.JToolBar;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.text.NumberFormatter;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JLabel;
@@ -28,6 +29,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.JButton;
 
+import com.sun.glass.events.KeyEvent;
 import com.toedter.calendar.JCalendar;
 import com.toedter.calendar.JDateChooser;
 import com.toedter.components.JSpinField;
@@ -71,8 +73,9 @@ public class EmployeesFrame extends JDialog {
 	JButton btnInsert;
 	JButton btnCancel;
 	JButton btnSave;
-	JButton btnSearch;
 	public int islem = -1;
+	private Boolean sonuc;
+	private String deger;
 
 	public void createJList() {
 
@@ -305,11 +308,6 @@ public class EmployeesFrame extends JDialog {
 		lblDepartmentId.setBounds(23, 371, 86, 14);
 		panelRight.add(lblDepartmentId);
 
-		btnSearch = new JButton("Search");
-		btnSearch.setBounds(238, 14, 89, 23);
-		panelRight.add(btnSearch);
-		btnSearch.setVisible(false);
-
 		btnInsert = new JButton("Insert");
 		btnInsert.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -322,7 +320,7 @@ public class EmployeesFrame extends JDialog {
 				btnDelete.setEnabled(false);
 				txtHireDate.setVisible(false);
 				dateChooser.setVisible(true);
-				btnSearch.setVisible(false);
+
 				btnSave.setEnabled(true);
 				btnCancel.setEnabled(true);
 
@@ -338,15 +336,20 @@ public class EmployeesFrame extends JDialog {
 				for (JTextField jt : jtList) {
 					jt.setEditable(true);
 				}
+
 				islem = 1;
 				txtID.setEditable(false);
 				btnInsert.setEnabled(false);
 				btnDelete.setEnabled(false);
-				btnSearch.setVisible(false);
+
 				btnSave.setEnabled(true);
 				btnCancel.setEnabled(true);
 				txtHireDate.setVisible(true);
+				if (txtID.getText().equals("")) {
+					JOptionPane.showMessageDialog(new JFrame(), "Listeden Kiþi Seçimi Yapýnýz. ", "Dialog",
+							JOptionPane.YES_NO_CANCEL_OPTION);
 
+				}
 			}
 		});
 		btnUpdate.setBounds(225, 434, 89, 23);
@@ -357,7 +360,7 @@ public class EmployeesFrame extends JDialog {
 		btnDelete.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				islem = 2;
-				btnSearch.setVisible(true);
+
 				for (JTextField jt : jtList) {
 					jt.setEditable(false);
 				}
@@ -367,10 +370,6 @@ public class EmployeesFrame extends JDialog {
 				btnInsert.setEnabled(false);
 				btnUpdate.setEnabled(false);
 				dateChooser.setVisible(false);
-				dateChooser.setVisible(true);
-				if (!txtID.getText().equals("")) {
-					empDao.delete();
-				}
 
 			}
 		});
@@ -392,35 +391,47 @@ public class EmployeesFrame extends JDialog {
 
 					if (!(txtID.getText().equals("")) || !(txtEmail.getText().equals(""))) {
 
-						e.setEmployee_id(Integer.valueOf(txtID.getText()));
-						e.setFirst_name(txtName.getText());
-						e.setLast_name(txtSurname.getText());
-						e.setEmail(txtEmail.getText());
-						e.setPhone_number(txtPhoneNumber.getText());
+						Boolean numbercontrol = numberControl(txtID.getText().toString());
+						Boolean phoneNumbercontrol = numberControl(txtPhoneNumber.getText().toString());
+						Boolean salarycontrol = numberControl(txtSalary.getText().toString());
+						Boolean managercontrol = numberControl(txtManagerID.getText().toString());
+						Boolean departmentcontrol = numberControl(txtDepartmentID.getText().toString());
 
-						SimpleDateFormat sdf = new SimpleDateFormat("dd/mm/yyyy");
-						String d = sdf.format(dateChooser.getDate());
-						e.setHire_date(d);
+						if (numbercontrol == true && phoneNumbercontrol == true && salarycontrol == true
+								&& managercontrol == true && departmentcontrol == true) {
+							e.setEmployee_id(Integer.valueOf(txtID.getText()));
+							e.setFirst_name(txtName.getText());
+							e.setLast_name(txtSurname.getText());
+							e.setEmail(txtEmail.getText());
+							e.setPhone_number(txtPhoneNumber.getText());
 
-						// e.setHire_date(txtHireDate.toString());
-						// e.setHire_date(dateChooser.getDateFormatString());
-						e.setJob_id(txtJobID.getText());
-						e.setSalary(Integer.valueOf(txtSalary.getText()));
-						e.setCommission_pct(Double.valueOf(txtCommissionPCT.getText()));
-						e.setManager_id(Integer.valueOf(txtManagerID.getText()));
-						e.setDepartment_id(Integer.valueOf(txtDepartmentID.getText()));
+							SimpleDateFormat sdf = new SimpleDateFormat("dd/mm/yyyy");
+							String d = sdf.format(dateChooser.getDate());
+							e.setHire_date(d);
 
-						empDao.setEmployee(e);
-						Boolean sonuc = empDao.insert();
+							// e.setHire_date(txtHireDate.toString());
+							// e.setHire_date(dateChooser.getDateFormatString());
+							e.setJob_id(txtJobID.getText());
+							e.setSalary(Integer.valueOf(txtSalary.getText()));
+							e.setCommission_pct(Double.valueOf(txtCommissionPCT.getText()));
+							e.setManager_id(Integer.valueOf(txtManagerID.getText()));
+							e.setDepartment_id(Integer.valueOf(txtDepartmentID.getText()));
 
-						if (sonuc == true) {
-							JOptionPane.showMessageDialog(new JFrame(), "Bilgiler Kaydedildi. ", "Dialog",
-									JOptionPane.YES_NO_CANCEL_OPTION);
+							empDao.setEmployee(e);
+							sonuc = empDao.insert();
 
+							if (sonuc == true) {
+								JOptionPane.showMessageDialog(new JFrame(), "Bilgiler Kaydedildi. ", "Dialog",
+										JOptionPane.YES_NO_CANCEL_OPTION);
+
+							} else {
+								JOptionPane.showMessageDialog(new JFrame(), "Bir hata oluþtu.", "Dialog",
+										JOptionPane.ERROR_MESSAGE);
+
+							}
 						} else {
-							JOptionPane.showMessageDialog(new JFrame(), "Bir hata oluþtu.", "Dialog",
+							JOptionPane.showMessageDialog(new JFrame(), "Geçersiz deðer girdiniz.", "Dialog",
 									JOptionPane.ERROR_MESSAGE);
-
 						}
 
 					} else {
@@ -431,7 +442,6 @@ public class EmployeesFrame extends JDialog {
 				} else if (islem == 1) { // update islemi
 					dateChooser.setVisible(false);
 
-					
 					e.setEmployee_id(Integer.valueOf(txtID.getText()));
 					e.setFirst_name(txtName.getText());
 					e.setLast_name(txtSurname.getText());
@@ -445,7 +455,7 @@ public class EmployeesFrame extends JDialog {
 					e.setDepartment_id(Integer.valueOf(txtDepartmentID.getText()));
 
 					empDao.setEmployee(e);
-					Boolean sonuc = empDao.update();
+					sonuc = empDao.update();
 
 					if (sonuc == true) {
 						JOptionPane.showMessageDialog(new JFrame(), "Bilgiler Güncellendi. ", "Dialog",
@@ -460,7 +470,16 @@ public class EmployeesFrame extends JDialog {
 					// createJList();
 
 				} else if (islem == 2) { // delete islemi
+					if (!txtID.getText().equals("")) {
 
+						sonuc = empDao.delete(Integer.valueOf(txtID.getText()));
+
+						if (sonuc == true) {
+							JOptionPane.showMessageDialog(new JFrame(), "Kiþi Bilgileri Silindi. ", "Dialog",
+									JOptionPane.YES_NO_CANCEL_OPTION);
+
+						}
+					}
 				}
 
 			}
@@ -497,4 +516,30 @@ public class EmployeesFrame extends JDialog {
 		EmployeesFrame empFrame = new EmployeesFrame();
 
 	}
+
+	public boolean numberControl(String deger) {
+		char a;
+		int sonuc = 0;
+		char[] ch = deger.toCharArray();
+
+		for (int i = 0; i < deger.length(); i++) {
+			if (Character.isLetter(ch[i])) {
+				sonuc = +1;
+			} else if (Character.isDigit(ch[i])) {
+
+			} else if (Character.isSpaceChar(ch[i])) {
+				sonuc = +1;
+			} else {
+				sonuc = +1;
+			}
+		}
+
+		if (sonuc >= 1) {
+			return false;
+		} else {
+			return true;
+		}
+
+	}
+
 }

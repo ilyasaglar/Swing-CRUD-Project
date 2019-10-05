@@ -94,25 +94,9 @@ public class CountriesDAO implements CustomDAO {
 	}
 
 	
-	public boolean delete() {
-		
-		Connection connection = DbConnection.getConnection();
-		int region_id = 4;
-		
-		try {
-			Statement stmt = connection.createStatement();
-			int i = stmt.executeUpdate("DELETE FROM countries WHERE region_id='" + region_id + "'");
-			if (i == 1) {
-				System.out.println(region_id + " silindi");
-				return true;
-
-			}
-		} catch (SQLException ex) {
-			
-			System.out.println(ex);
-			ex.printStackTrace();
-
-		}
+	@Override
+	public boolean delete(int employee_id) {
+		// TODO Auto-generated method stub
 		return false;
 	}
 

@@ -74,9 +74,12 @@ public class DepartmentsDAO implements CustomDAO {
 	}
 
 	@Override
-	public boolean delete() {
-
+	public boolean delete(int employee_id) {
+		// TODO Auto-generated method stub
 		return false;
 	}
+
+
+
 
 }
