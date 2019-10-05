@@ -46,7 +46,7 @@ public class EmployeesDAO implements CustomDAO {
 				e.setCommission_pct(rs.getDouble(9));
 				e.setManager_id(rs.getInt(10));
 				e.setDepartment_id(rs.getInt(11));
-
+				connection.close();
 				return e;
 
 			}
@@ -81,7 +81,7 @@ public class EmployeesDAO implements CustomDAO {
 			stmt.setInt(11, employee.getDepartment_id());
 
 			stmt.execute();
-
+			connection.close();
 			return true;
 
 		} catch (SQLException e) {
@@ -125,7 +125,7 @@ public class EmployeesDAO implements CustomDAO {
 
 			Employees emp = new Employees();
 			emp = getEmployee(employee.getEmployee_id());
-
+			connection.close();
 			return true;
 
 		} catch (SQLException ex) {
@@ -144,8 +144,9 @@ public class EmployeesDAO implements CustomDAO {
 			if (i == 1) {
 				System.out.println(employee_id + " silindi");
 				return true;
-
+				
 			}
+			connection.close();
 		} catch (SQLException ex) {
 			System.out.println(ex);
 			ex.printStackTrace();
@@ -163,9 +164,9 @@ public class EmployeesDAO implements CustomDAO {
 			List<Employees> empList = new ArrayList<>();
 			while (rs.next()) {
 				Employees employee = extractUserFromResultSet(rs);
-
 				empList.add(employee);
 			}
+			conn.close();
 			return empList;
 		} catch (SQLException ex) {
 			ex.printStackTrace();

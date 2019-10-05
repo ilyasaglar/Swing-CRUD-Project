@@ -8,34 +8,36 @@ import java.util.List;
 
 public class CountriesDAO implements CustomDAO {
 
-
-	List<Countries> countries;
 	private Countries country;
 
 	public CountriesDAO() {
-		countries = new ArrayList<Countries>();
-
+		super();
 	}
 	
-	public void getCountry() {
+	public Countries setCountry(Countries c) {
+		return country = c;
+	}
+	
+	public Countries getCountry(String id) {
 
 		Connection connection = DbConnection.getConnection();
-		
 		try {
 			Statement stmt = connection.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT * FROM countries WHERE country_id=AR");
+			ResultSet rs = stmt.executeQuery("SELECT * FROM countries WHERE country_id=" + id);
 			if (rs.next()) {
-				Countries user = new Countries();
-				user.setCountry_id(rs.getString(1));
-				user.setCountry_name(rs.getString(2));
-				user.setRegion_id(rs.getInt(3));
-				System.out.println(user);
-
+				Countries c = new Countries();
+				
+				c.setCountry_id(rs.getString(1));
+				c.setCountry_name(rs.getString(2));
+				c.setRegion_id(rs.getInt(3));
+				
+				connection.close();
+				return c;
 			}
 		} catch (SQLException ex) {
 			ex.printStackTrace();
 		}
-
+		return null;
 	}
 	
 	public boolean insert() {
@@ -43,78 +45,101 @@ public class CountriesDAO implements CustomDAO {
 		try {
 			Connection connection = DbConnection.getConnection();
 
-			Countries c = new Countries("CA", "Canada", 2);
-			String inserting = "INSERT INTO countries (country_id, country_name, region_id, job_id)"+ " values(?,?,?)";
+			String inserting = "INSERT INTO countries (country_id, country_name, region_id, job_id)"
+					+ " values(?,?,?)";
 
 			System.out.println("insert " + inserting);
 			PreparedStatement ps = connection.prepareStatement(inserting);
 
-			ps.setString(1, c.getCountry_id());
-			ps.setString(2, c.getCountry_name());
-			ps.setInt(3, c.getRegion_id());
+			ps.setString(1, country.getCountry_id());
+			ps.setString(2, country.getCountry_name());
+			ps.setInt(3, country.getRegion_id());
 			ps.executeUpdate();
-
+			connection.close();
+			return true;
 
 		} catch (SQLException e) {
-
 			e.printStackTrace();
 		} 
-
 		return false;
 	}
 
 	
 	public boolean update() {
-		
 		Connection connection = DbConnection.getConnection();
-		Countries c = new Countries("DE", "Germany", 1);
 
 		try {
-			String sql = "UPDATE countries SET country_id=?, country_name=?"
-					+ " WHERE Region_id='" + c.getRegion_id() + "'";
+			String sql = "UPDATE countries "
+					+ "SET country_name=?, region_id=?"
+					+ " WHERE country_id='" + country.getCountry_id() + "'";
 
 			PreparedStatement ps = connection.prepareStatement(sql);
-			ps.setString(1, c.getCountry_id());
-			ps.setString(2, c.getCountry_name());
-			ps.setInt(3, c.getRegion_id());
+			ps.setString(1, country.getCountry_name());
+			ps.setInt(2, country.getRegion_id());
 
 			int i = ps.executeUpdate();
 			if (i == 1) {
-				System.out.println(c.getCountry_id() + " güncellendi");
-				return true;
-
+				System.out.println(country.getCountry_id() + " güncellendi");
 			}
+			connection.close();
+			return true;
 		} catch (SQLException ex) {
 			ex.printStackTrace();
+			return false;
 		}
-		
-		
-		return false;
-
 	}
-
 	
-	public boolean delete() {
-		
+	public boolean delete(int country_id) {
 		Connection connection = DbConnection.getConnection();
-		int region_id = 4;
-		
+
 		try {
 			Statement stmt = connection.createStatement();
-			int i = stmt.executeUpdate("DELETE FROM countries WHERE region_id='" + region_id + "'");
+			int i = stmt.executeUpdate("DELETE FROM countries WHERE country_id='" + country_id + "'");
 			if (i == 1) {
-				System.out.println(region_id + " silindi");
-				return true;
-
+				System.out.println(country_id + " silindi");	
 			}
+			connection.close();
+			return true;
 		} catch (SQLException ex) {
-			
 			System.out.println(ex);
 			ex.printStackTrace();
-
+			return false;
 		}
-		return false;
+	}
+	
+	public List<Countries> getAllData() {
+
+		Connection conn = DbConnection.getConnection();
+		try {
+			Statement stmt = conn.createStatement();
+			ResultSet rs = stmt.executeQuery("SELECT * FROM Countries");
+			List<Countries> countryList = new ArrayList<>();
+			while (rs.next()) {
+				Countries job = extractUserFromResultSet(rs);
+				countryList.add(job);
+			}
+			conn.close();
+			return countryList;
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+		}
+		return null;
 	}
 
+	public static Countries extractUserFromResultSet(ResultSet rs) throws SQLException {
+		Countries c = new Countries();
+		
+		c.setCountry_id(rs.getString("country_id"));
+		c.setCountry_name(rs.getString("country_name"));
+		c.setRegion_id(rs.getInt("region_id"));		
+		
+		return c;
+	}
+	@Override
+	public boolean delete() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+	
 	
 }

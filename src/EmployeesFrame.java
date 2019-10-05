@@ -44,6 +44,7 @@ public class EmployeesFrame extends JDialog {
 	List<Employees> empList = new ArrayList<>();
 	List<Jobs> jobList = new ArrayList<>();
 	List<Departments> depList = new ArrayList<>();
+	JPanel panelLeft = new JPanel();
 	
 	private JTextField txtID;
 	private JTextField txtName;
@@ -101,17 +102,7 @@ public class EmployeesFrame extends JDialog {
 		return depname;
 	}
 	
-	public EmployeesFrame() {
-		setModal(true);
-		this.setTitle("Employees");
-		this.setBounds(200, 200, 655, 507);
-		getContentPane().setLayout(null);
-
-		JPanel panelLeft = new JPanel();
-		panelLeft.setBounds(10, 11, 261, 410);
-		getContentPane().add(panelLeft);
-		panelLeft.setLayout(null);
-		
+	public void createJlist() {
 		model = new DefaultListModel<Employees>();
 		jlist = new JList<Employees>(model);
 		scrollPane = new JScrollPane();
@@ -139,10 +130,55 @@ public class EmployeesFrame extends JDialog {
 			txtCommissionPCT.setText(emp.getCommission_pct().toString());
 			txtManagerID.setText(emp.getManager_id().toString());
 			//txtDepartmentID.setText(emp.getDepartment_id().toString());
-			
 			comboBoxJobID.setSelectedItem(findJobTitlefromJobID(emp));
 			comboBoxDepID.setSelectedItem(findDepNamefromDepID(emp));
 		});
+	}
+	
+	public EmployeesFrame() {
+		setModal(true);
+		this.setTitle("Employees");
+		this.setBounds(200, 200, 655, 507);
+		getContentPane().setLayout(null);
+
+		//JPanel panelLeft = new JPanel();
+		panelLeft.setBounds(10, 11, 261, 410);
+		getContentPane().add(panelLeft);
+		panelLeft.setLayout(null);
+		/*
+		model = new DefaultListModel<Employees>();
+		jlist = new JList<Employees>(model);
+		scrollPane = new JScrollPane();
+		scrollPane.setBounds(10, 11, 241, 388);
+		scrollPane.setViewportView(jlist);
+		panelLeft.add(scrollPane);
+		jlist.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
+		empList = empDao.getAllData();
+
+		for (Employees employees : empList) {
+			model.addElement(employees);
+		}
+		
+		jlist.getSelectionModel().addListSelectionListener(e -> {
+			Employees emp = jlist.getSelectedValue();
+
+			txtID.setText(emp.getEmployee_id().toString());
+			txtName.setText(emp.getFirst_name());
+			txtSurname.setText(emp.getLast_name());
+			txtEmail.setText(emp.getEmail());
+			txtPhoneNumber.setText(emp.getPhone_number());
+			txtHireDate.setText(emp.getHire_date().toString());
+			//txtJobID.setText(emp.getJob_id());
+			txtSalary.setText(emp.getSalary().toString());
+			txtCommissionPCT.setText(emp.getCommission_pct().toString());
+			txtManagerID.setText(emp.getManager_id().toString());
+			//txtDepartmentID.setText(emp.getDepartment_id().toString());
+			comboBoxJobID.setSelectedItem(findJobTitlefromJobID(emp));
+			comboBoxDepID.setSelectedItem(findDepNamefromDepID(emp));
+		});
+		*/
+		
+		createJlist();
 		
 		JPanel panelRight = new JPanel();
 		panelRight.setBounds(281, 11, 348, 410);
@@ -267,6 +303,7 @@ public class EmployeesFrame extends JDialog {
 		panelRight.add(lblDepartmentId);
 		
 		comboBoxJobID = new JComboBox();
+		comboBoxJobID.setEditable(false);
 		comboBoxJobID.setBounds(134, 229, 108, 20);
 		try {
 			String str;
@@ -286,6 +323,7 @@ public class EmployeesFrame extends JDialog {
 		panelRight.add(comboBoxJobID);
 		
 		comboBoxDepID = new JComboBox();
+		comboBoxDepID.setEditable(false);
 		comboBoxDepID.setBounds(134, 361, 108, 20);
 		try {
 			String str;
@@ -319,6 +357,8 @@ public class EmployeesFrame extends JDialog {
 				//btnSearch.setVisible(false);
 				btnSave.setEnabled(true);
 				btnCancel.setEnabled(true);
+				comboBoxDepID.setEditable(true);
+				comboBoxJobID.setEditable(true);
 
 			}
 		});
@@ -340,7 +380,9 @@ public class EmployeesFrame extends JDialog {
 				btnSave.setEnabled(true);
 				btnCancel.setEnabled(true);
 				txtHireDate.setVisible(true);
-
+				comboBoxDepID.setEditable(true);
+				comboBoxJobID.setEditable(true);
+				createJlist();
 			}
 		});
 		btnUpdate.setBounds(225, 434, 89, 23);

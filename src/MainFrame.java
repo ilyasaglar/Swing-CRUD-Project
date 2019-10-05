@@ -41,24 +41,48 @@ public class MainFrame extends JFrame {
 		
 		JButton btnDepartments = new JButton("DEPARTMENTS");
 		btnList.add(btnDepartments);
+		btnDepartments.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				DepartmentsFrame depFrame = new DepartmentsFrame();
+				depFrame.setVisible(true);
+			}
+		});
 		btnDepartments.setBounds(168, 74, 112, 40);
 		btnDepartments.setVisible(false);
 		getContentPane().add(btnDepartments);
 		
 		JButton btnJobs = new JButton("JOBS");
 		btnList.add(btnJobs);
+		btnJobs.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				JobsFrame jobFrame = new JobsFrame();
+				jobFrame.setVisible(true);
+			}
+		});
 		btnJobs.setBounds(308, 74, 112, 40);
 		btnJobs.setVisible(false);
 		getContentPane().add(btnJobs);
 		
 		JButton btnCountries = new JButton("COUNTRIES");
 		btnList.add(btnCountries);
+		btnCountries.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				CountriesFrame countryFrame = new CountriesFrame();
+				countryFrame.setVisible(true);
+			}
+		});
 		btnCountries.setBounds(28, 139, 112, 40);
 		btnCountries.setVisible(false);
 		getContentPane().add(btnCountries);
 		
 		JButton btnLocations = new JButton("LOCATIONS");
 		btnList.add(btnLocations);
+		btnLocations.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				LocationsFrame locationFrame = new LocationsFrame();
+				locationFrame.setVisible(true);
+			}
+		});
 		btnLocations.setBounds(168, 139, 112, 40);
 		btnLocations.setVisible(false);
 		getContentPane().add(btnLocations);
@@ -119,7 +143,7 @@ public class MainFrame extends JFrame {
 				
 			}
 		});
-		btnLogin.setBounds(180, 171, 89, 23);
+		btnLogin.setBounds(180, 180, 89, 23);
 		getContentPane().add(btnLogin);
 		this.setVisible(true);
 	//			
