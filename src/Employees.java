@@ -6,16 +6,16 @@ public class Employees {
 	String last_name;
 	String email;
 	String phone_number;
-	String hire_date;
+	Date hire_date;
 	String job_id;
 	Integer salary;
 	Integer manager_id;
 	Integer department_id;
-	Integer commission_pct;
+	Double commission_pct;
 
 
-	public Employees(Integer employee_id, String first_name, String last_name, String email, String phone_number, String hire_date,
-			 String job_id, Integer salary, Integer commission_pct, Integer manager_id, Integer department_id) {
+	public Employees(Integer employee_id, String first_name, String last_name, String email, String phone_number, Date hire_date,
+			 String job_id, Integer salary, Double commission_pct, Integer manager_id, Integer department_id) {
 		super();
 		this.employee_id = employee_id;
 		this.first_name = first_name;
@@ -106,25 +106,28 @@ public class Employees {
 		this.department_id = department_id;
 	}
 
-	public Integer getCommission_pct() {
+	public Double getCommission_pct() {
 		return commission_pct;
 	}
 
-	public void setCommission_pct(Integer commission_pct) {
+	public void setCommission_pct(Double commission_pct) {
 		this.commission_pct = commission_pct;
 	}
 
-	public String getHire_date() {
+	public Date getHire_date() {
 		return hire_date;
 	}
 
-	public void setHire_date(String date2) {
-		this.hire_date = date2;
+	public void setHire_date(Date hire_date) {
+		this.hire_date = hire_date;
 	}
 
 	@Override
 	public String toString() {
 		return employee_id + " " + first_name + " " + last_name;
 	}
+
+
+	
 
 }

@@ -5,17 +5,16 @@ import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
-import javax.swing.JToolBar;
+
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -29,13 +28,23 @@ import javax.swing.JButton;
 
 import com.toedter.calendar.JCalendar;
 import com.toedter.calendar.JDateChooser;
+import com.toedter.components.JSpinField;
+import javax.swing.JComboBox;
 
 public class EmployeesFrame extends JDialog {
+
+	
+	private static Connection connection = DbConnection.getConnection();
+	DefaultListModel<Employees> model;
 	JList<Employees> jlist;
 	EmployeesDAO empDao = new EmployeesDAO();
+	Employees tempData = new Employees();
 	List<JTextField> jtList = new ArrayList<>();
 	List<JButton> btnList = new ArrayList<>();
-
+	List<Employees> empList = new ArrayList<>();
+	List<Jobs> jobList = new ArrayList<>();
+	List<Departments> depList = new ArrayList<>();
+	
 	private JTextField txtID;
 	private JTextField txtName;
 	private JTextField txtSurname;
@@ -47,7 +56,6 @@ public class EmployeesFrame extends JDialog {
 	private JLabel lblEmail;
 	private JTextField txtPhoneNumber;
 	private JTextField txtHireDate;
-	private JTextField txtJobID;
 	private JTextField txtSalary;
 	private JLabel lblPhoneNumber;
 	private JLabel lblHireDate;
@@ -55,68 +63,89 @@ public class EmployeesFrame extends JDialog {
 	private JLabel lblSalary;
 	private JTextField txtCommissionPCT;
 	private JTextField txtManagerID;
-	private JTextField txtDepartmentID;
 	private JLabel lblCommissionPct;
 	private JLabel lblManagerId;
 	private JLabel lblDepartmentId;
-	JButton btnUpdate;
-	JButton btnDelete;
-	JButton btnInsert;
-	JButton btnCancel;
-	JButton btnSave;
-
+	private JDateChooser dateChooser;
+	private JButton btnUpdate;
+	private JButton btnDelete;
+	private JButton btnInsert;
+	private JButton btnCancel;
+	private JButton btnSave;
+	public int islem = -1;
+	private JComboBox<String> comboBoxJobID;
+	private JComboBox<String> comboBoxDepID;
+	
+	
+	public String findJobTitlefromJobID (Employees e) {
+		String jobtitle = null;
+		String jobid = e.getJob_id();
+		
+		for (Jobs j : jobList) {
+			if (j.getJob_id().equals(jobid)) {
+				jobtitle = j.getJob_title();
+			}
+		}
+		return jobtitle;
+	}
+	
+	public String findDepNamefromDepID (Employees e) {
+		String depname = null;
+		Integer depid = e.getDepartment_id();
+		
+		for (Departments d : depList) {
+			if (d.getDepartment_id() == depid) {
+				depname = d.getDepartment_name();
+			}
+		}
+		return depname;
+	}
+	
 	public EmployeesFrame() {
 		setModal(true);
 		this.setTitle("Employees");
-		this.setBounds(200, 200, 634, 507);
+		this.setBounds(200, 200, 655, 507);
 		getContentPane().setLayout(null);
 
 		JPanel panelLeft = new JPanel();
 		panelLeft.setBounds(10, 11, 261, 410);
 		getContentPane().add(panelLeft);
 		panelLeft.setLayout(null);
-
-		DefaultListModel<Employees> model = new DefaultListModel<Employees>();
-
+		
+		model = new DefaultListModel<Employees>();
+		jlist = new JList<Employees>(model);
 		scrollPane = new JScrollPane();
 		scrollPane.setBounds(10, 11, 241, 388);
-		panelLeft.add(scrollPane);
-		jlist = new JList<Employees>(model);
 		scrollPane.setViewportView(jlist);
+		panelLeft.add(scrollPane);
 		jlist.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
-
-		List<Employees> empList = new ArrayList<>();
 		empList = empDao.getAllData();
 
 		for (Employees employees : empList) {
 			model.addElement(employees);
 		}
+		
+		jlist.getSelectionModel().addListSelectionListener(e -> {
+			Employees emp = jlist.getSelectedValue();
 
-		jlist.addListSelectionListener(new ListSelectionListener() {
-			@Override
-			public void valueChanged(ListSelectionEvent e) {
-				if (!e.getValueIsAdjusting()) {
-					Employees emp = jlist.getSelectedValue();
-
-					txtID.setText(emp.getEmployee_id().toString());
-					txtName.setText(emp.getFirst_name());
-					txtSurname.setText(emp.getLast_name());
-					txtEmail.setText(emp.getEmail());
-					txtPhoneNumber.setText(emp.getPhone_number());
-					txtHireDate.setText(emp.getHire_date().toString());
-					SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-					txtJobID.setText(emp.getJob_id());
-					txtSalary.setText(emp.getSalary().toString());
-					txtCommissionPCT.setText(emp.getCommission_pct().toString());
-					txtManagerID.setText(emp.getManager_id().toString());
-					txtDepartmentID.setText(emp.getDepartment_id().toString());
-
-				}
-			}
+			txtID.setText(emp.getEmployee_id().toString());
+			txtName.setText(emp.getFirst_name());
+			txtSurname.setText(emp.getLast_name());
+			txtEmail.setText(emp.getEmail());
+			txtPhoneNumber.setText(emp.getPhone_number());
+			txtHireDate.setText(emp.getHire_date().toString());
+			//txtJobID.setText(emp.getJob_id());
+			txtSalary.setText(emp.getSalary().toString());
+			txtCommissionPCT.setText(emp.getCommission_pct().toString());
+			txtManagerID.setText(emp.getManager_id().toString());
+			//txtDepartmentID.setText(emp.getDepartment_id().toString());
+			
+			comboBoxJobID.setSelectedItem(findJobTitlefromJobID(emp));
+			comboBoxDepID.setSelectedItem(findDepNamefromDepID(emp));
 		});
-
+		
 		JPanel panelRight = new JPanel();
-		panelRight.setBounds(281, 11, 337, 410);
+		panelRight.setBounds(281, 11, 348, 410);
 		getContentPane().add(panelRight);
 		panelRight.setLayout(null);
 
@@ -176,17 +205,10 @@ public class EmployeesFrame extends JDialog {
 
 		txtHireDate = new JTextField();
 		txtHireDate.setEditable(false);
-		txtHireDate.setBounds(134, 190, 86, 20);
+		txtHireDate.setBounds(134, 190, 67, 20);
 		panelRight.add(txtHireDate);
 		txtHireDate.setColumns(10);
 		jtList.add(txtHireDate);
-
-		txtJobID = new JTextField();
-		txtJobID.setEditable(false);
-		txtJobID.setBounds(134, 225, 86, 20);
-		panelRight.add(txtJobID);
-		txtJobID.setColumns(10);
-		jtList.add(txtJobID);
 
 		txtSalary = new JTextField();
 		txtSalary.setEditable(false);
@@ -203,7 +225,7 @@ public class EmployeesFrame extends JDialog {
 		lblHireDate.setBounds(23, 196, 86, 14);
 		panelRight.add(lblHireDate);
 
-		lblJobId = new JLabel("Job ID");
+		lblJobId = new JLabel("Job Title");
 		lblJobId.setBounds(23, 231, 86, 14);
 		panelRight.add(lblJobId);
 
@@ -225,13 +247,6 @@ public class EmployeesFrame extends JDialog {
 		panelRight.add(txtManagerID);
 		jtList.add(txtManagerID);
 
-		txtDepartmentID = new JTextField();
-		txtDepartmentID.setEditable(false);
-		txtDepartmentID.setColumns(10);
-		txtDepartmentID.setBounds(134, 365, 86, 20);
-		panelRight.add(txtDepartmentID);
-		jtList.add(txtDepartmentID);
-
 		lblCommissionPct = new JLabel("Commission PCT");
 		lblCommissionPct.setBounds(23, 301, 101, 14);
 		panelRight.add(lblCommissionPct);
@@ -240,9 +255,54 @@ public class EmployeesFrame extends JDialog {
 		lblManagerId.setBounds(23, 336, 86, 14);
 		panelRight.add(lblManagerId);
 
-		lblDepartmentId = new JLabel("Department ID");
-		lblDepartmentId.setBounds(23, 371, 86, 14);
+		dateChooser = new JDateChooser();
+		dateChooser.setDateFormatString("dd/mm/yyyy");
+		dateChooser.setBounds(134, 190, 95, 20);
+		panelRight.add(dateChooser);
+
+		dateChooser.setVisible(true);
+
+		lblDepartmentId = new JLabel("Department Name");
+		lblDepartmentId.setBounds(23, 371, 101, 14);
 		panelRight.add(lblDepartmentId);
+		
+		comboBoxJobID = new JComboBox();
+		comboBoxJobID.setBounds(134, 229, 108, 20);
+		try {
+			String str;
+			Statement stmt = connection.createStatement();
+			ResultSet rs = stmt.executeQuery("SELECT * from JOBS");
+			while (rs.next()) {
+				str = rs.getString("job_title");
+				comboBoxJobID.addItem(str);	
+				Jobs j = new Jobs();
+				j.setJob_id(rs.getString(1));
+				j.setJob_title(rs.getString(2));
+				jobList.add(j);
+			}
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+		}
+		panelRight.add(comboBoxJobID);
+		
+		comboBoxDepID = new JComboBox();
+		comboBoxDepID.setBounds(134, 361, 108, 20);
+		try {
+			String str;
+			Statement stmt = connection.createStatement();
+			ResultSet rs = stmt.executeQuery("SELECT * from DEPARTMENTS");
+			while (rs.next()) {
+				str = rs.getString("department_name");
+				comboBoxDepID.addItem(str);	
+				Departments d = new Departments();
+				d.setDepartment_id(rs.getInt(1));
+				d.setDepartment_name(rs.getString(2));
+				depList.add(d);
+			}
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+		}
+		panelRight.add(comboBoxDepID);
 
 		btnInsert = new JButton("Insert");
 		btnInsert.addActionListener(new ActionListener() {
@@ -251,8 +311,14 @@ public class EmployeesFrame extends JDialog {
 					jt.setEditable(true);
 					jt.setText(null);
 				}
+				islem = 0;
 				btnUpdate.setEnabled(false);
 				btnDelete.setEnabled(false);
+				txtHireDate.setVisible(false);
+				dateChooser.setVisible(true);
+				//btnSearch.setVisible(false);
+				btnSave.setEnabled(true);
+				btnCancel.setEnabled(true);
 
 			}
 		});
@@ -266,10 +332,14 @@ public class EmployeesFrame extends JDialog {
 				for (JTextField jt : jtList) {
 					jt.setEditable(true);
 				}
-
+				islem = 1;
 				txtID.setEditable(false);
 				btnInsert.setEnabled(false);
 				btnDelete.setEnabled(false);
+				//btnSearch.setVisible(false);
+				btnSave.setEnabled(true);
+				btnCancel.setEnabled(true);
+				txtHireDate.setVisible(true);
 
 			}
 		});
@@ -278,6 +348,26 @@ public class EmployeesFrame extends JDialog {
 		getContentPane().add(btnUpdate);
 
 		btnDelete = new JButton("Delete");
+		btnDelete.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				islem = 2;
+				//btnSearch.setVisible(true);
+				for (JTextField jt : jtList) {
+					jt.setEditable(false);
+				}
+				btnSave.setEnabled(true);
+				btnCancel.setEnabled(true);
+				txtID.setEditable(true);
+				btnInsert.setEnabled(false);
+				btnUpdate.setEnabled(false);
+				dateChooser.setVisible(false);
+				dateChooser.setVisible(true);
+				if (!txtID.getText().equals("")) {
+					empDao.delete();
+				}
+
+			}
+		});
 		btnDelete.setBounds(324, 434, 89, 23);
 		btnList.add(btnDelete);
 		getContentPane().add(btnDelete);
@@ -290,58 +380,134 @@ public class EmployeesFrame extends JDialog {
 						btn.setEnabled(true);
 					}
 				}
-
 				Employees e = new Employees();
-				if (!(txtID.getText().equals("")) || !(txtEmail.getText().equals(""))) {
+
+				if (islem == 0) { // Ã½nsert iÃ¾lemi
+
+					if (!(txtID.getText().equals("")) || !(txtEmail.getText().equals(""))) {
+
+						e.setEmployee_id(Integer.valueOf(txtID.getText()));
+						e.setFirst_name(txtName.getText());
+						e.setLast_name(txtSurname.getText());
+						e.setEmail(txtEmail.getText());
+						e.setPhone_number(txtPhoneNumber.getText());
+
+						SimpleDateFormat sdf = new SimpleDateFormat("dd/mm/yyyy");
+						String d = sdf.format(dateChooser.getDate());
+						//e.setHire_date(d);
+
+						// e.setHire_date(txtHireDate.toString());
+						// e.setHire_date(dateChooser.getDateFormatString());
+						//e.setJob_id(txtJobID.getText());
+						for (Jobs j : jobList) {
+							if (comboBoxJobID.getSelectedItem().equals(j.getJob_title())) {
+								e.setJob_id(j.getJob_id());
+							}
+						}
+						e.setSalary(Integer.valueOf(txtSalary.getText()));
+						e.setCommission_pct(Double.valueOf(txtCommissionPCT.getText()));
+						e.setManager_id(Integer.valueOf(txtManagerID.getText()));
+						for (Departments dep : depList) {
+							if (comboBoxDepID.getSelectedItem().equals(dep.getDepartment_name())) {
+								e.setDepartment_id(dep.getDepartment_id());
+							}
+						}
+
+						empDao.setEmployee(e);
+						Boolean sonuc = empDao.insert();
+
+						if (sonuc == true) {
+							JOptionPane.showMessageDialog(new JFrame(), "New employee is inserted. ", "Dialog",
+									JOptionPane.YES_NO_CANCEL_OPTION);
+
+						} else {
+							JOptionPane.showMessageDialog(new JFrame(), "Error occured", "Dialog",
+									JOptionPane.ERROR_MESSAGE);
+
+						}
+
+					} else {
+						JOptionPane.showMessageDialog(new JFrame(), "Missing fields. Please fill all data.",
+								"Dialog", JOptionPane.ERROR_MESSAGE);
+					}
+
+				} else if (islem == 1) { // update islemi
+					dateChooser.setVisible(false);
+
+					
 					e.setEmployee_id(Integer.valueOf(txtID.getText()));
 					e.setFirst_name(txtName.getText());
 					e.setLast_name(txtSurname.getText());
 					e.setEmail(txtEmail.getText());
 					e.setPhone_number(txtPhoneNumber.getText());
-					e.setHire_date(txtHireDate.toString());
-					e.setJob_id(txtJobID.getText());
+					e.setHire_date(Date.valueOf(txtHireDate.getText()));
+					for (Jobs j : jobList) {
+						if (comboBoxJobID.getSelectedItem().equals(j.getJob_title())) {
+							e.setJob_id(j.getJob_id());
+						}
+					}
 					e.setSalary(Integer.valueOf(txtSalary.getText()));
-					e.setCommission_pct(Integer.valueOf(txtCommissionPCT.getText()));
+					e.setCommission_pct(Double.valueOf(txtCommissionPCT.getText()));
 					e.setManager_id(Integer.valueOf(txtManagerID.getText()));
-					e.setDepartment_id(Integer.valueOf(txtDepartmentID.getText()));
+					for (Departments d : depList) {
+						if (comboBoxDepID.getSelectedItem().equals(d.getDepartment_name())) {
+							e.setDepartment_id(d.getDepartment_id());
+						}
+					}
 
 					empDao.setEmployee(e);
-					Boolean sonuc = empDao.insert();
-					
-					
+					Boolean sonuc = empDao.update();
+
 					if (sonuc == true) {
-						JOptionPane.showMessageDialog(new JFrame(), "Bilgiler Kaydedildi. ", "Dialog",
+						JOptionPane.showMessageDialog(new JFrame(), "Employee is updated. ", "Dialog",
 								JOptionPane.YES_NO_CANCEL_OPTION);
 
 					} else {
-						JOptionPane.showMessageDialog(new JFrame(), "Bir hata oluþtu.", "Dialog",
+						JOptionPane.showMessageDialog(new JFrame(), "Error occured.", "Dialog",
 								JOptionPane.ERROR_MESSAGE);
 
 					}
 
-				} else {
-					JOptionPane.showMessageDialog(new JFrame(), "Eksik bilgi girildi. Tüm alanlarý doldurunuz",
-							"Dialog", JOptionPane.ERROR_MESSAGE);
+					// createJList();
+
+				} else if (islem == 2) { // delete islemi
+
 				}
 
 			}
 		});
 		btnSave.setBounds(430, 434, 89, 23);
 		btnList.add(btnSave);
+
 		getContentPane().add(btnSave);
 
+		btnSave.setEnabled(false);
+
 		btnCancel = new JButton("Cancel");
+		btnCancel.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				btnInsert.setEnabled(true);
+				btnDelete.setEnabled(true);
+				btnUpdate.setEnabled(true);
+				for (JTextField jt : jtList) {
+					jt.setEditable(false);
+				}
+				dateChooser.setVisible(false);
+			}
+		});
 		btnCancel.setBounds(529, 434, 89, 23);
 		btnList.add(btnCancel);
+		btnCancel.setEnabled(false);
 		getContentPane().add(btnCancel);
+		
 		this.setVisible(true);
 
 		//
 	}
 
 	public static void main(String[] args) {
+		
 		EmployeesFrame empFrame = new EmployeesFrame();
-		// List<String> list = new List<String>();
-
+		
 	}
 }
