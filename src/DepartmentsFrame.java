@@ -1,12 +1,15 @@
 
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -48,6 +51,11 @@ public class DepartmentsFrame extends JDialog {
 	private JLabel lblLocationID;
 	private int islem;
 	private Boolean sonuc;
+	private JComboBox<String> comboBoxManagerID;
+	private JComboBox<String> comboBoxLocationID;
+	private List<Employees> empList = new ArrayList<>();
+	private List<Locations> locationList = new ArrayList<>();
+	private EmployeesDAO empDao = new EmployeesDAO();
 
 	public void createJlist() {
 		model = new DefaultListModel<Departments>();
@@ -69,9 +77,27 @@ public class DepartmentsFrame extends JDialog {
 			txtID.setText(dep.getDepartment_id().toString());
 			txtDepName.setText(dep.getDepartment_name());
 			txtManagerID.setText(dep.getManager_id().toString());
-			txtLocationID.setText(dep.getLocation_id().toString());
+			comboBoxLocationID.setSelectedItem(dep.getLocation_id().toString());
+			//txtLocationID.setText(dep.getLocation_id().toString());
 		});
 	}
+	
+	public void deneme() {
+		
+	}
+	
+	public String findManagerNameFromID(Departments d) {
+		String name = null;
+		Integer managerid = d.getManager_id();
+
+		for (Employees emp : empList) {
+			if (emp.getEmployee_id() == managerid) {
+				name = emp.getFirst_name() + " " + emp.getLast_name();
+			}
+		}
+		return name;
+	}
+
 
 	public DepartmentsFrame() {
 		setResizable(false);
@@ -106,7 +132,7 @@ public class DepartmentsFrame extends JDialog {
 		panelRight.add(txtDepName);
 		txtDepName.setColumns(10);
 		jtList.add(txtDepName);
-
+		
 		txtManagerID = new JTextField();
 		txtManagerID.setEditable(false);
 		txtManagerID.setText("");
@@ -114,7 +140,26 @@ public class DepartmentsFrame extends JDialog {
 		panelRight.add(txtManagerID);
 		txtManagerID.setColumns(10);
 		jtList.add(txtManagerID);
-
+		
+		comboBoxLocationID = new JComboBox();
+		comboBoxLocationID.setEditable(false);
+		comboBoxLocationID.setBounds(134, 120, 120, 20);
+		try {
+			String str;
+			Statement stmt = connection.createStatement();
+			ResultSet rs = stmt.executeQuery("SELECT * from LOCATIONS");
+			while (rs.next()) {
+				str = rs.getString("location_id");
+				comboBoxLocationID.addItem(str);
+				Locations l = new Locations();
+				l.setLocation_id(rs.getInt(1));
+				locationList.add(l);
+			}
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+		}
+		panelRight.add(comboBoxLocationID);
+		/*
 		txtLocationID = new JTextField();
 		txtLocationID.setEditable(false);
 		txtLocationID.setText("");
@@ -122,7 +167,7 @@ public class DepartmentsFrame extends JDialog {
 		panelRight.add(txtLocationID);
 		txtLocationID.setColumns(10);
 		jtList.add(txtLocationID);
-
+		*/
 		lblDepID = new JLabel("Department ID");
 		lblDepID.setBounds(23, 21, 86, 14);
 		panelRight.add(lblDepID);
@@ -168,6 +213,7 @@ public class DepartmentsFrame extends JDialog {
 				btnDelete.setEnabled(false);
 				btnSave.setEnabled(true);
 				btnCancel.setEnabled(true);
+				
 
 			}
 
@@ -192,8 +238,9 @@ public class DepartmentsFrame extends JDialog {
 				btnDelete.setEnabled(false);
 				btnSave.setEnabled(true);
 				btnCancel.setEnabled(true);
+				
 				if (txtID.getText().equals("")) {
-					JOptionPane.showMessageDialog(new JFrame(), "Listeden Department Seçimi Yapýnýz. ", "Dialog",
+					JOptionPane.showMessageDialog(new JFrame(), "Select a Department from the list.", "Error!",
 							JOptionPane.YES_NO_CANCEL_OPTION);
 
 				}
@@ -244,9 +291,9 @@ public class DepartmentsFrame extends JDialog {
 
 							Boolean IDnumbercontrol = numberControl(txtID.getText().toString());
 							Boolean ManagerNumbercontrol = numberControl(txtManagerID.getText().toString());
-							Boolean Locationcontrol = numberControl(txtLocationID.getText().toString());
+							//Boolean Locationcontrol = numberControl(txtLocationID.getText().toString());
 
-							if (IDnumbercontrol == true && ManagerNumbercontrol == true && Locationcontrol == true) {
+							if (IDnumbercontrol == true && ManagerNumbercontrol == true/* && Locationcontrol == true*/) {
 								d.setDepartment_id(Integer.valueOf(txtID.getText().toString()));
 								degerGirisi();
 
@@ -254,26 +301,26 @@ public class DepartmentsFrame extends JDialog {
 								sonuc = depDao.insert();
 
 								if (sonuc == true) {
-									JOptionPane.showMessageDialog(new JFrame(), "Bilgiler Kaydedildi. ", "Sonuç",
+									JOptionPane.showMessageDialog(new JFrame(), "New Department is inserted.", "Successful",
 											JOptionPane.YES_NO_CANCEL_OPTION);
 
 								} else {
 
-									JOptionPane.showMessageDialog(new JFrame(), "Bir hata oluþtu.", "Hata!",
+									JOptionPane.showMessageDialog(new JFrame(), "An error occured.", "Error!",
 											JOptionPane.ERROR_MESSAGE);
 
 								}
 							} else {
-								JOptionPane.showMessageDialog(new JFrame(), "Geçersiz deðer girdiniz.", "Hata!",
+								JOptionPane.showMessageDialog(new JFrame(), "You entered an invalid value.", "Error!",
 										JOptionPane.ERROR_MESSAGE);
 							}
 						} else {
 							JOptionPane.showMessageDialog(new JFrame(),
-									"Maximum alan uzunlugunu geçtiniz, düzeltip yeniden deneyiniz.", "Hata!",
+									"You have exceeded the maximum field lenght, please try again.", "Error!",
 									JOptionPane.ERROR_MESSAGE);
 						}
 					} else {
-						JOptionPane.showMessageDialog(new JFrame(), "Tüm alanlarý doldurunuz", "Hata!",
+						JOptionPane.showMessageDialog(new JFrame(), "Please fill in all fields", "Error!",
 								JOptionPane.ERROR_MESSAGE);
 					}
 
@@ -293,21 +340,21 @@ public class DepartmentsFrame extends JDialog {
 							sonuc = depDao.update();
 
 							if (sonuc == true) {
-								JOptionPane.showMessageDialog(new JFrame(), "Bilgiler Güncellendi. ", "Sonuç",
+								JOptionPane.showMessageDialog(new JFrame(), "Department is updated.", "Successful",
 										JOptionPane.YES_NO_CANCEL_OPTION);
 
 							} else {
-								JOptionPane.showMessageDialog(new JFrame(), "Bir hata oluþtu.", "Hata!",
+								JOptionPane.showMessageDialog(new JFrame(), "An error occured.", "Error!",
 										JOptionPane.ERROR_MESSAGE);
 
 							}
 						} else {
 							JOptionPane.showMessageDialog(new JFrame(),
-									"Maximum alan uzunlugunu geçtiniz, düzeltip yeniden deneyiniz.", "Hata!",
+									"You have exceeded the maximum field length, please try again.", "Error!",
 									JOptionPane.ERROR_MESSAGE);
 						}
 					} else {
-						JOptionPane.showMessageDialog(new JFrame(), "Tüm alanlarý doldurunuz", "Hata!",
+						JOptionPane.showMessageDialog(new JFrame(), "Please fill in all fields.", "Hata!",
 								JOptionPane.ERROR_MESSAGE);
 					}
 				}
@@ -320,15 +367,15 @@ public class DepartmentsFrame extends JDialog {
 
 						if (sonuc == true) {
 							JOptionPane.showMessageDialog(new JFrame(),
-									txtID.getText().toString() + " ID'ye Ait Departments Bilgileri Silindi. ", "Sonuç",
+									txtID.getText().toString() + " is deleted.", "Successful",
 									JOptionPane.YES_NO_CANCEL_OPTION);
 
 						} else {
-							JOptionPane.showMessageDialog(new JFrame(), " Bir hata oluþtu. ", "Sonuç",
+							JOptionPane.showMessageDialog(new JFrame(), "An error occured.", "Error",
 									JOptionPane.ERROR_MESSAGE);
 						}
 					} else {
-						JOptionPane.showMessageDialog(new JFrame(), " Departments Seçimi Yapýnýz ", "Hata!",
+						JOptionPane.showMessageDialog(new JFrame(), "Please select a Department.", "Error!",
 								JOptionPane.ERROR_MESSAGE);
 					}
 				} else {
@@ -358,6 +405,7 @@ public class DepartmentsFrame extends JDialog {
 				btnInsert.setEnabled(true);
 				btnDelete.setEnabled(true);
 				btnUpdate.setEnabled(true);
+				comboBoxLocationID.setEditable(false);
 				for (JTextField jt : jtList) {
 					jt.setEditable(false);
 				}
@@ -374,13 +422,7 @@ public class DepartmentsFrame extends JDialog {
 		btnList.add(btnCancel);
 		btnCancel.setEnabled(false);
 		getContentPane().add(btnCancel);
-		this.setVisible(true);
-
-	}
-
-	public static void main(String[] args) {
-		DepartmentsFrame depFrame = new DepartmentsFrame();
-
+		
 	}
 
 	public boolean numberControl(String deger) {
@@ -409,15 +451,16 @@ public class DepartmentsFrame extends JDialog {
 	}
 
 	public void degerGirisi() {
-
+		d.setDepartment_id(Integer.valueOf(txtID.getText().toString()));
 		d.setDepartment_name(txtDepName.getText().toString());
-		d.setLocation_id(Integer.valueOf(txtLocationID.getText().toString()));
+		//d.setLocation_id(Integer.valueOf(txtLocationID.getText().toString()));
+		d.setLocation_id(Integer.valueOf(comboBoxLocationID.getSelectedItem().toString()));
 		d.setManager_id(Integer.valueOf(txtManagerID.getText().toString()));
 
 	}
 
 	public Boolean uzunlukKontrol() {
-		if (txtDepName.getText().length() <= 30 && txtLocationID.getText().toString().length() <= 6
+		if (txtDepName.getText().length() <= 30 /*&& txtLocationID.getText().toString().length() <= 6*/
 				&& txtManagerID.getText().toString().length() <= 4) {
 			return true;
 		} else {

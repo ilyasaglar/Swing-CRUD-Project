@@ -15,11 +15,12 @@ import javax.swing.JLabel;
 import java.awt.Font;
 import javax.swing.JTextField;
 import javax.swing.JPasswordField;
+import javax.swing.SwingConstants;
 
 public class MainFrame extends JFrame {
 	private JTextField textField;
 	private JPasswordField passwordField;
-
+	private JLabel lblNewLabel, labelInput;
 	private List<JButton> btnList = new ArrayList<>();
 
 	public MainFrame() {
@@ -27,7 +28,7 @@ public class MainFrame extends JFrame {
 
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setTitle("Human Resources");
-		this.setBounds(100, 100, 775, 429);
+		this.setBounds(100, 100, 820, 477);
 		getContentPane().setLayout(null);
 
 		JButton btnEmployees = new JButton("EMPLOYEES");
@@ -40,7 +41,7 @@ public class MainFrame extends JFrame {
 				empFrame.setVisible(true);
 			}
 		});
-		btnEmployees.setBounds(46, 101, 195, 80);
+		btnEmployees.setBounds(53, 150, 195, 80);
 		btnEmployees.setVisible(false);
 		getContentPane().add(btnEmployees);
 
@@ -54,7 +55,7 @@ public class MainFrame extends JFrame {
 				depFrame.setVisible(true);
 			}
 		});
-		btnDepartments.setBounds(271, 101, 210, 80);
+		btnDepartments.setBounds(283, 150, 210, 80);
 		btnDepartments.setVisible(false);
 		getContentPane().add(btnDepartments);
 
@@ -68,7 +69,7 @@ public class MainFrame extends JFrame {
 				jobFrame.setVisible(true);
 			}
 		});
-		btnJobs.setBounds(515, 101, 195, 80);
+		btnJobs.setBounds(532, 150, 195, 80);
 		btnJobs.setVisible(false);
 		getContentPane().add(btnJobs);
 
@@ -82,7 +83,7 @@ public class MainFrame extends JFrame {
 				countryFrame.setVisible(true);
 			}
 		});
-		btnCountries.setBounds(46, 215, 195, 80);
+		btnCountries.setBounds(53, 264, 195, 80);
 		btnCountries.setVisible(false);
 		getContentPane().add(btnCountries);
 
@@ -96,7 +97,7 @@ public class MainFrame extends JFrame {
 				locationFrame.setVisible(true);
 			}
 		});
-		btnLocations.setBounds(271, 215, 210, 80);
+		btnLocations.setBounds(283, 264, 210, 80);
 		btnLocations.setVisible(false);
 		getContentPane().add(btnLocations);
 
@@ -111,29 +112,29 @@ public class MainFrame extends JFrame {
 		btnRegions.setIcon(new ImageIcon(this.getClass().getResource("icon/regions.png")));
 		btnRegions.setFont(new Font("Tahoma", Font.BOLD, 14));
 		btnList.add(btnRegions);
-		btnRegions.setBounds(515, 215, 195, 80);
+		btnRegions.setBounds(532, 264, 195, 80);
 		btnRegions.setVisible(false);
 		getContentPane().add(btnRegions);
 
 		JLabel lblUsername = new JLabel("Username");
 		lblUsername.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		lblUsername.setBounds(263, 117, 97, 21);
+		lblUsername.setBounds(280, 204, 97, 21);
 		getContentPane().add(lblUsername);
 
 		JLabel lblPassword = new JLabel("Password");
 		lblPassword.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		lblPassword.setBounds(263, 149, 97, 21);
+		lblPassword.setBounds(280, 236, 97, 21);
 		getContentPane().add(lblPassword);
 
 		textField = new JTextField();
 		textField.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		textField.setBounds(370, 119, 103, 20);
+		textField.setBounds(387, 206, 103, 20);
 		getContentPane().add(textField);
 		textField.setColumns(10);
 
 		passwordField = new JPasswordField();
 		passwordField.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		passwordField.setBounds(370, 151, 103, 20);
+		passwordField.setBounds(387, 238, 103, 20);
 		getContentPane().add(passwordField);
 
 		JButton btnLogin = new JButton("LOGIN");
@@ -150,12 +151,15 @@ public class MainFrame extends JFrame {
 					for (JButton jButton : btnList) {
 						jButton.setVisible(true);
 					}
-
+					lblNewLabel.setVisible(true);
 					textField.setVisible(false);
 					passwordField.setVisible(false);
 					lblUsername.setVisible(false);
 					lblPassword.setVisible(false);
+					labelInput.setVisible(false);
 					btnLogin.setVisible(false);
+					
+					
 
 				} else
 					JOptionPane.showMessageDialog(new JFrame(), "Invalid Username or Password", "Error",
@@ -164,8 +168,29 @@ public class MainFrame extends JFrame {
 			}
 
 		});
-		btnLogin.setBounds(370, 209, 103, 23);
+		btnLogin.setBounds(387, 296, 103, 23);
 		getContentPane().add(btnLogin);
+
+		lblNewLabel = new JLabel("");
+		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		lblNewLabel.setIcon(new ImageIcon(this.getClass().getResource("icon/logo2.png")));
+		lblNewLabel.setBounds(213, 0, 368, 139);
+		lblNewLabel.setVisible(false);
+		getContentPane().add(lblNewLabel);
+
+		JLabel lblLogo2 = new JLabel("");
+		lblLogo2.setHorizontalAlignment(SwingConstants.CENTER);
+		lblLogo2.setIcon(new ImageIcon(this.getClass().getResource("icon/logo.png")));
+		lblLogo2.setBounds(645, 350, 188, 88);
+		getContentPane().add(lblLogo2);
+
+		labelInput = new JLabel("");
+		labelInput.setHorizontalAlignment(SwingConstants.CENTER);
+		labelInput.setIcon(new ImageIcon(this.getClass().getResource("icon/key.png")));
+		labelInput.setBounds(234, 0, 347, 180);
+		getContentPane().add(labelInput);
+		labelInput.setVisible(true);
+
 		this.setVisible(true);
 		//
 	}

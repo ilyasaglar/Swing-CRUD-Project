@@ -161,7 +161,7 @@ public class RegionsFrame extends JDialog {
 				btnSave.setEnabled(true);
 				btnCancel.setEnabled(true);
 				if (txtID.getText().equals("")) {
-					JOptionPane.showMessageDialog(new JFrame(), "Listeden Region Seçimi Yapýnýz. ", "Dialog",
+					JOptionPane.showMessageDialog(new JFrame(), "Select a Region from the list.", "Warning",
 							JOptionPane.YES_NO_CANCEL_OPTION);
 
 				}
@@ -216,29 +216,29 @@ public class RegionsFrame extends JDialog {
 								degerGirisi();
 
 								regionDao.setJob(r);
-								sonuc = regionDao.update();
+								sonuc = regionDao.insert();
 
 								if (sonuc == true) {
-									JOptionPane.showMessageDialog(new JFrame(), "Bilgiler Kaydedildi. ", "Sonuç",
+									JOptionPane.showMessageDialog(new JFrame(), "Region is inserted.", "Successful",
 											JOptionPane.YES_NO_CANCEL_OPTION);
 
 								} else {
 
-									JOptionPane.showMessageDialog(new JFrame(), "Bir hata oluþtu.", "Hata!",
+									JOptionPane.showMessageDialog(new JFrame(), "An error occured.", "Error!",
 											JOptionPane.ERROR_MESSAGE);
 
 								}
 							} else {
-								JOptionPane.showMessageDialog(new JFrame(), "Geçersiz deðer girdiniz.", "Hata!",
+								JOptionPane.showMessageDialog(new JFrame(), "You have entered invalid value.", "Error!",
 										JOptionPane.ERROR_MESSAGE);
 							}
 						} else {
 							JOptionPane.showMessageDialog(new JFrame(),
-									"Maximum alan uzunlugunu geçtiniz, düzeltip yeniden deneyiniz.", "Hata!",
+									"You have exceeded the maximum field length, please try again.", "Error!",
 									JOptionPane.ERROR_MESSAGE);
 						}
 					} else {
-						JOptionPane.showMessageDialog(new JFrame(), "Tüm alanlarý doldurunuz", "Hata!",
+						JOptionPane.showMessageDialog(new JFrame(), "Please fill in all fields.", "Error!",
 								JOptionPane.ERROR_MESSAGE);
 					}
 
@@ -257,21 +257,21 @@ public class RegionsFrame extends JDialog {
 							sonuc = regionDao.update();
 
 							if (sonuc == true) {
-								JOptionPane.showMessageDialog(new JFrame(), "Bilgiler Güncellendi. ", "Sonuç",
+								JOptionPane.showMessageDialog(new JFrame(), "Region is updated.", "Successful",
 										JOptionPane.YES_NO_CANCEL_OPTION);
 
 							} else {
-								JOptionPane.showMessageDialog(new JFrame(), "Bir hata oluþtu.", "Hata!",
+								JOptionPane.showMessageDialog(new JFrame(), "An error occured.", "Error!",
 										JOptionPane.ERROR_MESSAGE);
 
 							}
 						} else {
 							JOptionPane.showMessageDialog(new JFrame(),
-									"Maximum alan uzunlugunu geçtiniz, düzeltip yeniden deneyiniz.", "Hata!",
+									"You have exceeded the maximum field length, please try again.", "Error!",
 									JOptionPane.ERROR_MESSAGE);
 						}
 					} else {
-						JOptionPane.showMessageDialog(new JFrame(), "Tüm alanlarý doldurunuz", "Hata!",
+						JOptionPane.showMessageDialog(new JFrame(), "Please fill in all fields", "Error!",
 								JOptionPane.ERROR_MESSAGE);
 					}
 				}
@@ -284,15 +284,15 @@ public class RegionsFrame extends JDialog {
 
 						if (sonuc == true) {
 							JOptionPane.showMessageDialog(new JFrame(),
-									txtID.getText().toString() + " ID'ye Ait REgions Bilgileri Silindi. ", "Sonuç",
+									txtID.getText().toString() + " is deleted.", "Successful",
 									JOptionPane.YES_NO_CANCEL_OPTION);
 
 						} else {
-							JOptionPane.showMessageDialog(new JFrame(), " Bir hata oluþtu. ", "Sonuç",
+							JOptionPane.showMessageDialog(new JFrame(), "An error occured.", "Error!",
 									JOptionPane.ERROR_MESSAGE);
 						}
 					} else {
-						JOptionPane.showMessageDialog(new JFrame(), " Region Seçimi Yapýnýz ", "Hata!",
+						JOptionPane.showMessageDialog(new JFrame(), "Please select a Region.", "Error!",
 								JOptionPane.ERROR_MESSAGE);
 					}
 				} else {
@@ -338,7 +338,7 @@ public class RegionsFrame extends JDialog {
 		btnList.add(btnCancel);
 		btnCancel.setEnabled(false);
 		getContentPane().add(btnCancel);
-		this.setVisible(true);
+	
 
 	}
 

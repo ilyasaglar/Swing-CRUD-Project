@@ -86,7 +86,7 @@ public class CountriesFrame extends JDialog {
 
 		txtID = new JTextField();
 		txtID.setEditable(false);
-		txtID.setBounds(134, 15, 86, 20);
+		txtID.setBounds(134, 15, 100, 20);
 		panelRight.add(txtID);
 		txtID.setColumns(10);
 		jtList.add(txtID);
@@ -94,7 +94,7 @@ public class CountriesFrame extends JDialog {
 		txtCountryName = new JTextField();
 		txtCountryName.setEditable(false);
 		txtCountryName.setText("");
-		txtCountryName.setBounds(134, 50, 86, 20);
+		txtCountryName.setBounds(134, 50, 100, 20);
 		panelRight.add(txtCountryName);
 		txtCountryName.setColumns(10);
 		jtList.add(txtCountryName);
@@ -102,7 +102,7 @@ public class CountriesFrame extends JDialog {
 		txtRegionID = new JTextField();
 		txtRegionID.setEditable(false);
 		txtRegionID.setText("");
-		txtRegionID.setBounds(134, 85, 86, 20);
+		txtRegionID.setBounds(134, 85, 100, 20);
 		panelRight.add(txtRegionID);
 		txtRegionID.setColumns(10);
 		jtList.add(txtRegionID);
@@ -159,11 +159,14 @@ public class CountriesFrame extends JDialog {
 		btnUpdate.setIcon(new ImageIcon(this.getClass().getResource("icon/reload.png")));
 		btnUpdate.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-
+				/*
 				for (JTextField jt : jtList) {
 					jt.setEditable(true);
 				}
-
+				*/
+				JOptionPane.showMessageDialog(new JFrame(), "You have not authorized to update.", "Warning!",
+						JOptionPane.YES_NO_CANCEL_OPTION);
+				/*
 				islem = 1;
 				txtID.setEditable(false);
 				btnInsert.setEnabled(false);
@@ -171,11 +174,12 @@ public class CountriesFrame extends JDialog {
 				btnSave.setEnabled(true);
 				btnCancel.setEnabled(true);
 				if (txtID.getText().equals("")) {
-					JOptionPane.showMessageDialog(new JFrame(), "Listeden Countries Seçimi Yapýnýz. ", "Dialog",
+					JOptionPane.showMessageDialog(new JFrame(), "Please select a Country from the list.", "Error!",
 							JOptionPane.YES_NO_CANCEL_OPTION);
 
 				}
-
+				*/
+				
 			}
 		});
 		btnUpdate.setBounds(109, 432, 95, 30);
@@ -233,26 +237,26 @@ public class CountriesFrame extends JDialog {
 								sonuc = countryDao.insert();
 
 								if (sonuc == true) {
-									JOptionPane.showMessageDialog(new JFrame(), "Ýþ Bilgileri Kaydedildi. ", "Sonuç",
+									JOptionPane.showMessageDialog(new JFrame(), "New Country is inserted", "Successful",
 											JOptionPane.YES_NO_CANCEL_OPTION);
 
 								} else {
 
-									JOptionPane.showMessageDialog(new JFrame(), "Bir hata oluþtu.", "Hata!",
+									JOptionPane.showMessageDialog(new JFrame(), "An error occuredç", "Error!",
 											JOptionPane.ERROR_MESSAGE);
 
 								}
 							} else {
-								JOptionPane.showMessageDialog(new JFrame(), "Geçersiz deðer girdiniz.", "Hata!",
+								JOptionPane.showMessageDialog(new JFrame(), "You entered an invalid value.", "Error!",
 										JOptionPane.ERROR_MESSAGE);
 							}
 						} else {
 							JOptionPane.showMessageDialog(new JFrame(),
-									"Maximum alan uzunlugunu geçtiniz, düzeltip yeniden deneyiniz.", "Hata!",
+									"You have exceeded the maximum field length, please try again.", "Error!",
 									JOptionPane.ERROR_MESSAGE);
 						}
 					} else {
-						JOptionPane.showMessageDialog(new JFrame(), "Tüm alanlarý doldurunuz", "Hata!",
+						JOptionPane.showMessageDialog(new JFrame(), "Please fill in all fields.", "Error!",
 								JOptionPane.ERROR_MESSAGE);
 					}
 
@@ -269,17 +273,17 @@ public class CountriesFrame extends JDialog {
 						sonuc = countryDao.insert();
 
 						if (sonuc == true) {
-							JOptionPane.showMessageDialog(new JFrame(), "Bilgiler Güncellendi. ", "Sonuç",
+							JOptionPane.showMessageDialog(new JFrame(), "Country is updated.", "Successful",
 									JOptionPane.YES_NO_CANCEL_OPTION);
 
 						} else {
-							JOptionPane.showMessageDialog(new JFrame(), "Bir hata oluþtu.", "Hata!",
+							JOptionPane.showMessageDialog(new JFrame(), "An error occured.", "Error!",
 									JOptionPane.ERROR_MESSAGE);
 
 						}
 					} else {
 						JOptionPane.showMessageDialog(new JFrame(),
-								"Maximum alan uzunlugunu geçtiniz, düzeltip yeniden deneyiniz.", "Hata!",
+								"You have exceeded the maximum field length, please try again.", "Error!",
 								JOptionPane.ERROR_MESSAGE);
 					}
 				}
@@ -291,15 +295,15 @@ public class CountriesFrame extends JDialog {
 
 						if (sonuc == true) {
 							JOptionPane.showMessageDialog(new JFrame(),
-									txtID.getText().toString() + " ID'ye Ait Jobs Bilgileri Silindi. ", "Sonuç",
+									txtID.getText().toString() + " is deleted.", "Successful",
 									JOptionPane.YES_NO_CANCEL_OPTION);
 
 						} else {
-							JOptionPane.showMessageDialog(new JFrame(), " Bir hata oluþtu. ", "Sonuç",
+							JOptionPane.showMessageDialog(new JFrame(), "An error occured. ", "Error",
 									JOptionPane.ERROR_MESSAGE);
 						}
 					} else {
-						JOptionPane.showMessageDialog(new JFrame(), " Jobs Seçimi Yapýnýz ", "Hata!",
+						JOptionPane.showMessageDialog(new JFrame(), "Please select a Country.", "Error!",
 								JOptionPane.ERROR_MESSAGE);
 					}
 				} else {
@@ -348,14 +352,11 @@ public class CountriesFrame extends JDialog {
 		btnList.add(btnCancel);
 		btnCancel.setEnabled(false);
 		getContentPane().add(btnCancel);
-		this.setVisible(true);
+		
 
 	}
 
-	public static void main(String[] args) {
-		DepartmentsFrame depFrame = new DepartmentsFrame();
-
-	}
+	
 
 	public boolean numberControl(String deger) {
 		char a;

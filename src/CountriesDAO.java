@@ -99,8 +99,8 @@ public class CountriesDAO implements CustomDAO {
 			Statement stmt = connection.createStatement();
 
 			int dialogButton = JOptionPane.YES_NO_OPTION;
-			int dialogResult = JOptionPane.showConfirmDialog(null, "Countries Bilgilerini Silmek Ýstediðinize emin misiniz?",
-					"Onay Ekraný", dialogButton);
+			int dialogResult = JOptionPane.showConfirmDialog(null,
+					"Are you sure you want to delete Country Information.", "Warning", dialogButton);
 			if (dialogResult == JOptionPane.YES_OPTION) {
 
 				int i = stmt.executeUpdate("DELETE FROM countries WHERE country_id='" + country_id + "'");
@@ -110,14 +110,14 @@ public class CountriesDAO implements CustomDAO {
 				connection.close();
 				return true;
 			} else {
-
+				connection.close();
 				return false;
 			}
 
 		} catch (SQLException ex) {
 			System.out.println(ex);
 			ex.printStackTrace();
-			JOptionPane.showMessageDialog(new JFrame(), "Bir hata oluþtu.", "Hata!", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(new JFrame(), "An error occured.", "Error!", JOptionPane.ERROR_MESSAGE);
 			return false;
 		}
 	}

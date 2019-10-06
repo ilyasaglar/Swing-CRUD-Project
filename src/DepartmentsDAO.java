@@ -77,7 +77,7 @@ public class DepartmentsDAO implements CustomDAO {
 		try {
 
 			String sql = "UPDATE departments " + "SET department_name=?, manager_id=?, location_id=? "
-					+ "WHERE employee_id=" + department.getDepartment_id();
+					+ "WHERE department_id=" + department.getDepartment_id();
 
 			PreparedStatement ps = connection.prepareStatement(sql);
 			ps.setString(1, department.getDepartment_name());
@@ -107,7 +107,7 @@ public class DepartmentsDAO implements CustomDAO {
 
 			int dialogButton = JOptionPane.YES_NO_OPTION;
 			int dialogResult = JOptionPane.showConfirmDialog(null,
-					"Department Bilgilerini Silmek Ýstediðinize emin misiniz?", "Onay Ekraný", dialogButton);
+					"Are you sure you want to delete Department Informations?", "Warning", dialogButton);
 			if (dialogResult == JOptionPane.YES_OPTION) {
 
 				int i = stmt.executeUpdate("DELETE FROM departments WHERE department_id=" + department_id);
@@ -125,7 +125,7 @@ public class DepartmentsDAO implements CustomDAO {
 		} catch (SQLException ex) {
 			System.out.println(ex);
 			ex.printStackTrace();
-			JOptionPane.showMessageDialog(new JFrame(), "Bir hata oluþtu.", "Hata!", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(new JFrame(), "An error occured.", "Error!", JOptionPane.ERROR_MESSAGE);
 			return false;
 		}
 

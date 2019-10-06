@@ -191,7 +191,7 @@ public class JobsFrame extends JDialog {
 				btnSave.setEnabled(true);
 				btnCancel.setEnabled(true);
 				if (txtID.getText().equals("")) {
-					JOptionPane.showMessageDialog(new JFrame(), "Listeden Jobs Seçimi Yapýnýz. ", "Dialog",
+					JOptionPane.showMessageDialog(new JFrame(), "Please select a Job from the list.", "Error!",
 							JOptionPane.YES_NO_CANCEL_OPTION);
 
 				}
@@ -256,26 +256,26 @@ public class JobsFrame extends JDialog {
 								sonuc = jobDao.insert();
 
 								if (sonuc == true) {
-									JOptionPane.showMessageDialog(new JFrame(), "Ýþ Bilgileri Kaydedildi. ", "Sonuç",
+									JOptionPane.showMessageDialog(new JFrame(), "Job is inserted.", "Successful",
 											JOptionPane.YES_NO_CANCEL_OPTION);
 
 								} else {
 
-									JOptionPane.showMessageDialog(new JFrame(), "Bir hata oluþtu.", "Hata!",
+									JOptionPane.showMessageDialog(new JFrame(), "An error occured.", "Error!",
 											JOptionPane.ERROR_MESSAGE);
 
 								}
 							} else {
-								JOptionPane.showMessageDialog(new JFrame(), "Geçersiz deðer girdiniz.", "Hata!",
+								JOptionPane.showMessageDialog(new JFrame(), "You entered invalid value.", "Error!",
 										JOptionPane.ERROR_MESSAGE);
 							}
 						} else {
 							JOptionPane.showMessageDialog(new JFrame(),
-									"Maximum alan uzunlugunu geçtiniz, düzeltip yeniden deneyiniz.", "Hata!",
+									"You have exceeded maximum field length, please try again.", "Error!",
 									JOptionPane.ERROR_MESSAGE);
 						}
 					} else {
-						JOptionPane.showMessageDialog(new JFrame(), "Tüm alanlarý doldurunuz", "Hata!",
+						JOptionPane.showMessageDialog(new JFrame(), "Please fill in all fields.", "Error!",
 								JOptionPane.ERROR_MESSAGE);
 					}
 
@@ -294,21 +294,21 @@ public class JobsFrame extends JDialog {
 							sonuc = jobDao.update();
 
 							if (sonuc == true) {
-								JOptionPane.showMessageDialog(new JFrame(), "Bilgiler Güncellendi. ", "Sonuç",
+								JOptionPane.showMessageDialog(new JFrame(), "Job is updated.", "Successfull",
 										JOptionPane.YES_NO_CANCEL_OPTION);
 
 							} else {
-								JOptionPane.showMessageDialog(new JFrame(), "Bir hata oluþtu.", "Hata!",
+								JOptionPane.showMessageDialog(new JFrame(), "An error occured.", "Error!",
 										JOptionPane.ERROR_MESSAGE);
 
 							}
 						} else {
 							JOptionPane.showMessageDialog(new JFrame(),
-									"Maximum alan uzunlugunu geçtiniz, düzeltip yeniden deneyiniz.", "Hata!",
+									"You have exceeded maximum field length, please try again.", "Error!",
 									JOptionPane.ERROR_MESSAGE);
 						}
 					} else {
-						JOptionPane.showMessageDialog(new JFrame(), "Tüm alanlarý doldurunuz", "Hata!",
+						JOptionPane.showMessageDialog(new JFrame(), "Please fill in all fields.", "Error!",
 								JOptionPane.ERROR_MESSAGE);
 					}
 				}
@@ -316,19 +316,19 @@ public class JobsFrame extends JDialog {
 				else if (islem == 2) { // delete islemi
 					if (!txtID.getText().equals("")) {
 
-						sonuc = jobDao.delete(Integer.valueOf(txtID.getText()));
+						sonuc = jobDao.delete2(txtID.getText());
 
 						if (sonuc == true) {
 							JOptionPane.showMessageDialog(new JFrame(),
-									txtID.getText().toString() + " ID'ye Ait Jobs Bilgileri Silindi. ",
+									txtID.getText().toString() + " is deleted",
 									"Sonuç", JOptionPane.YES_NO_CANCEL_OPTION);
 
 						} else {
-							JOptionPane.showMessageDialog(new JFrame(), " Bir hata oluþtu. ", "Sonuç",
+							JOptionPane.showMessageDialog(new JFrame(), "An error occured.", "Error!",
 									JOptionPane.ERROR_MESSAGE);
 						}
 					} else {
-						JOptionPane.showMessageDialog(new JFrame(), " Jobs Seçimi Yapýnýz ", "Hata!",
+						JOptionPane.showMessageDialog(new JFrame(), "Please select a Job.", "Error!",
 								JOptionPane.ERROR_MESSAGE);
 					}
 				} else {
@@ -374,7 +374,7 @@ public class JobsFrame extends JDialog {
 		btnList.add(btnCancel);
 		btnCancel.setEnabled(false);
 		getContentPane().add(btnCancel);
-		this.setVisible(true);
+
 
 	}
 

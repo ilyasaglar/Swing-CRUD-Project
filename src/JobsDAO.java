@@ -75,8 +75,8 @@ public class JobsDAO implements CustomDAO {
 
 		try {
 
-			String sql = "UPDATE jobs " + "SET job_title=?, min_salary=?, max_salary=? " + "WHERE job_id="
-					+ job.getJob_id();
+			String sql = "UPDATE jobs SET job_title=?, min_salary=?, max_salary=? WHERE job_id= '" + job.getJob_id()
+					+ "'";
 
 			PreparedStatement ps = connection.prepareStatement(sql);
 			ps.setString(1, job.getJob_title());
@@ -129,14 +129,19 @@ public class JobsDAO implements CustomDAO {
 
 	@Override
 	public boolean delete(int job_id) {
+
+		return true;
+	}
+
+	public boolean delete2(String job_id) {
 		Connection connection = DbConnection.getConnection();
 
 		try {
 			Statement stmt = connection.createStatement();
 
 			int dialogButton = JOptionPane.YES_NO_OPTION;
-			int dialogResult = JOptionPane.showConfirmDialog(null, "Jobs Bilgilerini Silmek Ýstediðinize emin misiniz?",
-					"Onay Ekraný", dialogButton);
+			int dialogResult = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete Job Information?",
+					"Warning", dialogButton);
 			if (dialogResult == JOptionPane.YES_OPTION) {
 
 				int i = stmt.executeUpdate("DELETE FROM jobs WHERE job_id='" + job_id + "'");
@@ -154,7 +159,7 @@ public class JobsDAO implements CustomDAO {
 		} catch (SQLException ex) {
 			System.out.println(ex);
 			ex.printStackTrace();
-			JOptionPane.showMessageDialog(new JFrame(), "Bir hata oluþtu.", "Hata!", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(new JFrame(), "An error occured.", "Error!", JOptionPane.ERROR_MESSAGE);
 			return false;
 		}
 	}
