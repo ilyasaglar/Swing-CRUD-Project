@@ -417,7 +417,6 @@ public class EmployeesFrame extends JDialog {
 				txtDepartmentID.setVisible(false);
 				btnSave.setEnabled(true);
 				btnCancel.setEnabled(true);
-				txtHireDate.setVisible(true);
 				if (txtID.getText().equals("")) {
 					JOptionPane.showMessageDialog(new JFrame(), "Listeden Kiþi Seçimi Yapýnýz. ", "Dialog",
 							JOptionPane.YES_NO_CANCEL_OPTION);
@@ -469,11 +468,11 @@ public class EmployeesFrame extends JDialog {
 						if (uzunKontrol == true) {
 
 							Boolean numbercontrol = numberControl(txtID.getText().toString());
-							Boolean phoneNumbercontrol = numberControl(txtPhoneNumber.getText().toString());
+						//	Boolean phoneNumbercontrol = numberControl(txtPhoneNumber.getText().toString());
 							Boolean salarycontrol = numberControl(txtSalary.getText().toString());
 							Boolean managercontrol = numberControl(txtManagerID.getText().toString());
 
-							if (numbercontrol == true && phoneNumbercontrol == true && salarycontrol == true
+							if (numbercontrol == true  && salarycontrol == true
 									&& managercontrol == true) {
 								e.setEmployee_id(Integer.valueOf(txtID.getText()));
 								degerGirisi();
