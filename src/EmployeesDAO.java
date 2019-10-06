@@ -139,7 +139,7 @@ public class EmployeesDAO implements CustomDAO {
 
 	}
 
-	@Override
+
 	public boolean delete(int employee_id) { // Employees employee eklenmeli
 		Connection connection = DbConnection.getConnection();
 
@@ -207,5 +207,6 @@ public class EmployeesDAO implements CustomDAO {
 
 		return e;
 	}
+
 
 }

@@ -3,14 +3,12 @@ public class Countries {
 
 	String country_id;
 	String country_name;
-	int region_id;
-	
-	
+	Integer region_id;
 	
 	public Countries() {
 		super();
 	}
-	public Countries(String country_id, String country_name, int region_id) {
+	public Countries(String country_id, String country_name, Integer region_id) {
 		super();
 		this.country_id = country_id;
 		this.country_name = country_name;
@@ -28,16 +26,15 @@ public class Countries {
 	public void setCountry_name(String country_name) {
 		this.country_name = country_name;
 	}
-	public int getRegion_id() {
+	public Integer getRegion_id() {
 		return region_id;
 	}
-	public void setRegion_id(int region_id) {
+	public void setRegion_id(Integer region_id) {
 		this.region_id = region_id;
 	}
 	@Override
 	public String toString() {
-		return "Countries [country_id=" + country_id + ", country_name=" + country_name + ", region_id=" + region_id
-				+ "]";
+		return country_name;
 	}
 	
 	

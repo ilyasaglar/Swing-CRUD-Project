@@ -14,10 +14,12 @@ import java.util.List;
 import java.util.Locale;
 
 import javax.swing.DefaultListModel;
+import javax.swing.ImageIcon;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JToolBar;
 import javax.swing.ListSelectionModel;
+import javax.swing.SwingConstants;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.text.NumberFormatter;
@@ -152,7 +154,7 @@ public class EmployeesFrame extends JDialog {
 	public EmployeesFrame() {
 		setModal(true);
 		this.setTitle("Employees");
-		this.setBounds(200, 200, 634, 507);
+		this.setBounds(200, 200, 647, 507);
 		getContentPane().setLayout(null);
 
 		JPanel panelLeft = new JPanel();
@@ -383,6 +385,8 @@ public class EmployeesFrame extends JDialog {
 		panelRight.add(comboBoxDepID);
 
 		btnInsert = new JButton("Insert");
+		btnInsert.setHorizontalAlignment(SwingConstants.LEFT);
+		btnInsert.setIcon(new ImageIcon(this.getClass().getResource("icon/add.png")));
 		btnInsert.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				for (JTextField jt : jtList) {
@@ -401,11 +405,13 @@ public class EmployeesFrame extends JDialog {
 
 			}
 		});
-		btnInsert.setBounds(20, 434, 89, 23);
+		btnInsert.setBounds(10, 430, 89, 30);
 		btnList.add(btnInsert);
 		getContentPane().add(btnInsert);
 
 		btnUpdate = new JButton("Update");
+		btnUpdate.setHorizontalAlignment(SwingConstants.LEFT);
+		btnUpdate.setIcon(new ImageIcon(this.getClass().getResource("icon/reload.png")));
 		btnUpdate.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				for (JTextField jt : jtList) {
@@ -428,11 +434,13 @@ public class EmployeesFrame extends JDialog {
 				}
 			}
 		});
-		btnUpdate.setBounds(116, 434, 89, 23);
+		btnUpdate.setBounds(115, 430, 95, 30);
 		btnList.add(btnUpdate);
 		getContentPane().add(btnUpdate);
 
 		btnDelete = new JButton("Delete");
+		btnDelete.setHorizontalAlignment(SwingConstants.LEFT);
+		btnDelete.setIcon(new ImageIcon(this.getClass().getResource("icon/garbage.png")));
 		btnDelete.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				islem = 2;
@@ -449,11 +457,13 @@ public class EmployeesFrame extends JDialog {
 
 			}
 		});
-		btnDelete.setBounds(215, 434, 89, 23);
+		btnDelete.setBounds(222, 430, 91, 30);
 		btnList.add(btnDelete);
 		getContentPane().add(btnDelete);
 
 		btnSave = new JButton("Save");
+		btnSave.setHorizontalAlignment(SwingConstants.LEFT);
+		btnSave.setIcon(new ImageIcon(this.getClass().getResource("icon/save.png")));
 		btnSave.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				connection = DbConnection.getConnection();
@@ -486,25 +496,26 @@ public class EmployeesFrame extends JDialog {
 								sonuc = empDao.insert();
 
 								if (sonuc == true) {
-									JOptionPane.showMessageDialog(new JFrame(), "Bilgiler Kaydedildi. ", "Dialog",
+									JOptionPane.showMessageDialog(new JFrame(), "Bilgiler Kaydedildi. ", "Sonuç",
 											JOptionPane.YES_NO_CANCEL_OPTION);
 
 								} else {
-									JOptionPane.showMessageDialog(new JFrame(), "Bir hata oluþtu.", "Dialog",
+
+									JOptionPane.showMessageDialog(new JFrame(), "Bir hata oluþtu.", "Hata!",
 											JOptionPane.ERROR_MESSAGE);
 
 								}
 							} else {
-								JOptionPane.showMessageDialog(new JFrame(), "Geçersiz deðer girdiniz.", "Dialog",
+								JOptionPane.showMessageDialog(new JFrame(), "Geçersiz deðer girdiniz.", "Hata!",
 										JOptionPane.ERROR_MESSAGE);
 							}
 						} else {
 							JOptionPane.showMessageDialog(new JFrame(),
-									"Maximum alan uzunlugunu geçtiniz, düzeltip yeniden deneyiniz.", "Dialog",
+									"Maximum alan uzunlugunu geçtiniz, düzeltip yeniden deneyiniz.", "Hata!",
 									JOptionPane.ERROR_MESSAGE);
 						}
 					} else {
-						JOptionPane.showMessageDialog(new JFrame(), "Tüm alanlarý doldurunuz", "Dialog",
+						JOptionPane.showMessageDialog(new JFrame(), "Tüm alanlarý doldurunuz", "Hata!",
 								JOptionPane.ERROR_MESSAGE);
 					}
 
@@ -523,21 +534,21 @@ public class EmployeesFrame extends JDialog {
 							sonuc = empDao.update();
 
 							if (sonuc == true) {
-								JOptionPane.showMessageDialog(new JFrame(), "Bilgiler Güncellendi. ", "Dialog",
+								JOptionPane.showMessageDialog(new JFrame(), "Bilgiler Güncellendi. ", "Sonuç",
 										JOptionPane.YES_NO_CANCEL_OPTION);
 
 							} else {
-								JOptionPane.showMessageDialog(new JFrame(), "Bir hata oluþtu.", "Dialog",
+								JOptionPane.showMessageDialog(new JFrame(), "Bir hata oluþtu.", "Hata!",
 										JOptionPane.ERROR_MESSAGE);
 
 							}
 						} else {
 							JOptionPane.showMessageDialog(new JFrame(),
-									"Maximum alan uzunlugunu geçtiniz, düzeltip yeniden deneyiniz.", "Dialog",
+									"Maximum alan uzunlugunu geçtiniz, düzeltip yeniden deneyiniz.", "Hata!",
 									JOptionPane.ERROR_MESSAGE);
 						}
 					} else {
-						JOptionPane.showMessageDialog(new JFrame(), "Tüm alanlarý doldurunuz", "Dialog",
+						JOptionPane.showMessageDialog(new JFrame(), "Tüm alanlarý doldurunuz", "Hata!",
 								JOptionPane.ERROR_MESSAGE);
 					}
 				}
@@ -549,10 +560,16 @@ public class EmployeesFrame extends JDialog {
 
 						if (sonuc == true) {
 							JOptionPane.showMessageDialog(new JFrame(),
-									txtID.getText().toString() + " ID'ye Ait Kiþi Bilgileri Silindi. ", "Dialog",
+									txtID.getText().toString() + " ID'ye Ait Kiþi Bilgileri Silindi. ", "Sonuç",
 									JOptionPane.YES_NO_CANCEL_OPTION);
 
+						} else {
+							JOptionPane.showMessageDialog(new JFrame(), " Bir hata oluþtu. ", "Sonuç",
+									JOptionPane.ERROR_MESSAGE);
 						}
+					} else {
+						JOptionPane.showMessageDialog(new JFrame(), " Kiþi Seçimi Yapýnýz ", "Hata!",
+								JOptionPane.ERROR_MESSAGE);
 					}
 				} else {
 					btnSave.setEnabled(false);
@@ -568,7 +585,7 @@ public class EmployeesFrame extends JDialog {
 
 			}
 		});
-		btnSave.setBounds(321, 434, 89, 23);
+		btnSave.setBounds(326, 430, 91, 30);
 		btnList.add(btnSave);
 
 		getContentPane().add(btnSave);
@@ -576,6 +593,8 @@ public class EmployeesFrame extends JDialog {
 		btnSave.setEnabled(false);
 
 		btnCancel = new JButton("Cancel");
+		btnCancel.setHorizontalAlignment(SwingConstants.LEFT);
+		btnCancel.setIcon(new ImageIcon(this.getClass().getResource("icon/cancel.png")));
 		btnCancel.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				btnInsert.setEnabled(true);
@@ -587,15 +606,22 @@ public class EmployeesFrame extends JDialog {
 				dateChooser.setVisible(false);
 				txtJobID.setVisible(false);
 				txtDepartmentID.setVisible(false);
-
+				try {
+					connection.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 		});
-		btnCancel.setBounds(420, 434, 89, 23);
+		btnCancel.setBounds(427, 430, 89, 30);
 		btnList.add(btnCancel);
 		btnCancel.setEnabled(false);
 		getContentPane().add(btnCancel);
 
 		JButton btnTemizle = new JButton("Temizle");
+		btnTemizle.setHorizontalAlignment(SwingConstants.LEFT);
+		btnTemizle.setIcon(new ImageIcon(this.getClass().getResource("icon/temizle.png")));
 		btnTemizle.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				for (JTextField jt : jtList) {
@@ -604,16 +630,13 @@ public class EmployeesFrame extends JDialog {
 			}
 		});
 		btnTemizle.setEnabled(true);
-		btnTemizle.setBounds(519, 434, 89, 23);
+		btnTemizle.setBounds(526, 430, 98, 30);
 		getContentPane().add(btnTemizle);
 		this.setVisible(true);
 
 	}
 
-	public static void main(String[] args) {
-		EmployeesFrame empFrame = new EmployeesFrame();
 
-	}
 
 	public boolean numberControl(String deger) {
 		char a;
@@ -681,4 +704,5 @@ public class EmployeesFrame extends JDialog {
 			return false;
 		}
 	}
+
 }

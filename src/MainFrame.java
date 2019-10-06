@@ -39,7 +39,7 @@ public class MainFrame extends JFrame {
 				empFrame.setVisible(true);
 			}
 		});
-		btnEmployees.setBounds(51, 101, 180, 80);
+		btnEmployees.setBounds(51, 101, 190, 80);
 		btnEmployees.setVisible(false);
 		getContentPane().add(btnEmployees);
 		
@@ -47,7 +47,13 @@ public class MainFrame extends JFrame {
 		btnDepartments.setIcon(new ImageIcon(this.getClass().getResource("icon/departments.png")));
 		btnDepartments.setFont(new Font("Tahoma", Font.BOLD, 14));
 		btnList.add(btnDepartments);
-		btnDepartments.setBounds(283, 101, 180, 80);
+		btnDepartments.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				DepartmentsFrame depFrame = new DepartmentsFrame();
+				depFrame.setVisible(true);
+			}
+		});
+		btnDepartments.setBounds(280, 101, 205, 80);
 		btnDepartments.setVisible(false);
 		getContentPane().add(btnDepartments);
 		
@@ -55,7 +61,13 @@ public class MainFrame extends JFrame {
 		btnJobs.setIcon(new ImageIcon(this.getClass().getResource("icon/jobs.png")));
 		btnJobs.setFont(new Font("Tahoma", Font.BOLD, 14));
 		btnList.add(btnJobs);
-		btnJobs.setBounds(507, 101, 180, 80);
+		btnJobs.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				JobsFrame jobFrame = new JobsFrame();
+				jobFrame.setVisible(true);
+			}
+		});
+		btnJobs.setBounds(510, 101, 190, 80);
 		btnJobs.setVisible(false);
 		getContentPane().add(btnJobs);
 		
@@ -63,7 +75,13 @@ public class MainFrame extends JFrame {
 		btnCountries.setIcon(new ImageIcon(this.getClass().getResource("icon/countries.png")));
 		btnCountries.setFont(new Font("Tahoma", Font.BOLD, 14));
 		btnList.add(btnCountries);
-		btnCountries.setBounds(51, 215, 180, 80);
+		btnCountries.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				CountriesFrame countryFrame = new CountriesFrame();
+				countryFrame.setVisible(true);
+			}
+		});
+		btnCountries.setBounds(51, 215, 190, 80);
 		btnCountries.setVisible(false);
 		getContentPane().add(btnCountries);
 		
@@ -71,7 +89,13 @@ public class MainFrame extends JFrame {
 		btnLocations.setIcon(new ImageIcon(this.getClass().getResource("icon/locations.png")));
 		btnLocations.setFont(new Font("Tahoma", Font.BOLD, 14));
 		btnList.add(btnLocations);
-		btnLocations.setBounds(283, 215, 180, 80);
+		btnLocations.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				LocationsFrame locationFrame = new LocationsFrame();
+				locationFrame.setVisible(true);
+			}
+		});
+		btnLocations.setBounds(280, 215, 205, 80);
 		btnLocations.setVisible(false);
 		getContentPane().add(btnLocations);
 		
@@ -79,7 +103,7 @@ public class MainFrame extends JFrame {
 		btnRegions.setIcon(new ImageIcon(this.getClass().getResource("icon/regions.png")));
 		btnRegions.setFont(new Font("Tahoma", Font.BOLD, 14));
 		btnList.add(btnRegions);
-		btnRegions.setBounds(510, 215, 180, 80);
+		btnRegions.setBounds(510, 215, 190, 80);
 		btnRegions.setVisible(false);
 		getContentPane().add(btnRegions);
 		

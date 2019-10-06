@@ -5,10 +5,13 @@ public class Jobs {
 	Integer min_salary;
 	Integer max_salary;
 	
-	
-	
 	public Jobs() {
 		super();
+	}
+	public Jobs(String job_id, String job_title) {
+		super();
+		this.job_id = job_id;
+		this.job_title = job_title;
 	}
 	public Jobs(String job_id, String job_title, Integer min_salary, Integer max_salary) {
 		super();
@@ -43,8 +46,7 @@ public class Jobs {
 	}
 	@Override
 	public String toString() {
-		return "Jobs [job_id=" + job_id + ", job_title=" + job_title + ", min_salary=" + min_salary + ", max_salary="
-				+ max_salary + "]";
+		return job_title;
 	}
 	
 	

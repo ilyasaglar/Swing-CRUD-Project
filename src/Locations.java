@@ -5,16 +5,14 @@ public class Locations {
 	String postal_code;
 	String city;
 	String state_province;
-	char country_id;
-	
-	
+	String country_id;
 	
 	public Locations() {
 		super();
 	}
 
 	public Locations(Integer location_id, String street_address, String postal_code, String city, String state_province,
-			char country_id) {
+			String country_id) {
 		super();
 		this.location_id = location_id;
 		this.street_address = street_address;
@@ -64,19 +62,17 @@ public class Locations {
 		this.state_province = state_province;
 	}
 
-	public char getCountry_id() {
+	public String getCountry_id() {
 		return country_id;
 	}
 
-	public void setCountry_id(char country_id) {
+	public void setCountry_id(String country_id) {
 		this.country_id = country_id;
 	}
 
 	@Override
 	public String toString() {
-		return "Locations [location_id=" + location_id + ", street_address=" + street_address + ", postal_code="
-				+ postal_code + ", city=" + city + ", state_province=" + state_province + ", country_id=" + country_id
-				+ "]";
+		return location_id + " " + city;
 	}
 
 	
