@@ -37,8 +37,8 @@ public class DepartmentsFrame extends JDialog {
 	private JButton btnDelete;
 	private JButton btnInsert;
 	private JButton btnCancel;
-	private JButton btnSave;
-	private JTextField txtDepID;
+	private JButton btnSave, btnTemizle;
+	private JTextField txtID;
 	private JTextField txtDepName;
 	private JTextField txtManagerID;
 	private JTextField txtLocationID;
@@ -66,7 +66,7 @@ public class DepartmentsFrame extends JDialog {
 		jlist.getSelectionModel().addListSelectionListener(e -> {
 			Departments dep = jlist.getSelectedValue();
 
-			txtDepID.setText(dep.getDepartment_id().toString());
+			txtID.setText(dep.getDepartment_id().toString());
 			txtDepName.setText(dep.getDepartment_name());
 			txtManagerID.setText(dep.getManager_id().toString());
 			txtLocationID.setText(dep.getLocation_id().toString());
@@ -74,6 +74,7 @@ public class DepartmentsFrame extends JDialog {
 	}
 
 	public DepartmentsFrame() {
+		setResizable(false);
 		setModal(true);
 		this.setTitle("Departments");
 		this.setBounds(200, 200, 655, 507);
@@ -91,12 +92,12 @@ public class DepartmentsFrame extends JDialog {
 		getContentPane().add(panelRight);
 		panelRight.setLayout(null);
 
-		txtDepID = new JTextField();
-		txtDepID.setEditable(false);
-		txtDepID.setBounds(134, 15, 120, 20);
-		panelRight.add(txtDepID);
-		txtDepID.setColumns(10);
-		jtList.add(txtDepID);
+		txtID = new JTextField();
+		txtID.setEditable(false);
+		txtID.setBounds(134, 15, 120, 20);
+		panelRight.add(txtID);
+		txtID.setColumns(10);
+		jtList.add(txtID);
 
 		txtDepName = new JTextField();
 		txtDepName.setEditable(false);
@@ -137,8 +138,8 @@ public class DepartmentsFrame extends JDialog {
 		lblLocationID = new JLabel("Location ID");
 		lblLocationID.setBounds(23, 126, 86, 14);
 		panelRight.add(lblLocationID);
-		
-		JButton btnTemizle = new JButton("Temizle");
+
+		btnTemizle = new JButton("Temizle");
 		btnTemizle.setHorizontalAlignment(SwingConstants.LEFT);
 		btnTemizle.setIcon(new ImageIcon(this.getClass().getResource("icon/temizle.png")));
 		btnTemizle.addActionListener(new ActionListener() {
@@ -149,9 +150,8 @@ public class DepartmentsFrame extends JDialog {
 			}
 		});
 		btnTemizle.setEnabled(true);
-		btnTemizle.setBounds(540, 430, 94, 30);
+		btnTemizle.setBounds(536, 430, 97, 30);
 		getContentPane().add(btnTemizle);
-		
 
 		btnInsert = new JButton("Insert");
 		btnInsert.setHorizontalAlignment(SwingConstants.LEFT);
@@ -187,10 +187,16 @@ public class DepartmentsFrame extends JDialog {
 				}
 
 				islem = 1;
+				txtID.setEditable(false);
 				btnInsert.setEnabled(false);
 				btnDelete.setEnabled(false);
 				btnSave.setEnabled(true);
 				btnCancel.setEnabled(true);
+				if (txtID.getText().equals("")) {
+					JOptionPane.showMessageDialog(new JFrame(), "Listeden Department Seçimi Yapýnýz. ", "Dialog",
+							JOptionPane.YES_NO_CANCEL_OPTION);
+
+				}
 
 			}
 		});
@@ -226,27 +232,22 @@ public class DepartmentsFrame extends JDialog {
 			public void actionPerformed(ActionEvent e) {
 
 				connection = DbConnection.getConnection();
-				for (JButton btn : btnList) {
-					if (btn.isEnabled() == false) {
-						btn.setEnabled(true);
-					}
-				}
 
 				if (islem == 0) { // ýnsert iþlemi
-
-					d.setDepartment_id(Integer.valueOf(txtDepID.getText().toString()));
+					btnInsert.setEnabled(true);
+					d.setDepartment_id(Integer.valueOf(txtID.getText().toString()));
 					Boolean bosDolu = bosDoluKontrol();
 					Boolean uzunKontrol = uzunlukKontrol();
 
-					if (!(txtDepID.getText().equals("")) && bosDolu == true) {
+					if (!(txtID.getText().equals("")) && bosDolu == true) {
 						if (uzunKontrol == true) {
 
-							Boolean IDnumbercontrol = numberControl(txtDepID.getText().toString());
+							Boolean IDnumbercontrol = numberControl(txtID.getText().toString());
 							Boolean ManagerNumbercontrol = numberControl(txtManagerID.getText().toString());
 							Boolean Locationcontrol = numberControl(txtLocationID.getText().toString());
 
 							if (IDnumbercontrol == true && ManagerNumbercontrol == true && Locationcontrol == true) {
-								d.setDepartment_id(Integer.valueOf(txtDepID.getText()));
+								d.setDepartment_id(Integer.valueOf(txtID.getText().toString()));
 								degerGirisi();
 
 								depDao.setDepartment(d);
@@ -279,11 +280,12 @@ public class DepartmentsFrame extends JDialog {
 				}
 
 				else if (islem == 1) { // update islemi
-					
-					d.setDepartment_id(Integer.valueOf(txtDepID.getText().toString()));
+					btnUpdate.setEnabled(true);
+					d.setDepartment_id(Integer.valueOf(txtID.getText().toString()));
 					degerGirisi();
 					Boolean bosDolu = bosDoluKontrol();
 					Boolean uzunKontrol = uzunlukKontrol();
+
 					if (bosDolu = true) {
 						if (uzunKontrol == true) {
 
@@ -311,13 +313,14 @@ public class DepartmentsFrame extends JDialog {
 				}
 
 				else if (islem == 2) { // delete islemi
-					if (!txtDepID.getText().equals("")) {
+					btnDelete.setEnabled(true);
+					if (!txtID.getText().equals("")) {
 
-						sonuc = depDao.delete(Integer.valueOf(txtDepID.getText().toString()));
+						sonuc = depDao.delete(Integer.valueOf(txtID.getText().toString()));
 
 						if (sonuc == true) {
 							JOptionPane.showMessageDialog(new JFrame(),
-									txtDepID.getText().toString() + " ID'ye Ait Departments Bilgileri Silindi. ", "Sonuç",
+									txtID.getText().toString() + " ID'ye Ait Departments Bilgileri Silindi. ", "Sonuç",
 									JOptionPane.YES_NO_CANCEL_OPTION);
 
 						} else {
@@ -367,13 +370,12 @@ public class DepartmentsFrame extends JDialog {
 				}
 			}
 		});
-		btnCancel.setBounds(420, 434, 89, 23);
+		btnCancel.setBounds(431, 430, 92, 30);
 		btnList.add(btnCancel);
 		btnCancel.setEnabled(false);
 		getContentPane().add(btnCancel);
 		this.setVisible(true);
 
-		
 	}
 
 	public static void main(String[] args) {
@@ -424,8 +426,7 @@ public class DepartmentsFrame extends JDialog {
 	}
 
 	public Boolean bosDoluKontrol() {
-		if (!(txtDepName.getText().equals("")) && !(txtManagerID.getText().equals(""))
-				&& !(txtLocationID.getText().equals(""))) {
+		if (!(txtDepName.getText().equals(""))) {
 			return true;
 		} else {
 			return false;

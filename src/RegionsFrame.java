@@ -19,66 +19,55 @@ import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
 
-public class LocationsFrame extends JDialog {
+public class RegionsFrame extends JDialog {
 
 	private static Connection connection = DbConnection.getConnection();
 	private List<JButton> btnList = new ArrayList<>();
 	private List<JTextField> jtList = new ArrayList<>();
-	private List<Locations> locationList = new ArrayList<>();
+	private List<Regions> regionList = new ArrayList<>();
 	private JPanel panelLeft = new JPanel();
-	private LocationsDAO locationDao = new LocationsDAO();
-	private Locations l = new Locations();
-	private JList<Locations> jlist;
-	private DefaultListModel<Locations> model;
+	private RegionsDAO regionDao = new RegionsDAO();
+	private Regions r = new Regions();
+	private JList<Regions> jlist;
+	private DefaultListModel<Regions> model;
 	private JTextField txtID;
-	private JTextField txtStreetAddress;
-	private JTextField txtPostalCode;
-	private JTextField txtCity;
-	private JTextField txtStateProvince;
-	private JTextField txtCountryID;
-	private JLabel lblLocationID;
-	private JLabel lblStreetAddress;
-	private JLabel lblPostalCode;
-	private JLabel lblCity;
-	private JLabel lblStateProvince;
-	private JLabel lblCountryID;
+	private JTextField txtRegionName;
+	private JLabel lblRegionID;
+	private JLabel lblRegionName;
 	private JScrollPane scrollPane;
-	private JButton btnUpdate;
 	private JButton btnTemizle;
-	private JButton btnDelete;
-	private JButton btnInsert;
 	private JButton btnCancel;
 	private JButton btnSave;
+	private JButton btnDelete;
+	private JButton btnUpdate;
+	private JButton btnInsert;
 	private int islem;
 	private Boolean sonuc;
 
 	public void createJlist() {
-		model = new DefaultListModel<Locations>();
-		jlist = new JList<Locations>(model);
+		model = new DefaultListModel<Regions>();
+		jlist = new JList<Regions>(model);
 		scrollPane = new JScrollPane();
 		scrollPane.setBounds(10, 11, 241, 388);
 		scrollPane.setViewportView(jlist);
 		panelLeft.add(scrollPane);
 		jlist.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
-		locationList = locationDao.getAllData();
+		regionList = regionDao.getAllData();
 
-		for (Locations locations : locationList) {
-			model.addElement(locations);
+		for (Regions regions : regionList) {
+			model.addElement(regions);
 		}
 
 		jlist.getSelectionModel().addListSelectionListener(e -> {
-			Locations location = jlist.getSelectedValue();
+			Regions region = jlist.getSelectedValue();
 
-			txtID.setText(location.getLocation_id().toString());
-			txtStreetAddress.setText(location.getStreet_address());
-			txtPostalCode.setText(location.getPostal_code());
-			txtCity.setText(location.getCity());
-			txtStateProvince.setText(location.getState_province());
-			txtCountryID.setText(location.getCountry_id());
+			txtID.setText(region.getRegion_id().toString());
+			txtRegionName.setText(region.getRegion_name());
+
 		});
 	}
 
-	public LocationsFrame() {
+	public RegionsFrame() {
 		setModal(true);
 		this.setTitle("Locations");
 		this.setBounds(200, 200, 655, 507);
@@ -102,67 +91,21 @@ public class LocationsFrame extends JDialog {
 		txtID.setColumns(10);
 		jtList.add(txtID);
 
-		txtStreetAddress = new JTextField();
-		txtStreetAddress.setEditable(false);
-		txtStreetAddress.setText("");
-		txtStreetAddress.setBounds(134, 50, 150, 20);
-		panelRight.add(txtStreetAddress);
-		txtStreetAddress.setColumns(10);
-		jtList.add(txtStreetAddress);
+		txtRegionName = new JTextField();
+		txtRegionName.setEditable(false);
+		txtRegionName.setText("");
+		txtRegionName.setBounds(134, 50, 150, 20);
+		panelRight.add(txtRegionName);
+		txtRegionName.setColumns(10);
+		jtList.add(txtRegionName);
 
-		txtPostalCode = new JTextField();
-		txtPostalCode.setEditable(false);
-		txtPostalCode.setText("");
-		txtPostalCode.setBounds(134, 85, 150, 20);
-		panelRight.add(txtPostalCode);
-		txtPostalCode.setColumns(10);
-		jtList.add(txtPostalCode);
+		lblRegionID = new JLabel("Location ID");
+		lblRegionID.setBounds(23, 21, 86, 14);
+		panelRight.add(lblRegionID);
 
-		txtCity = new JTextField();
-		txtCity.setEditable(false);
-		txtCity.setText("");
-		txtCity.setBounds(134, 120, 150, 20);
-		panelRight.add(txtCity);
-		txtCity.setColumns(10);
-		jtList.add(txtCity);
-
-		txtStateProvince = new JTextField();
-		txtStateProvince.setEditable(false);
-		txtStateProvince.setBounds(134, 155, 150, 20);
-		panelRight.add(txtStateProvince);
-		txtStateProvince.setColumns(10);
-		jtList.add(txtStateProvince);
-
-		txtCountryID = new JTextField();
-		txtCountryID.setEditable(false);
-		txtCountryID.setBounds(134, 190, 150, 20);
-		panelRight.add(txtCountryID);
-		txtCountryID.setColumns(10);
-		jtList.add(txtCountryID);
-
-		lblLocationID = new JLabel("Location ID");
-		lblLocationID.setBounds(23, 21, 86, 14);
-		panelRight.add(lblLocationID);
-
-		lblStreetAddress = new JLabel("Street Address");
-		lblStreetAddress.setBounds(23, 56, 86, 14);
-		panelRight.add(lblStreetAddress);
-
-		lblPostalCode = new JLabel("Postal Code");
-		lblPostalCode.setBounds(23, 91, 86, 14);
-		panelRight.add(lblPostalCode);
-
-		lblCity = new JLabel("City");
-		lblCity.setBounds(23, 126, 86, 14);
-		panelRight.add(lblCity);
-
-		lblStateProvince = new JLabel("State Province");
-		lblStateProvince.setBounds(23, 161, 86, 14);
-		panelRight.add(lblStateProvince);
-
-		lblCountryID = new JLabel("Country ID");
-		lblCountryID.setBounds(23, 196, 86, 14);
-		panelRight.add(lblCountryID);
+		lblRegionName = new JLabel("Street Address");
+		lblRegionName.setBounds(23, 56, 86, 14);
+		panelRight.add(lblRegionName);
 
 		btnTemizle = new JButton("Temizle");
 		btnTemizle.setHorizontalAlignment(SwingConstants.LEFT);
@@ -175,7 +118,7 @@ public class LocationsFrame extends JDialog {
 			}
 		});
 		btnTemizle.setEnabled(true);
-		btnTemizle.setBounds(536, 430, 99, 30);
+		btnTemizle.setBounds(533, 430, 98, 30);
 		getContentPane().add(btnTemizle);
 
 		btnInsert = new JButton("Insert");
@@ -197,7 +140,7 @@ public class LocationsFrame extends JDialog {
 			}
 
 		});
-		btnInsert.setBounds(10, 430, 89, 30);
+		btnInsert.setBounds(16, 430, 89, 30);
 		btnList.add(btnInsert);
 		getContentPane().add(btnInsert);
 
@@ -218,14 +161,14 @@ public class LocationsFrame extends JDialog {
 				btnSave.setEnabled(true);
 				btnCancel.setEnabled(true);
 				if (txtID.getText().equals("")) {
-					JOptionPane.showMessageDialog(new JFrame(), "Listeden Department Seçimi Yapýnýz. ", "Dialog",
+					JOptionPane.showMessageDialog(new JFrame(), "Listeden Region Seçimi Yapýnýz. ", "Dialog",
 							JOptionPane.YES_NO_CANCEL_OPTION);
 
 				}
 
 			}
 		});
-		btnUpdate.setBounds(109, 430, 95, 30);
+		btnUpdate.setBounds(115, 430, 95, 30);
 		btnList.add(btnUpdate);
 
 		getContentPane().add(btnUpdate);
@@ -246,7 +189,7 @@ public class LocationsFrame extends JDialog {
 
 			}
 		});
-		btnDelete.setBounds(219, 430, 91, 30);
+		btnDelete.setBounds(223, 430, 91, 30);
 		btnList.add(btnDelete);
 		getContentPane().add(btnDelete);
 
@@ -257,30 +200,23 @@ public class LocationsFrame extends JDialog {
 			public void actionPerformed(ActionEvent e) {
 
 				connection = DbConnection.getConnection();
-				for (JButton btn : btnList) {
-					if (btn.isEnabled() == false) {
-						btn.setEnabled(true);
-					}
-				}
 
 				if (islem == 0) { // ýnsert iþlemi
-
-					l.setLocation_id(Integer.valueOf(txtID.getText().toString()));
-					Boolean bosDolu = bosDoluKontrol();
+					btnInsert.setEnabled(true);
+					r.setRegion_id(Integer.valueOf(txtID.getText().toString()));
 					Boolean uzunKontrol = uzunlukKontrol();
 
-					if (!(txtID.getText().equals("")) && bosDolu == true) {
+					if (!(txtID.getText().equals(""))) {
 						if (uzunKontrol == true) {
 
 							Boolean IDnumbercontrol = numberControl(txtID.getText().toString());
 
 							if (IDnumbercontrol == true) {
-
-								l.setLocation_id(Integer.valueOf(txtID.getText().toString()));
+								r.setRegion_id(Integer.valueOf(txtID.getText().toString()));
 								degerGirisi();
 
-								locationDao.setLocation(l);
-								sonuc = locationDao.insert();
+								regionDao.setJob(r);
+								sonuc = regionDao.update();
 
 								if (sonuc == true) {
 									JOptionPane.showMessageDialog(new JFrame(), "Bilgiler Kaydedildi. ", "Sonuç",
@@ -309,17 +245,16 @@ public class LocationsFrame extends JDialog {
 				}
 
 				else if (islem == 1) { // update islemi
-
-					
-					l.setLocation_id(Integer.valueOf(txtID.getText().toString()));
+					btnUpdate.setEnabled(true);
+					r.setRegion_id(Integer.valueOf(txtID.getText().toString()));
 					degerGirisi();
-					Boolean bosDolu = bosDoluKontrol();
 					Boolean uzunKontrol = uzunlukKontrol();
-					if (bosDolu = true) {
+
+					if (!(txtID.getText().equals(""))) {
 						if (uzunKontrol == true) {
 
-							locationDao.setLocation(l);
-							sonuc = locationDao.insert();
+							regionDao.setJob(r);
+							sonuc = regionDao.update();
 
 							if (sonuc == true) {
 								JOptionPane.showMessageDialog(new JFrame(), "Bilgiler Güncellendi. ", "Sonuç",
@@ -342,13 +277,14 @@ public class LocationsFrame extends JDialog {
 				}
 
 				else if (islem == 2) { // delete islemi
+					btnDelete.setEnabled(true);
 					if (!txtID.getText().equals("")) {
 
-						sonuc = locationDao.delete(Integer.valueOf(txtID.getText().toString()));
+						sonuc = regionDao.delete(Integer.valueOf(txtID.getText().toString()));
 
 						if (sonuc == true) {
 							JOptionPane.showMessageDialog(new JFrame(),
-									txtID.getText().toString() + " ID'ye Ait Departments Bilgileri Silindi. ", "Sonuç",
+									txtID.getText().toString() + " ID'ye Ait REgions Bilgileri Silindi. ", "Sonuç",
 									JOptionPane.YES_NO_CANCEL_OPTION);
 
 						} else {
@@ -356,7 +292,7 @@ public class LocationsFrame extends JDialog {
 									JOptionPane.ERROR_MESSAGE);
 						}
 					} else {
-						JOptionPane.showMessageDialog(new JFrame(), " Departments Seçimi Yapýnýz ", "Hata!",
+						JOptionPane.showMessageDialog(new JFrame(), " Region Seçimi Yapýnýz ", "Hata!",
 								JOptionPane.ERROR_MESSAGE);
 					}
 				} else {
@@ -373,7 +309,7 @@ public class LocationsFrame extends JDialog {
 
 			}
 		});
-		btnSave.setBounds(322, 430, 91, 30);
+		btnSave.setBounds(325, 430, 91, 30);
 		btnList.add(btnSave);
 		getContentPane().add(btnSave);
 		btnSave.setEnabled(false);
@@ -398,7 +334,7 @@ public class LocationsFrame extends JDialog {
 				}
 			}
 		});
-		btnCancel.setBounds(426, 430, 97, 30);
+		btnCancel.setBounds(426, 430, 95, 30);
 		btnList.add(btnCancel);
 		btnCancel.setEnabled(false);
 		getContentPane().add(btnCancel);
@@ -438,27 +374,13 @@ public class LocationsFrame extends JDialog {
 
 	public void degerGirisi() {
 
-		l.setLocation_id(Integer.valueOf(txtID.getText().toString()));
-		l.setStreet_address(txtStreetAddress.getText());
-		l.setPostal_code(txtPostalCode.getText());
-		l.setCity(txtCity.getText());
-		l.setCountry_id(txtCountryID.getText());
-		l.setState_province(txtStateProvince.getText());
+		r.setRegion_id(Integer.valueOf(txtID.getText().toString()));
+		r.setRegion_name(txtRegionName.getText());
 
 	}
 
 	public Boolean uzunlukKontrol() {
-		if (txtID.getText().toString().length() <= 4 && txtStreetAddress.getText().length() <= 40
-				&& txtPostalCode.getText().length() <= 12 && txtCity.getText().length() <= 30
-				&& txtStateProvince.getText().length() <= 25 && txtCountryID.getText().length() <= 2) {
-			return true;
-		} else {
-			return false;
-		}
-	}
-
-	public Boolean bosDoluKontrol() {
-		if (!(txtID.getText().equals("")) && !(txtCity.getText().equals(""))) {
+		if (txtRegionName.getText().toString().length() <= 25) {
 			return true;
 		} else {
 			return false;

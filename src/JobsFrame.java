@@ -34,7 +34,7 @@ public class JobsFrame extends JDialog {
 	private JButton btnUpdate;
 	private JButton btnDelete;
 	private JButton btnInsert;
-	private JButton btnCancel;
+	private JButton btnCancel, btnTemizle;
 	private JButton btnSave;
 	private JTextField txtID;
 	private JTextField txtJobTitle;
@@ -73,6 +73,7 @@ public class JobsFrame extends JDialog {
 	}
 
 	public JobsFrame() {
+		setResizable(false);
 		setModal(true);
 		this.setTitle("Jobs");
 		this.setBounds(200, 200, 655, 507);
@@ -136,7 +137,7 @@ public class JobsFrame extends JDialog {
 		lblMaxSalary.setBounds(23, 126, 80, 14);
 		panelRight.add(lblMaxSalary);
 
-		JButton btnTemizle = new JButton("Temizle");
+	    btnTemizle = new JButton("Temizle");
 		btnTemizle.setHorizontalAlignment(SwingConstants.LEFT);
 		btnTemizle.setIcon(new ImageIcon(this.getClass().getResource("icon/temizle.png")));
 		btnTemizle.addActionListener(new ActionListener() {
@@ -184,16 +185,21 @@ public class JobsFrame extends JDialog {
 				}
 
 				islem = 1;
+				txtID.setEditable(false);
 				btnInsert.setEnabled(false);
 				btnDelete.setEnabled(false);
 				btnSave.setEnabled(true);
 				btnCancel.setEnabled(true);
+				if (txtID.getText().equals("")) {
+					JOptionPane.showMessageDialog(new JFrame(), "Listeden Jobs Seçimi Yapýnýz. ", "Dialog",
+							JOptionPane.YES_NO_CANCEL_OPTION);
+
+				}
 
 			}
 		});
 		btnUpdate.setBounds(109, 432, 95, 30);
 		btnList.add(btnUpdate);
-
 		getContentPane().add(btnUpdate);
 
 		btnDelete = new JButton("Delete");

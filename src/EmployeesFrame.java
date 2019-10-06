@@ -80,7 +80,7 @@ public class EmployeesFrame extends JDialog {
 	JButton btnInsert;
 	JButton btnCancel;
 	JButton btnSave;
-	public int islem = -1;
+	public int islem ;
 	private Boolean sonuc;
 	private String deger;
 	private JComboBox<String> comboBoxJobID;
@@ -152,6 +152,7 @@ public class EmployeesFrame extends JDialog {
 	}
 
 	public EmployeesFrame() {
+		setResizable(false);
 		setModal(true);
 		this.setTitle("Employees");
 		this.setBounds(200, 200, 647, 507);
@@ -193,7 +194,7 @@ public class EmployeesFrame extends JDialog {
 					txtSurname.setText(emp.getLast_name());
 					txtEmail.setText(emp.getEmail());
 					txtPhoneNumber.setText(emp.getPhone_number());
-					txtHireDate.setText(emp.getHire_date().toString());
+					txtHireDate.setText(emp.getHire_date());
 					SimpleDateFormat sdf = new SimpleDateFormat("dd/mm/yyyy");
 					txtJobID.setText(emp.getJob_id());
 					txtSalary.setText(emp.getSalary().toString());
@@ -339,11 +340,7 @@ public class EmployeesFrame extends JDialog {
 
 		dateChooser.setVisible(false);
 		lblDepartmentId = new JLabel("Department Name");
-		lblDepartmentId.setBounds(23, 371, 101, 14);
-		panelRight.add(lblDepartmentId);
-
-		lblDepartmentId = new JLabel("Department ID");
-		lblDepartmentId.setBounds(23, 371, 86, 14);
+		lblDepartmentId.setBounds(8, 368, 101, 14);
 		panelRight.add(lblDepartmentId);
 
 		comboBoxJobID = new JComboBox();
@@ -434,7 +431,7 @@ public class EmployeesFrame extends JDialog {
 				}
 			}
 		});
-		btnUpdate.setBounds(115, 430, 95, 30);
+		btnUpdate.setBounds(110, 430, 95, 30);
 		btnList.add(btnUpdate);
 		getContentPane().add(btnUpdate);
 
@@ -457,7 +454,7 @@ public class EmployeesFrame extends JDialog {
 
 			}
 		});
-		btnDelete.setBounds(222, 430, 91, 30);
+		btnDelete.setBounds(216, 430, 91, 30);
 		btnList.add(btnDelete);
 		getContentPane().add(btnDelete);
 
@@ -467,13 +464,15 @@ public class EmployeesFrame extends JDialog {
 		btnSave.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				connection = DbConnection.getConnection();
+			/*
 				for (JButton btn : btnList) {
 					if (btn.isEnabled() == false) {
 						btn.setEnabled(true);
 					}
 				}
-
+*/
 				if (islem == 0) { // ýnsert iþlemi
+					btnInsert.setEnabled(true);
 
 					e.setEmployee_id(Integer.valueOf(txtID.getText().toString()));
 					Boolean bosDolu = bosDoluKontrol();
@@ -523,6 +522,7 @@ public class EmployeesFrame extends JDialog {
 
 				else if (islem == 1) { // update islemi
 					dateChooser.setVisible(false);
+					btnUpdate.setEnabled(true);
 					e.setEmployee_id(Integer.valueOf(txtID.getText()));
 					degerGirisi();
 					Boolean bosDolu = bosDoluKontrol();
@@ -554,6 +554,7 @@ public class EmployeesFrame extends JDialog {
 				}
 
 				else if (islem == 2) { // delete islemi
+					btnDelete.setEnabled(true);
 					if (!txtID.getText().equals("")) {
 
 						sonuc = empDao.delete(Integer.valueOf(txtID.getText()));
@@ -585,7 +586,7 @@ public class EmployeesFrame extends JDialog {
 
 			}
 		});
-		btnSave.setBounds(326, 430, 91, 30);
+		btnSave.setBounds(319, 430, 91, 30);
 		btnList.add(btnSave);
 
 		getContentPane().add(btnSave);
@@ -603,7 +604,6 @@ public class EmployeesFrame extends JDialog {
 				for (JTextField jt : jtList) {
 					jt.setEditable(false);
 				}
-				dateChooser.setVisible(false);
 				txtJobID.setVisible(false);
 				txtDepartmentID.setVisible(false);
 				try {
@@ -614,7 +614,7 @@ public class EmployeesFrame extends JDialog {
 				}
 			}
 		});
-		btnCancel.setBounds(427, 430, 89, 30);
+		btnCancel.setBounds(420, 430, 95, 30);
 		btnList.add(btnCancel);
 		btnCancel.setEnabled(false);
 		getContentPane().add(btnCancel);
@@ -630,13 +630,11 @@ public class EmployeesFrame extends JDialog {
 			}
 		});
 		btnTemizle.setEnabled(true);
-		btnTemizle.setBounds(526, 430, 98, 30);
+		btnTemizle.setBounds(524, 430, 98, 30);
 		getContentPane().add(btnTemizle);
 		this.setVisible(true);
 
 	}
-
-
 
 	public boolean numberControl(String deger) {
 		char a;
