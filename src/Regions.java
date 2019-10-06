@@ -4,8 +4,6 @@ public class Regions {
 	Integer region_id;
 	String region_name;
 	
-	
-	
 	public Regions() {
 		super();
 	}
@@ -34,7 +32,7 @@ public class Regions {
 
 	@Override
 	public String toString() {
-		return "Regions [region_id=" + region_id + ", region_name=" + region_name + "]";
+		return region_id + " " + region_name;
 	}
 	
 
