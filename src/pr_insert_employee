@@ -1,17 +1,3 @@
-CallableStatement stmt = myConn.prepareCall("{call PR_INSERT_EMPLOYEE(?,?,?,?,?,?,?,?,?,?,?)}");
-		
-		stmt.setInt(1, 500);
-		stmt.setString(2, "Kemoç");
-		stmt.setString(3, "Cesar");
-		stmt.setString(4, "keremowski");
-		stmt.setInt(5, 654987656);
-		stmt.setString(6, "03/10/2019");
-		stmt.setString(7, "SA_REP");
-		stmt.setInt(8, 6010);
-		stmt.setInt(9, 0);
-		stmt.setInt(10, 101);
-		stmt.setInt(11, 50);
-
 create or replace PROCEDURE PR_INSERT_EMPLOYEE 
 (
   PRM_EMP_ID IN NUMBER 
@@ -49,12 +35,12 @@ INTO EMPLOYEES
 , PRM_LAST_NAME
 , PRM_EMAIL
 , PRM_PHONE_NUMBER
-, to_date(PRM_HIRE_DATE,'dd/MM/yyyy')
+, to_date(PRM_HIRE_DATE,'dd/mm/yyyy')
 , PRM_JOB_ID
 , PRM_SALARY
 , PRM_COMM
 , PRM_MANAGER
 , PRM_DEPT_ID
   );
-  COMMIT;
+  
 END;

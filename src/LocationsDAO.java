@@ -102,7 +102,7 @@ public class LocationsDAO implements CustomDAO {
 		}
 	}
 
-	public boolean delete(Integer location_id) {
+	public boolean delete(int location_id) {
 		Connection connection = DbConnection.getConnection();
 
 		try {
@@ -152,10 +152,6 @@ public class LocationsDAO implements CustomDAO {
 		return l;
 	}
 	
-	@Override
-	public boolean delete() {
-		// TODO Auto-generated method stub
-		return false;
-	}
+
 
 }

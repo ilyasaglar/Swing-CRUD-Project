@@ -1,0 +1,21 @@
+create or replace TRIGGER TRG_EMPLOYEES 
+BEFORE INSERT OR UPDATE OF SALARY ON EMPLOYEES 
+for each row
+declare
+l_max_salary JOBS.MAX_SALARY%type;
+l_min_salary JOBS.MIN_SALARY%type;
+BEGIN
+  select j.max_salary, j.min_salary
+    into l_max_salary,l_min_salary
+    from jobs j
+  where j.job_id = :new.job_id;
+  if :old.salary != :new.salary then
+  if not (:new.salary between l_min_salary and l_max_salary) then
+    raise_application_error(-20001,'Salary, job limitleri dýþýnda girildi.');
+  end if;
+  end if;
+  
+  dbms_output.put_line( :new.job_id );
+  dbms_output.put_line( :old.salary );
+  dbms_output.put_line( :new.salary );
+END;

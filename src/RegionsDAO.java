@@ -91,7 +91,8 @@ public class RegionsDAO implements CustomDAO {
 		}
 	}
 	
-	public boolean delete(Integer region_id) {
+	@Override
+	public boolean delete(int region_id) {
 		Connection connection = DbConnection.getConnection();
 
 		try {
@@ -137,10 +138,5 @@ public class RegionsDAO implements CustomDAO {
 		return r;
 	}
 	
-	@Override
-	public boolean delete() {
-		// TODO Auto-generated method stub
-		return false;
-	}
 
 }

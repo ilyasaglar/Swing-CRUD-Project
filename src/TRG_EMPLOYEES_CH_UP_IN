@@ -1,0 +1,34 @@
+ALTER TABLE EMPLOYEES 
+ADD (DELETECOL NUMBER(1) DEFAULT 0 NOT NULL);
+
+COMMENT ON COLUMN EMPLOYEES.DELETECOL IS '1 when deleted';
+
+CREATE OR REPLACE TRIGGER TRG_EMPLOYEES_CH_UP_IN 
+BEFORE INSERT ON EMPLOYEES 
+for each row
+declare
+emp_firstname EMPLOYEES.FIRST_NAME%type;
+emp_lastname EMPLOYEES.LAST_NAME%type;
+emp_phone EMPLOYEES.PHONE_NUMBER%type;
+emp_email EMPLOYEES.EMAIL%type;
+BEGIN
+  select e.first_name, e.last_name, e.email, e.phone_number
+    into emp_firstname,emp_lastname,emp_email, emp_phone
+    from employees e
+  where e.first_name = :new.first_name and
+  e.last_name = :new.last_name and
+  e.email = :new.email and
+  e.phone_number = :new.phone_number and
+  e.deletecol = 1;
+  if (:old.first_name = :new.first_name) AND (:old.last_name = :new.last_name) AND (:old.email = :new.email) then
+    PR_UPDATE_EMPLOYEE( :new.employee_id, :old.first_name, :old.last_name, :old.email, :old.phone_number, :new.hire_date
+  , :new.job_id, :new.salary, :new.commission_pct, :new.manager_id, :new.department_id, 0);
+  else
+    PR_INSERT_EMPLOYEE( :new.employee_id, :new.first_name, :new.last_name, :new.email, :new.phone_number, :new.hire_date
+  , :new.job_id, :new.salary, :new.commission_pct, :new.manager_id, :new.department_id);
+  end if;
+  
+  dbms_output.put_line( :new.job_id );
+  dbms_output.put_line( :old.salary );
+  dbms_output.put_line( :new.salary );
+END;

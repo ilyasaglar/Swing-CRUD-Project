@@ -1,0 +1,27 @@
+CREATE OR REPLACE PROCEDURE PR_INSERT_LOCATION
+(
+ PRM_LOC_ID IN NUMBER
+,PRM_STR_ADD IN VARCHAR2
+,PRM_POST_CODE IN VARCHAR2
+,PRM_CITY IN VARCHAR2
+,PRM_STATE IN VARCHAR2
+,PRM_COUNTRY_ID IN VARCHAR2
+)
+AS 
+BEGIN
+  INSERT INTO locations (
+    location_id,
+    street_address,
+    postal_code,
+    city,
+    state_province,
+    country_id
+) VALUES (
+    PRM_LOC_ID,
+    PRM_STR_ADD,
+    PRM_POST_CODE,
+    PRM_CITY,
+    PRM_STATE,
+    to_char(PRM_COUNTRY_ID)
+);
+END;

@@ -7,15 +7,18 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+
 public class DepartmentsDAO implements CustomDAO {
 
-	//List<Departments> departments;
+	// List<Departments> departments;
 	private Departments department;
 
 	public DepartmentsDAO() {
-		//departments = new ArrayList<Departments>();
+		// departments = new ArrayList<Departments>();
 	}
-	
+
 	public Departments setDepartment(Departments d) {
 		return department = d;
 	}
@@ -37,7 +40,7 @@ public class DepartmentsDAO implements CustomDAO {
 				return d;
 			}
 		} catch (SQLException ex) {
-			ex.printStackTrace();	
+			ex.printStackTrace();
 		}
 		return null;
 	}
@@ -58,7 +61,7 @@ public class DepartmentsDAO implements CustomDAO {
 			ps.setInt(3, department.getManager_id());
 			ps.setInt(4, department.getLocation_id());
 			ps.executeUpdate();
-			
+
 			connection.close();
 			return true;
 		} catch (SQLException e) {
@@ -73,15 +76,14 @@ public class DepartmentsDAO implements CustomDAO {
 
 		try {
 
-			String sql = "UPDATE departments "
-					+ "SET department_name=?, manager_id=?, location_id=? "
-					+ "WHERE employee_id=" + department.getDepartment_id();
+			String sql = "UPDATE departments " + "SET department_name=?, manager_id=?, location_id=? "
+					+ "WHERE department_id=" + department.getDepartment_id();
 
 			PreparedStatement ps = connection.prepareStatement(sql);
 			ps.setString(1, department.getDepartment_name());
 			ps.setInt(2, department.getManager_id());
 			ps.setInt(3, department.getLocation_id());
-			
+
 			int i = ps.executeUpdate();
 			if (i == 1) {
 				System.out.println(department.getDepartment_id() + " güncellendi");
@@ -96,26 +98,39 @@ public class DepartmentsDAO implements CustomDAO {
 		}
 	}
 
-	public boolean delete(Integer department_id) {
+	public boolean delete(int department_id) {
 
 		Connection connection = DbConnection.getConnection();
 
 		try {
 			Statement stmt = connection.createStatement();
-			int i = stmt.executeUpdate("DELETE FROM departments WHERE department_id=" + department_id);
-			if (i == 1) {
-				System.out.println(department_id + " silindi");
-				return true;	
+
+			int dialogButton = JOptionPane.YES_NO_OPTION;
+			int dialogResult = JOptionPane.showConfirmDialog(null,
+					"Are you sure you want to delete Department Informations?", "Warning", dialogButton);
+			if (dialogResult == JOptionPane.YES_OPTION) {
+
+				int i = stmt.executeUpdate("DELETE FROM departments WHERE department_id=" + department_id);
+				if (i == 1) {
+					System.out.println(department_id + " silindi");
+					connection.close();
+
+				}
+				return true;
+			} else {
+
+				return false;
 			}
-			connection.close();
+
 		} catch (SQLException ex) {
 			System.out.println(ex);
 			ex.printStackTrace();
-
+			JOptionPane.showMessageDialog(new JFrame(), "An error occured.", "Error!", JOptionPane.ERROR_MESSAGE);
+			return false;
 		}
-		return false;
+
 	}
-	
+
 	public List<Departments> getAllData() {
 
 		Connection conn = DbConnection.getConnection();
@@ -138,18 +153,13 @@ public class DepartmentsDAO implements CustomDAO {
 
 	public static Departments extractUserFromResultSet(ResultSet rs) throws SQLException {
 		Departments d = new Departments();
-		
+
 		d.setDepartment_id(rs.getInt("department_id"));
 		d.setDepartment_name(rs.getString("department_name"));
 		d.setLocation_id(rs.getInt("location_id"));
 		d.setManager_id(rs.getInt("manager_id"));
-		
+
 		return d;
-	}
-	
-	public boolean delete() {
-		// TODO Auto-generated method stub
-		return false;
 	}
 
 }
