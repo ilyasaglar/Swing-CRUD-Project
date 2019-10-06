@@ -1,0 +1,23 @@
+CREATE OR REPLACE PROCEDURE PR_DELETE_EMPLOYEE 
+(
+  PRM_EMP_ID IN NUMBER
+) AS 
+BEGIN
+    UPDATE employees
+SET
+    DELETECOL = 1
+WHERE
+    employee_id = PRM_EMP_ID;
+    
+    UPDATE employees
+SET
+    manager_id = null
+WHERE
+    manager_id = PRM_EMP_ID;
+    
+    UPDATE departments
+SET
+    manager_id = null
+WHERE
+    manager_id = PRM_EMP_ID;
+END;
