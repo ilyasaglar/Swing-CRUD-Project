@@ -130,11 +130,11 @@ public class JobsFrame extends JDialog {
 		panelRight.add(lblJobTitle);
 
 		lblMinSalary = new JLabel("Minimum Salary");
-		lblMinSalary.setBounds(23, 91, 80, 14);
+		lblMinSalary.setBounds(23, 91, 101, 14);
 		panelRight.add(lblMinSalary);
 
 		lblMaxSalary = new JLabel("Maximum Salary");
-		lblMaxSalary.setBounds(23, 126, 80, 14);
+		lblMaxSalary.setBounds(23, 126, 101, 14);
 		panelRight.add(lblMaxSalary);
 
 	    btnTemizle = new JButton("Temizle");

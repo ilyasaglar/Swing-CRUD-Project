@@ -124,7 +124,7 @@ public class Employees {
 
 	@Override
 	public String toString() {
-		return employee_id + " " + first_name + " " + last_name;
+		return employee_id + " " + first_name + " " + last_name + " " + hire_date;
 	}
 
 

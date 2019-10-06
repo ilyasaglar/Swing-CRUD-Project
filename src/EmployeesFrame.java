@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
+import java.util.TimeZone;
 
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
@@ -73,14 +74,13 @@ public class EmployeesFrame extends JDialog {
 	private JLabel lblCommissionPct;
 	private JLabel lblManagerId;
 	private JLabel lblDepartmentId;
-	private JDateChooser dateChooser;
 	JPanel panelLeft = new JPanel();
 	JButton btnUpdate;
 	JButton btnDelete;
 	JButton btnInsert;
 	JButton btnCancel;
 	JButton btnSave;
-	public int islem ;
+	public int islem;
 	private Boolean sonuc;
 	private String deger;
 	private JComboBox<String> comboBoxJobID;
@@ -194,8 +194,11 @@ public class EmployeesFrame extends JDialog {
 					txtSurname.setText(emp.getLast_name());
 					txtEmail.setText(emp.getEmail());
 					txtPhoneNumber.setText(emp.getPhone_number());
-					txtHireDate.setText(emp.getHire_date());
+					
 					SimpleDateFormat sdf = new SimpleDateFormat("dd/mm/yyyy");
+					String date = sdf.format(emp.getHire_date());
+					txtHireDate.setText(date);
+
 					txtJobID.setText(emp.getJob_id());
 					txtSalary.setText(emp.getSalary().toString());
 					txtCommissionPCT.setText(emp.getCommission_pct().toString());
@@ -267,7 +270,7 @@ public class EmployeesFrame extends JDialog {
 
 		txtHireDate = new JTextField();
 		txtHireDate.setEditable(false);
-		txtHireDate.setBounds(134, 190, 86, 20);
+		txtHireDate.setBounds(134, 186, 86, 20);
 		panelRight.add(txtHireDate);
 		txtHireDate.setColumns(10);
 		jtList.add(txtHireDate);
@@ -332,13 +335,6 @@ public class EmployeesFrame extends JDialog {
 		lblManagerId = new JLabel("Manager ID");
 		lblManagerId.setBounds(23, 336, 86, 14);
 		panelRight.add(lblManagerId);
-
-		dateChooser = new JDateChooser();
-		dateChooser.setDateFormatString("dd/mm/yyyy");
-		dateChooser.setBounds(134, 190, 95, 20);
-		panelRight.add(dateChooser);
-
-		dateChooser.setVisible(false);
 		lblDepartmentId = new JLabel("Department Name");
 		lblDepartmentId.setBounds(8, 368, 101, 14);
 		panelRight.add(lblDepartmentId);
@@ -393,8 +389,6 @@ public class EmployeesFrame extends JDialog {
 				islem = 0;
 				btnUpdate.setEnabled(false);
 				btnDelete.setEnabled(false);
-				txtHireDate.setVisible(false);
-				dateChooser.setVisible(true);
 				txtJobID.setVisible(false);
 				txtDepartmentID.setVisible(false);
 				btnSave.setEnabled(true);
@@ -449,7 +443,6 @@ public class EmployeesFrame extends JDialog {
 				btnCancel.setEnabled(true);
 				btnInsert.setEnabled(false);
 				btnUpdate.setEnabled(false);
-				dateChooser.setVisible(false);
 				txtJobID.setVisible(true);
 
 			}
@@ -464,13 +457,7 @@ public class EmployeesFrame extends JDialog {
 		btnSave.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				connection = DbConnection.getConnection();
-			/*
-				for (JButton btn : btnList) {
-					if (btn.isEnabled() == false) {
-						btn.setEnabled(true);
-					}
-				}
-*/
+
 				if (islem == 0) { // ýnsert iþlemi
 					btnInsert.setEnabled(true);
 
@@ -505,7 +492,7 @@ public class EmployeesFrame extends JDialog {
 
 								}
 							} else {
-								JOptionPane.showMessageDialog(new JFrame(), "Geçersiz deðer girdiniz.", "Hata!",
+								JOptionPane.showMessageDialog(new JFrame(), "Bir hata oluþtu.", "Hata!",
 										JOptionPane.ERROR_MESSAGE);
 							}
 						} else {
@@ -521,7 +508,6 @@ public class EmployeesFrame extends JDialog {
 				}
 
 				else if (islem == 1) { // update islemi
-					dateChooser.setVisible(false);
 					btnUpdate.setEnabled(true);
 					e.setEmployee_id(Integer.valueOf(txtID.getText()));
 					degerGirisi();
@@ -672,6 +658,8 @@ public class EmployeesFrame extends JDialog {
 				e.setJob_id(j.getJob_id());
 			}
 		}
+
+		e.setHire_date(txtHireDate.getText());
 		e.setJob_id(txtJobID.getText());
 		e.setSalary(Integer.valueOf(txtSalary.getText()));
 		e.setCommission_pct(Double.valueOf(txtCommissionPCT.getText()));
@@ -702,5 +690,4 @@ public class EmployeesFrame extends JDialog {
 			return false;
 		}
 	}
-
 }

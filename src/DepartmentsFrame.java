@@ -150,7 +150,7 @@ public class DepartmentsFrame extends JDialog {
 			}
 		});
 		btnTemizle.setEnabled(true);
-		btnTemizle.setBounds(536, 430, 97, 30);
+		btnTemizle.setBounds(538, 430, 97, 30);
 		getContentPane().add(btnTemizle);
 
 		btnInsert = new JButton("Insert");
@@ -370,7 +370,7 @@ public class DepartmentsFrame extends JDialog {
 				}
 			}
 		});
-		btnCancel.setBounds(431, 430, 92, 30);
+		btnCancel.setBounds(431, 430, 97, 30);
 		btnList.add(btnCancel);
 		btnCancel.setEnabled(false);
 		getContentPane().add(btnCancel);
