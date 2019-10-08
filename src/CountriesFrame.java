@@ -1,11 +1,14 @@
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -31,7 +34,10 @@ public class CountriesFrame extends JDialog {
 	private JList<Countries> jlist;
 	private DefaultListModel<Countries> model;
 	private Countries c = new Countries();
+	private RegionsDAO regionDAO = new RegionsDAO();
+	private List<Regions> regionList = new ArrayList<>();
 
+	private JComboBox<String> comboBoxRegionID;
 	private JTextField txtID;
 	private JTextField txtCountryName;
 	private JTextField txtRegionID;
@@ -62,7 +68,8 @@ public class CountriesFrame extends JDialog {
 
 			txtID.setText(country.getCountry_id());
 			txtCountryName.setText(country.getCountry_name());
-			txtRegionID.setText(country.getRegion_id().toString());
+			//txtRegionID.setText(country.getRegion_id().toString());
+			comboBoxRegionID.setSelectedItem(country.getRegion_id().toString());
 		});
 	}
 
@@ -98,7 +105,7 @@ public class CountriesFrame extends JDialog {
 		panelRight.add(txtCountryName);
 		txtCountryName.setColumns(10);
 		jtList.add(txtCountryName);
-
+		/*
 		txtRegionID = new JTextField();
 		txtRegionID.setEditable(false);
 		txtRegionID.setText("");
@@ -106,6 +113,15 @@ public class CountriesFrame extends JDialog {
 		panelRight.add(txtRegionID);
 		txtRegionID.setColumns(10);
 		jtList.add(txtRegionID);
+		*/
+		comboBoxRegionID = new JComboBox();
+		comboBoxRegionID.setBounds(134, 85, 100, 20);
+		regionList = regionDAO.getAllData();
+		for (Regions reg : regionList) {
+			comboBoxRegionID.addItem(reg.getRegion_id().toString());
+		}
+
+		panelRight.add(comboBoxRegionID);
 
 		lblCountryID = new JLabel("Country ID");
 		lblCountryID.setBounds(23, 21, 86, 14);
@@ -242,12 +258,12 @@ public class CountriesFrame extends JDialog {
 
 								} else {
 
-									JOptionPane.showMessageDialog(new JFrame(), "An error occuredç", "Error!",
+									JOptionPane.showMessageDialog(new JFrame(), "An error occured.", "Error!",
 											JOptionPane.ERROR_MESSAGE);
 
 								}
 							} else {
-								JOptionPane.showMessageDialog(new JFrame(), "You entered an invalid value.", "Error!",
+								JOptionPane.showMessageDialog(new JFrame(), "You have entered an invalid value.", "Error!",
 										JOptionPane.ERROR_MESSAGE);
 							}
 						} else {
@@ -387,7 +403,8 @@ public class CountriesFrame extends JDialog {
 
 		c.setCountry_id(txtID.getText());
 		c.setCountry_name(txtCountryName.getText());
-		c.setRegion_id(Integer.valueOf(txtRegionID.getText().toString()));
+		//c.setRegion_id(Integer.valueOf(txtRegionID.getText().toString()));
+		c.setRegion_id(Integer.valueOf(comboBoxRegionID.getSelectedItem().toString()));
 
 	}
 
