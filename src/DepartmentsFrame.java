@@ -70,14 +70,16 @@ public class DepartmentsFrame extends JDialog {
 		for (Departments departments : depList) {
 			model.addElement(departments);
 		}
+		jlist.revalidate();
 
 		jlist.getSelectionModel().addListSelectionListener(e -> {
 			Departments dep = jlist.getSelectedValue();
-
+			if (jlist.getSelectedValue()!=null) {
 			txtID.setText(dep.getDepartment_id().toString());
 			txtDepName.setText(dep.getDepartment_name());
 			txtManagerID.setText(dep.getManager_id().toString());
 			comboBoxLocationID.setSelectedItem(dep.getLocation_id().toString());
+			}
 			//txtLocationID.setText(dep.getLocation_id().toString());
 		});
 	}
@@ -332,7 +334,9 @@ public class DepartmentsFrame extends JDialog {
 					degerGirisi();
 					Boolean bosDolu = bosDoluKontrol();
 					Boolean uzunKontrol = uzunlukKontrol();
-
+					
+					
+					
 					if (bosDolu = true) {
 						if (uzunKontrol == true) {
 
@@ -357,6 +361,8 @@ public class DepartmentsFrame extends JDialog {
 						JOptionPane.showMessageDialog(new JFrame(), "Please fill in all fields.", "Hata!",
 								JOptionPane.ERROR_MESSAGE);
 					}
+					
+					createJlist();
 				}
 
 				else if (islem == 2) { // delete islemi
@@ -451,9 +457,8 @@ public class DepartmentsFrame extends JDialog {
 	}
 
 	public void degerGirisi() {
-		d.setDepartment_id(Integer.valueOf(txtID.getText().toString()));
+	//	d.setDepartment_id(Integer.valueOf(txtID.getText().toString()));
 		d.setDepartment_name(txtDepName.getText().toString());
-		//d.setLocation_id(Integer.valueOf(txtLocationID.getText().toString()));
 		d.setLocation_id(Integer.valueOf(comboBoxLocationID.getSelectedItem().toString()));
 		d.setManager_id(Integer.valueOf(txtManagerID.getText().toString()));
 

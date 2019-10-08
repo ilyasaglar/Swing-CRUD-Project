@@ -29,7 +29,6 @@ import javax.swing.JTextField;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 
-
 public class EmployeesFrame extends JDialog {
 	public static Connection connection = DbConnection.getConnection();
 	JList<Employees> jlist;
@@ -42,6 +41,7 @@ public class EmployeesFrame extends JDialog {
 	Employees tempData = new Employees();
 	List<Employees> empList = new ArrayList<>();
 	DefaultListModel<Employees> model;
+	List<Employees> newList;
 
 	private JTextField txtID;
 	private JTextField txtName;
@@ -72,7 +72,7 @@ public class EmployeesFrame extends JDialog {
 	JButton btnInsert;
 	JButton btnCancel;
 	JButton btnSave;
-	public int islem ;
+	public int islem;
 	private Boolean sonuc;
 	private String deger;
 	private JComboBox<String> comboBoxJobID;
@@ -107,13 +107,18 @@ public class EmployeesFrame extends JDialog {
 		model = new DefaultListModel<Employees>();
 		jlist = new JList<Employees>(model);
 		scrollPane = new JScrollPane();
-		scrollPane.setBounds(10, 11, 241, 388);
-		scrollPane.setViewportView(jlist);
-		panelLeft.add(scrollPane);
+		int i = 0;
+		if (i < 1) {
+			scrollPane.setBounds(10, 11, 241, 388);
+			scrollPane.setViewportView(jlist);
+			panelLeft.add(scrollPane);
+		}
+
 		jlist.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
 		empList = empDao.getAllData();
 
 		for (Employees employees : empList) {
+
 			model.addElement(employees);
 		}
 
@@ -148,7 +153,7 @@ public class EmployeesFrame extends JDialog {
 		panelLeft.setLayout(null);
 
 		createJList();
-	
+
 		JPanel panelRight = new JPanel();
 		panelRight.setBounds(281, 11, 337, 410);
 		getContentPane().add(panelRight);
@@ -275,7 +280,7 @@ public class EmployeesFrame extends JDialog {
 		lblManagerId = new JLabel("Manager ID");
 		lblManagerId.setBounds(23, 336, 86, 14);
 		panelRight.add(lblManagerId);
-		
+
 		lblDepartmentId = new JLabel("Department Name");
 		lblDepartmentId.setBounds(23, 368, 110, 14);
 		panelRight.add(lblDepartmentId);
@@ -327,21 +332,25 @@ public class EmployeesFrame extends JDialog {
 					jt.setEditable(true);
 					jt.setText(null);
 				}
+				txtID.setEditable(false);
 				islem = 0;
 				btnUpdate.setEnabled(false);
 				btnDelete.setEnabled(false);
 				txtHireDate.setVisible(true);
-				
+
 				txtJobID.setVisible(false);
 				txtDepartmentID.setVisible(false);
 				btnSave.setEnabled(true);
 				btnCancel.setEnabled(true);
 				
-				int size = empList.size();
-				Integer newEmpID = empList.get(size-1).getEmployee_id() + 1;
-				txtID.setText(newEmpID.toString());
-				txtID.setEditable(false);
+				newList = new ArrayList<Employees>();
+				newList = empDao.getAllData();
 				
+				int size = newList.size();
+				Integer newEmpID = newList.get(size - 1).getEmployee_id() + 1;
+				//int size2 = newList.size();
+				txtID.setText(newEmpID.toString());
+				//txtID.setEditable(false);
 
 			}
 		});
@@ -367,7 +376,7 @@ public class EmployeesFrame extends JDialog {
 				btnSave.setEnabled(true);
 				btnCancel.setEnabled(true);
 				txtHireDate.setVisible(true);
-				
+
 				if (txtID.getText().equals("")) {
 					JOptionPane.showMessageDialog(new JFrame(), "Select an Employee from the list. ", "Error!",
 							JOptionPane.YES_NO_CANCEL_OPTION);
@@ -407,14 +416,11 @@ public class EmployeesFrame extends JDialog {
 		btnSave.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				connection = DbConnection.getConnection();
-			/*
-				for (JButton btn : btnList) {
-					if (btn.isEnabled() == false) {
-						btn.setEnabled(true);
-					}
-				}
-*/
-				if (islem == 0) { // ınsert işlemi
+				/*
+				 * for (JButton btn : btnList) { if (btn.isEnabled() == false) {
+				 * btn.setEnabled(true); } }
+				 */
+				if (islem == 0) { // insert işlemi
 					btnInsert.setEnabled(true);
 
 					e.setEmployee_id(Integer.valueOf(txtID.getText().toString()));
@@ -433,19 +439,26 @@ public class EmployeesFrame extends JDialog {
 									&& managercontrol == true) {
 								e.setEmployee_id(Integer.valueOf(txtID.getText()));
 								degerGirisi();
+								tarihKontrol();
+								if (tarihKontrol() == true) {
 
-								empDao.setEmployee(e);
-								sonuc = empDao.insert();
+									empDao.setEmployee(e);
+									sonuc = empDao.insert();
 
-								if (sonuc == true) {
-									JOptionPane.showMessageDialog(new JFrame(), "New Employee is inserted.", "Successful",
-											JOptionPane.YES_NO_CANCEL_OPTION);
+									if (sonuc == true) {
+										JOptionPane.showMessageDialog(new JFrame(), "New Employee is inserted.",
+												"Successful", JOptionPane.YES_NO_CANCEL_OPTION);
 
+									} else {
+
+										JOptionPane.showMessageDialog(new JFrame(), "An error occured.", "Error!",
+												JOptionPane.ERROR_MESSAGE);
+
+									}
 								} else {
-
-									JOptionPane.showMessageDialog(new JFrame(), "An error occured.", "Error!",
-											JOptionPane.ERROR_MESSAGE);
-
+									JOptionPane.showMessageDialog(new JFrame(),
+											"You have entered the Hire Date format incorrectly. Example: yyyy-mm-dd",
+											"Error!", JOptionPane.ERROR_MESSAGE);
 								}
 							} else {
 								JOptionPane.showMessageDialog(new JFrame(), "You entered an invalid value.", "Error!",
@@ -460,7 +473,9 @@ public class EmployeesFrame extends JDialog {
 						JOptionPane.showMessageDialog(new JFrame(), "Please fill in all fields.", "Error!",
 								JOptionPane.ERROR_MESSAGE);
 					}
-
+					newList = new ArrayList<Employees>();
+					newList = empDao.getAllData();
+					
 				}
 
 				else if (islem == 1) { // update islemi
@@ -472,18 +487,25 @@ public class EmployeesFrame extends JDialog {
 					Boolean uzunKontrol = uzunlukKontrol();
 					if (bosDolu = true) {
 						if (uzunKontrol == true) {
+							tarihKontrol();
+							if (tarihKontrol() == true) {
 
-							empDao.setEmployee(e);
-							sonuc = empDao.update();
+								empDao.setEmployee(e);
+								sonuc = empDao.update();
 
-							if (sonuc == true) {
-								JOptionPane.showMessageDialog(new JFrame(), "Employee is updated.", "Successful",
-										JOptionPane.YES_NO_CANCEL_OPTION);
+								if (sonuc == true) {
+									JOptionPane.showMessageDialog(new JFrame(), "Employee is updated.", "Successful",
+											JOptionPane.YES_NO_CANCEL_OPTION);
 
+								} else {
+									JOptionPane.showMessageDialog(new JFrame(), "An error occured.", "Error!",
+											JOptionPane.ERROR_MESSAGE);
+
+								}
 							} else {
-								JOptionPane.showMessageDialog(new JFrame(), "An error occured.", "Error!",
-										JOptionPane.ERROR_MESSAGE);
-
+								JOptionPane.showMessageDialog(new JFrame(),
+										"You have entered the Hire Date format incorrectly. Example: yyyy-mm-dd",
+										"Error!", JOptionPane.ERROR_MESSAGE);
 							}
 						} else {
 							JOptionPane.showMessageDialog(new JFrame(),
@@ -494,6 +516,7 @@ public class EmployeesFrame extends JDialog {
 						JOptionPane.showMessageDialog(new JFrame(), "Please fill in all fields.", "Error!",
 								JOptionPane.ERROR_MESSAGE);
 					}
+					
 				}
 
 				else if (islem == 2) { // delete islemi
@@ -503,9 +526,8 @@ public class EmployeesFrame extends JDialog {
 						sonuc = empDao.delete(Integer.valueOf(txtID.getText()));
 
 						if (sonuc == true) {
-							JOptionPane.showMessageDialog(new JFrame(),
-									txtID.getText().toString() + " is deleted ", "Successful",
-									JOptionPane.YES_NO_CANCEL_OPTION);
+							JOptionPane.showMessageDialog(new JFrame(), txtID.getText().toString() + " is deleted ",
+									"Successful", JOptionPane.YES_NO_CANCEL_OPTION);
 
 						} else {
 							JOptionPane.showMessageDialog(new JFrame(), "An error occured.", "Error",
@@ -575,11 +597,8 @@ public class EmployeesFrame extends JDialog {
 		btnTemizle.setEnabled(true);
 		btnTemizle.setBounds(524, 430, 98, 30);
 		getContentPane().add(btnTemizle);
-		
 
 	}
-	
-	
 
 	public boolean numberControl(String deger) {
 		char a;
@@ -607,12 +626,11 @@ public class EmployeesFrame extends JDialog {
 	}
 
 	public void degerGirisi() {
-		
+
 		e.setFirst_name(txtName.getText());
 		e.setLast_name(txtSurname.getText());
 		e.setEmail(txtEmail.getText());
 		e.setPhone_number(txtPhoneNumber.getText());
-		e.setHire_date(Date.valueOf(txtHireDate.getText()));
 		for (Jobs j : jobList) {
 			if (comboBoxJobID.getSelectedItem().equals(j.getJob_title())) {
 				e.setJob_id(j.getJob_id());
@@ -626,6 +644,41 @@ public class EmployeesFrame extends JDialog {
 				e.setDepartment_id(d.getDepartment_id());
 			}
 		}
+	}
+
+	public Boolean tarihKontrol() {
+		if (txtHireDate.getText().length() == 10) {
+			char gun1 = txtHireDate.getText().charAt(8);
+			char gun2 = txtHireDate.getText().charAt(9);
+			char ay1 = txtHireDate.getText().charAt(5);
+			char ay2 = txtHireDate.getText().charAt(6);
+			char yil1 = txtHireDate.getText().charAt(0);
+			char yil2 = txtHireDate.getText().charAt(1);
+			char yil3 = txtHireDate.getText().charAt(2);
+			char yil4 = txtHireDate.getText().charAt(3);
+
+			Boolean gun11 = numberControl(String.valueOf(gun1));
+			Boolean gun12 = numberControl(String.valueOf(gun2));
+			Boolean ay11 = numberControl(String.valueOf(ay1));
+			Boolean ay12 = numberControl(String.valueOf(ay2));
+			Boolean yil11 = numberControl(String.valueOf(yil1));
+			Boolean yil12 = numberControl(String.valueOf(yil2));
+			Boolean yil13 = numberControl(String.valueOf(yil3));
+			Boolean yil14 = numberControl(String.valueOf(yil4));
+
+			if (gun11 == true && gun12 == true && ay11 == true && ay12 == true && yil11 == true && yil12 == true
+					&& yil13 == true && yil14 == true && txtHireDate.getText().charAt(4) == '-'
+					&& txtHireDate.getText().charAt(7) == '-') {
+
+				e.setHire_date(Date.valueOf(txtHireDate.getText()));
+				return true;
+			} else {
+				return false;
+			}
+		} else {
+			return false;
+		}
+
 	}
 
 	public Boolean uzunlukKontrol() {

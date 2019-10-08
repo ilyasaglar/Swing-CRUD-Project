@@ -320,7 +320,7 @@ public class LocationsFrame extends JDialog {
 						if (uzunKontrol == true) {
 
 							locationDao.setLocation(l);
-							sonuc = locationDao.insert();
+							sonuc = locationDao.update();
 
 							if (sonuc == true) {
 								JOptionPane.showMessageDialog(new JFrame(), "Location is updated.", "Successful",

@@ -159,14 +159,14 @@ public class CountriesFrame extends JDialog {
 		btnUpdate.setIcon(new ImageIcon(this.getClass().getResource("icon/reload.png")));
 		btnUpdate.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				/*
+				
 				for (JTextField jt : jtList) {
 					jt.setEditable(true);
 				}
-				*/
+			
 				JOptionPane.showMessageDialog(new JFrame(), "You have not authorized to update.", "Warning!",
 						JOptionPane.YES_NO_CANCEL_OPTION);
-				/*
+				
 				islem = 1;
 				txtID.setEditable(false);
 				btnInsert.setEnabled(false);
@@ -178,7 +178,7 @@ public class CountriesFrame extends JDialog {
 							JOptionPane.YES_NO_CANCEL_OPTION);
 
 				}
-				*/
+				
 				
 			}
 		});
@@ -270,7 +270,7 @@ public class CountriesFrame extends JDialog {
 					if (uzunKontrol == true) {
 
 						countryDao.setCountry(c);
-						sonuc = countryDao.insert();
+						sonuc = countryDao.update();
 
 						if (sonuc == true) {
 							JOptionPane.showMessageDialog(new JFrame(), "Country is updated.", "Successful",

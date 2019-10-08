@@ -153,8 +153,8 @@ public class EmployeesDAO implements CustomDAO {
 			Statement stmt = connection.createStatement();
 
 			int dialogButton = JOptionPane.YES_NO_OPTION;
-			int dialogResult = JOptionPane.showConfirmDialog(null, "Kiþi Bilgilerini Silmek Ýstediðinize emin misiniz?",
-					"Onay Ekraný", dialogButton);
+			int dialogResult = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete Employee Informations?",
+					"Warning", dialogButton);
 			if (dialogResult == JOptionPane.YES_OPTION) {
 
 				int i = stmt.executeUpdate("DELETE FROM employees WHERE employee_id='" + employee_id + "'");
@@ -172,7 +172,7 @@ public class EmployeesDAO implements CustomDAO {
 		} catch (SQLException ex) {
 			System.out.println(ex);
 			ex.printStackTrace();
-			JOptionPane.showMessageDialog(new JFrame(), "Bir hata oluþtu.", "Hata!", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(new JFrame(), "An error occured.", "Error!", JOptionPane.ERROR_MESSAGE);
 			return false;
 		}
 
@@ -183,7 +183,7 @@ public class EmployeesDAO implements CustomDAO {
 		Connection conn = DbConnection.getConnection();
 		try {
 			Statement stmt = conn.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT * FROM Employees");
+			ResultSet rs = stmt.executeQuery("SELECT * FROM Employees ORDER BY employee_id");
 			List<Employees> empList = new ArrayList<>();
 			while (rs.next()) {
 				Employees employee = extractUserFromResultSet(rs);
