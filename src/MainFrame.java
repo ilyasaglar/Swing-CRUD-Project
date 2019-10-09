@@ -177,7 +177,7 @@ public class MainFrame extends JFrame {
 
 		JLabel lblLogo2 = new JLabel("");
 		lblLogo2.setHorizontalAlignment(SwingConstants.CENTER);
-		lblLogo2.setIcon(new ImageIcon(this.getClass().getResource("icon/logo.png")));
+		//lblLogo2.setIcon(new ImageIcon(this.getClass().getResource("icon/logo.png")));
 		lblLogo2.setBounds(645, 350, 188, 88);
 		getContentPane().add(lblLogo2);
 
